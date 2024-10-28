@@ -1,0 +1,5 @@
+files:
+  - source: /src/public/translations/en/*.json
+    translation: /src/public/translations/%two_letters_code%/%original_file_name%
+  - source: /translations/en/*.json
+    translation: /translations/%two_letters_code%/%original_file_name%
