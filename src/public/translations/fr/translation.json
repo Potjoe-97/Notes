@@ -15,7 +15,13 @@
       "message": "Une erreur critique s'est produite qui empêche l'application client de démarrer :\n\n{{message}}\n\nCeci est probablement dû à un échec inattendu d'un script. Essayez de démarrer l'application en mode sans échec et de résoudre le problème."
     },
     "widget-error": {
-      "title": "Impossible d'initialiser un widget"
+      "title": "Impossible d'initialiser un widget",
+      "message-custom": "Custom widget from note with ID \"{{id}}\", titled \"{{title}}\" could not be initialized due to:\n\n{{message}}",
+      "message-unknown": "Unknown widget could not be initialized due to:\n\n{{message}}"
+    },
+    "bundle-error": {
+      "title": "Failed to load a custom script",
+      "message": "Script from note with ID \"{{id}}\", titled \"{{title}}\" could not be executed due to:\n\n{{message}}"
     }
   },
   "add_link": {
@@ -51,7 +57,7 @@
     "clone_notes_to": "Cloner des notes dans...",
     "help_on_links": "Aide sur les liens",
     "notes_to_clone": "Notes à cloner",
-    "target_parent_note": "Note parent cible",
+    "target_parent_note": "Note parent de destination",
     "search_for_note_by_its_name": "rechercher une note par son nom",
     "cloned_note_prefix_title": "La note clonée sera affichée dans l'arbre des notes avec le préfixe donné",
     "prefix_optional": "Préfixe (facultatif)",
@@ -68,7 +74,7 @@
     "also_delete_note": "Supprimer également la note"
   },
   "delete_notes": {
-    "delete_notes_preview": "Supprimer l'aperçu des notes",
+    "delete_notes_preview": "Supprimer la note",
     "delete_all_clones_description": "supprime également tous les clones (peut être annulé depuis les Modifications récentes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
     "erase_notes_warning": "efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
@@ -111,7 +117,7 @@
     "collapseSubTree": "réduire le sous-arbre",
     "tabShortcuts": "Raccourcis des onglets",
     "newTabNoteLink": "(ou clic central de la souris) sur le lien de la note ouvre la note dans un nouvel onglet",
-    "onlyInDesktop": "Uniquement sur ordinateur (version Electron)",
+    "onlyInDesktop": "Only in desktop (Electron build)",
     "openEmptyTab": "ouvrir un onglet vide",
     "closeActiveTab": "fermer l'onglet actif",
     "activateNextTab": "activer l'onglet suivant",
@@ -165,7 +171,8 @@
     "textImportedAsText": "Importez HTML, Markdown et TXT sous forme de notes de texte si les métadonnées ne sont pas claires",
     "codeImportedAsCode": "Importez des fichiers de code reconnus (par exemple <code>.json</code>) en tant que notes de code si cela n'est pas clair à partir des métadonnées",
     "replaceUnderscoresWithSpaces": "Remplacez les tirets bas par des espaces dans les noms de notes importées",
-    "import": "Importer"
+    "import": "Importer",
+    "failed": "Import failed: {{message}}."
   },
   "include_note": {
     "dialog_title": "Inclure une note",
@@ -195,7 +202,7 @@
   "move_to": {
     "dialog_title": "Déplacer les notes vers...",
     "notes_to_move": "Notes à déplacer",
-    "target_parent_note": "Note parent cible",
+    "target_parent_note": "Note parent de destination",
     "search_placeholder": "rechercher une note par son nom",
     "move_button": "Déplacer vers la note sélectionnée <kbd>entrer</kbd>",
     "error_no_path": "Aucun chemin vers lequel déplacer.",
@@ -232,7 +239,7 @@
     "confirm_undelete": "Voulez-vous restaurer cette note et ses sous-notes ?"
   },
   "revisions": {
-    "note_revisions": "Versions des notes",
+    "note_revisions": "Versions de la note",
     "delete_all_revisions": "Supprimer toutes les versions de cette note",
     "delete_all_button": "Supprimer toutes les versions",
     "help_title": "Aide sur les versions de notes",
@@ -246,7 +253,7 @@
     "revisions_deleted": "Les versions de notes ont été supprimées.",
     "revision_restored": "La version de la note a été restaurée.",
     "revision_deleted": "La version de la note a été supprimée.",
-    "snapshot_interval": "Intervalle d'instantané des versions de notes : {{seconds}}s.",
+    "snapshot_interval": "Intervalle d'enregistrement des versions de notes : {{seconds}}s.",
     "maximum_revisions": "Nombre maximal de versions pour la note actuelle : {{number}}.",
     "settings": "Paramètres pour les versions de notes",
     "download_button": "Télécharger",
@@ -397,7 +404,7 @@
     "share_js": "Note JavaScript qui sera injectée dans la page de partage. La note JS doit également figurer dans le sous-arbre partagé. Pensez à utiliser 'share_hidden_from_tree'.",
     "share_template": "Note JavaScript intégrée qui sera utilisée comme modèle pour afficher la note partagée. Revient au modèle par défaut. Pensez à utiliser 'share_hidden_from_tree'.",
     "share_favicon": "Favicon de la note à définir dans la page partagée. En règle générale, vous souhaitez le configurer pour partager la racine et le rendre héritable. La note Favicon doit également figurer dans le sous-arbre partagé. Pensez à utiliser 'share_hidden_from_tree'.",
-    "is_owned_by_note": "appartient à la note",
+    "is_owned_by_note": "appartenant à la note",
     "other_notes_with_name": "Autres notes portant le nom {{attributeType}} \"{{attributeName}}\"",
     "and_more": "... et {{count}} plus."
   },
@@ -426,7 +433,7 @@
     "add_label": "Ajouter un label",
     "label_name_placeholder": "nom du label",
     "label_name_title": "Les caractères autorisés sont : caractères alphanumériques, les tirets bas et les deux-points.",
-    "to_value": "modifié par",
+    "to_value": "égal à",
     "new_value_placeholder": "nouvelle valeur",
     "help_text": "Pour toutes les notes correspondantes :",
     "help_text_item1": "créer un label donné si la note ne le possède pas encore",
@@ -469,7 +476,7 @@
   "move_note": {
     "move_note": "Déplacer la note",
     "to": "vers",
-    "target_parent_note": "note parent cible",
+    "target_parent_note": "note parent de destination",
     "on_all_matched_notes": "Pour toutes les notes correspondantes",
     "move_note_new_parent": "déplacer la note vers le nouveau parent si la note n'a qu'un seul parent (c.-à-d. l'ancienne branche est supprimée et une nouvelle branche est créée dans le nouveau parent)",
     "clone_note_new_parent": "cloner la note vers le nouveau parent si la note a plusieurs clones/branches (il n'est pas clair quelle branche doit être supprimée)",
@@ -477,7 +484,7 @@
   },
   "rename_note": {
     "rename_note": "Renommer la note",
-    "rename_note_title_to": "Renommer le titre de la note en",
+    "rename_note_title_to": "Renommer la note en",
     "new_note_title": "nouveau titre de note",
     "click_help_icon": "Cliquez sur l'icône d'aide à droite pour voir toutes les options",
     "evaluated_as_js_string": "La valeur donnée est évaluée comme une chaîne JavaScript et peut ainsi être enrichie de contenu dynamique via la variable <code>note</code> injectée (la note étant renommée). Exemples :",
@@ -620,18 +627,21 @@
   },
   "note_actions": {
     "convert_into_attachment": "Convertir en pièce jointe",
-    "re_render_note": "Re-rendre la note",
+    "re_render_note": "Recharger la note",
     "search_in_note": "Rechercher dans la note",
-    "note_source": "Source de la note",
+    "note_source": "Code source",
     "note_attachments": "Pièces jointes",
     "open_note_externally": "Ouverture externe",
     "open_note_externally_title": "Le fichier sera ouvert dans une application externe et les modifications apportées seront surveillées. Vous pourrez ensuite téléverser la version modifiée dans Trilium.",
     "open_note_custom": "Ouvrir la note avec",
     "import_files": "Importer des fichiers",
-    "export_note": "Exporter la note",
+    "export_note": "Exporter",
     "delete_note": "Supprimer la note",
-    "print_note": "Imprimer la note",
-    "save_revision": "Enregistrer la version"
+    "print_note": "Imprimer",
+    "save_revision": "Enregistrer une version",
+    "convert_into_attachment_failed": "Converting note '{{title}}' failed.",
+    "convert_into_attachment_successful": "Note '{{title}}' has been converted to attachment.",
+    "convert_into_attachment_prompt": "Are you sure you want to convert note '{{title}}' into an attachment of the parent note?"
   },
   "onclick_button": {
     "no_click_handler": "Le widget bouton '{{componentId}}' n'a pas de gestionnaire de clic défini"
@@ -641,7 +651,7 @@
     "inactive": "Cliquez pour accéder à une session protégée"
   },
   "revisions_button": {
-    "note_revisions": "Versions des Notes"
+    "note_revisions": "Versions de la note"
   },
   "update_available": {
     "update_available": "Mise à jour disponible"
@@ -694,7 +704,7 @@
   "basic_properties": {
     "note_type": "Type de note",
     "editable": "Modifiable",
-    "basic_properties": "Propriétés de base"
+    "basic_properties": "Propriétés basiques"
   },
   "book_properties": {
     "view_type": "Type d'affichage",
@@ -704,7 +714,7 @@
     "expand_all_children": "Développer tous les enfants",
     "collapse": "Réduire",
     "expand": "Développer",
-    "book_properties": "Propriétés du livre",
+    "book_properties": "Propriétés basiques",
     "invalid_view_type": "Type de vue non valide '{{type}}'"
   },
   "edited_notes": {
@@ -741,9 +751,9 @@
     "no_inherited_attributes": "Aucun attribut hérité."
   },
   "note_info_widget": {
-    "note_id": "Identifiant de la note",
-    "created": "Créé",
-    "modified": "Modifié",
+    "note_id": "ID de la note",
+    "created": "Créée le",
+    "modified": "Modifiée le",
     "type": "Type",
     "note_size": "Taille de la note",
     "note_size_info": "La taille de la note fournit une estimation approximative des besoins de stockage pour cette note. Il prend en compte le contenu de la note et de ses versions.",
@@ -752,12 +762,12 @@
     "title": "Infos sur la Note"
   },
   "note_map": {
-    "open_full": "Développer au maximum",
+    "open_full": "Agrandir au maximum",
     "collapse": "Réduire à la taille normale",
-    "title": "Carte de la Note"
+    "title": "Liens de la note"
   },
   "note_paths": {
-    "title": "Chemins de la Note",
+    "title": "Chemins de la note",
     "clone_button": "Cloner la note vers un nouvel emplacement...",
     "intro_placed": "Cette note est située dans les chemins suivants :",
     "intro_not_placed": "Cette note n'est pas encore située dans l'arbre des notes.",
@@ -788,7 +798,7 @@
     "execute_script": "Exécuter le script"
   },
   "search_definition": {
-    "add_search_option": "Ajouter une option de recherche :",
+    "add_search_option": "Options de recherche :",
     "search_string": "chaîne de caractères à rechercher",
     "search_script": "script de recherche",
     "ancestor": "ancêtre",
@@ -886,7 +896,8 @@
     "label_rock_or_pop": "un seul des labels doit être présent",
     "label_year_comparison": "comparaison numérique (également >, >=, <).",
     "label_date_created": "notes créées le mois dernier",
-    "error": "Erreur de recherche : {{error}}"
+    "error": "Erreur de recherche : {{error}}",
+    "search_prefix": "Search:"
   },
   "attachment_detail": {
     "open_help_page": "Ouvrir la page d'aide sur les pièces jointes",
@@ -920,7 +931,15 @@
   },
   "protected_session": {
     "enter_password_instruction": "L'affichage de la note protégée nécessite la saisie de votre mot de passe :",
-    "start_session_button": "Démarrer une session protégée"
+    "start_session_button": "Démarrer une session protégée",
+    "started": "Protected session has been started.",
+    "wrong_password": "Wrong password.",
+    "protecting-finished-successfully": "Protecting finished successfully.",
+    "unprotecting-finished-successfully": "Unprotecting finished successfully.",
+    "protecting-in-progress": "Protecting in progress: {{count}}",
+    "unprotecting-in-progress-count": "Unprotecting in progress: {{count}}",
+    "protecting-title": "Protecting status",
+    "unprotecting-title": "Unprotecting status"
   },
   "relation_map": {
     "open_in_new_tab": "Ouvrir dans un nouvel onglet",
@@ -991,7 +1010,9 @@
     "fill_entity_changes_button": "Remplir les enregistrements de modifications d'entité",
     "full_sync_triggered": "Synchronisation complète déclenchée",
     "filling_entity_changes": "Remplissage changements de ligne d'entité ...",
-    "sync_rows_filled_successfully": "Synchronisation avec succès des lignes remplies"
+    "sync_rows_filled_successfully": "Synchronisation avec succès des lignes remplies",
+    "finished-successfully": "Sync finished successfully.",
+    "failed": "Sync failed: {{message}}"
   },
   "vacuum_database": {
     "title": "Nettoyage la base de donnée",
@@ -1001,7 +1022,7 @@
     "database_vacuumed": "La base de données a été nettoyée"
   },
   "fonts": {
-    "theme_defined": "Thème défini",
+    "theme_defined": "Défini par le thème",
     "fonts": "Polices",
     "main_font": "Police principale",
     "font_family": "Famille de polices",
@@ -1009,14 +1030,14 @@
     "note_tree_font": "Police de l'arborescence",
     "note_detail_font": "Police du contenu des notes",
     "monospace_font": "Police Monospace (code)",
-    "note_tree_and_detail_font_sizing": "Notez que la taille de la police de l’arborescence et des détails est relative au paramètre de taille de police principal.",
-    "not_all_fonts_available": "Toutes les polices répertoriées peuvent ne pas être disponibles sur votre système.",
+    "note_tree_and_detail_font_sizing": "Notez que la taille de la police de l’arborescence et du contenu est relative au paramètre de taille de police principal.",
+    "not_all_fonts_available": "Toutes les polices répertoriées ne sont peut-être pas disponibles sur votre système.",
     "apply_font_changes": "Pour appliquer les modifications de police, cliquez sur",
     "reload_frontend": "recharger l'interface"
   },
   "max_content_width": {
     "title": "Largeur du contenu",
-    "default_description": "Trilium limite par défaut la largeur maximale du contenu pour améliorer la lisibilité sur des écrans larges.",
+    "default_description": "Trilium limite par défaut la largeur maximale du contenu pour améliorer la lisibilité sur les écrans larges.",
     "max_width_label": "Largeur maximale du contenu en pixels",
     "apply_changes_description": "Pour appliquer les modifications de largeur du contenu, cliquez sur",
     "reload_button": "recharger l'interface",
@@ -1036,7 +1057,7 @@
     "title": "Thème",
     "theme_label": "Thème",
     "override_theme_fonts_label": "Remplacer les polices du thème",
-    "light_theme": "Lumière",
+    "light_theme": "Clair",
     "dark_theme": "Sombre"
   },
   "zoom_factor": {
@@ -1088,16 +1109,16 @@
     "deleted_notes_erased": "Les notes supprimées ont été effacées."
   },
   "revisions_snapshot_interval": {
-    "note_revisions_snapshot_interval_title": "Intervalle d’instantané des Versions de notes",
-    "note_revisions_snapshot_description": "L'intervalle de temps de l'instantané de version de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
-    "snapshot_time_interval_label": "Intervalle de temps entre deux instantanés de version de note (en secondes) :"
+    "note_revisions_snapshot_interval_title": "Intervalle d'enregistrement automatique des versions des notes",
+    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
+    "snapshot_time_interval_label": "Intervalle de temps entre deux enregistrements de version de note (en secondes) :"
   },
   "revisions_snapshot_limit": {
-    "note_revisions_snapshot_limit_title": "Limite des instantanés de version de note",
-    "note_revisions_snapshot_limit_description": "La limite du nombre d’instantanés de version de note désigne le nombre maximum de versions pouvant être enregistrées pour chaque note. -1 signifie aucune limite, 0 signifie supprimer toutes les versions. Vous pouvez définir le nombre maximal de versions pour une seule note via le label #versioningLimit.",
-    "snapshot_number_limit_label": "Nombre limite d'instantanés de version de la note :",
-    "erase_excess_revision_snapshots": "Effacez maintenant les instantanés de version en excès",
-    "erase_excess_revision_snapshots_prompt": "Les instantanés de version en excès ont été effacés."
+    "note_revisions_snapshot_limit_title": "Limite des enregistrements de version de note",
+    "note_revisions_snapshot_limit_description": "La limite du nombre d'enregistrements de version de note désigne le nombre maximum de versions pouvant être enregistrées pour chaque note. -1 signifie aucune limite, 0 signifie supprimer toutes les versions. Vous pouvez définir le nombre maximal de versions pour une seule note via le label #versioningLimit.",
+    "snapshot_number_limit_label": "Nombre limite d'enregistrements de version de la note :",
+    "erase_excess_revision_snapshots": "Effacez maintenant les versions en excès",
+    "erase_excess_revision_snapshots_prompt": "Les versions en excès ont été effacées."
   },
   "search_engine": {
     "title": "Moteur de recherche",
@@ -1110,7 +1131,7 @@
     "custom_name_label": "Nom du moteur de recherche personnalisé",
     "custom_name_placeholder": "Personnaliser le nom du moteur de recherche",
     "custom_url_label": "L'URL du moteur de recherche personnalisé doit inclure {keyword} comme espace réservé pour le terme de recherche.",
-    "custom_url_placeholder": "Personnaliser l'URL du moteur de recherche",
+    "custom_url_placeholder": "Customize search engine url",
     "save_button": "Sauvegarder"
   },
   "tray": {
@@ -1147,7 +1168,7 @@
     "label": "Taille automatique en lecture seule (notes de texte)"
   },
   "i18n": {
-    "title": "Localisation",
+    "title": "Paramètres régionaux",
     "language": "Langue",
     "first-day-of-the-week": "Premier jour de la semaine",
     "sunday": "Dimanche",
@@ -1198,7 +1219,7 @@
   "password": {
     "heading": "Mot de passe",
     "alert_message": "Prenez soin de mémoriser votre nouveau mot de passe. Le mot de passe est utilisé pour se connecter à l'interface Web et pour crypter les notes protégées. Si vous oubliez votre mot de passe, toutes vos notes protégées seront définitivement perdues.",
-    "reset_link": "cliquez ici pour le réinitialiser.",
+    "reset_link": "Click here to reset it.",
     "old_password": "Ancien mot de passe",
     "new_password": "Nouveau mot de passe",
     "new_password_confirmation": "Confirmation du nouveau mot de passe",
@@ -1266,7 +1287,7 @@
     "unrecognized_role": "Rôle de pièce jointe « {{role}} » non reconnu."
   },
   "bookmark_switch": {
-    "bookmark": "Favoris",
+    "bookmark": "Favori",
     "bookmark_this_note": "Ajouter cette note à vos favoris dans le panneau latéral gauche",
     "remove_bookmark": "Supprimer le favori"
   },
@@ -1280,7 +1301,7 @@
   },
   "note-map": {
     "button-link-map": "Carte des liens",
-    "button-tree-map": "Carte de l'arborescence"
+    "button-tree-map": "Carte arborescente"
   },
   "tree-context-menu": {
     "open-in-a-new-tab": "Ouvrir dans un nouvel onglet",
@@ -1289,6 +1310,8 @@
     "insert-child-note": "Insérer une note enfant",
     "delete": "Supprimer",
     "search-in-subtree": "Rechercher dans le sous-arbre",
+    "hoist-note": "Hoist note",
+    "unhoist-note": "Unhoist note",
     "edit-branch-prefix": "Modifier le préfixe de branche",
     "advanced": "Avancé",
     "expand-subtree": "Développer le sous-arbre",
@@ -1308,7 +1331,9 @@
     "duplicate-subtree": "Dupliquer le sous-arbre",
     "export": "Exporter",
     "import-into-note": "Importer dans la note",
-    "apply-bulk-actions": "Appliquer des Actions groupées"
+    "apply-bulk-actions": "Actions groupées",
+    "converted-to-attachments": "{{count}} notes have been converted to attachments.",
+    "convert-to-attachment-confirm": "Are you sure you want to convert note selected notes into attachments of their parent notes?"
   },
   "shared_info": {
     "shared_publicly": "Cette note est partagée publiquement sur",
@@ -1321,7 +1346,7 @@
     "saved-search": "Recherche enregistrée",
     "relation-map": "Carte des relations",
     "note-map": "Carte de notes",
-    "render-note": "Rendu HTML",
+    "render-note": "Render Note",
     "book": "Livre",
     "mermaid-diagram": "Diagramme Mermaid",
     "canvas": "Canevas",
@@ -1331,7 +1356,8 @@
     "image": "Image",
     "launcher": "Raccourci",
     "doc": "Doc",
-    "widget": "Widget"
+    "widget": "Widget",
+    "confirm-change": "It is not recommended to change note type when note content is not empty. Do you want to continue anyway?"
   },
   "protect_note": {
     "toggle-on": "Protéger la note",
@@ -1354,7 +1380,7 @@
   "open-help-page": "Ouvrir la page d'aide",
   "find": {
     "case_sensitive": "sensible aux majuscules et minuscules",
-    "match_words": "faire correspondre les mots"
+    "match_words": "correspondance exacte"
   },
   "highlights_list_2": {
     "title": "Accentuations",
@@ -1377,10 +1403,12 @@
     "hide-archived-notes": "Masquer les notes archivées",
     "automatically-collapse-notes": "Réduire automatiquement les notes",
     "automatically-collapse-notes-title": "Les notes seront réduites après une période d'inactivité pour désencombrer l'arborescence.",
-    "save-changes": "Enregistrer et appliquer les modifications"
+    "save-changes": "Enregistrer et appliquer les modifications",
+    "auto-collapsing-notes-after-inactivity": "Auto collapsing notes after inactivity...",
+    "saved-search-note-refreshed": "Saved search note refreshed."
   },
   "title_bar_buttons": {
-    "window-on-top": "Gardez cette fenêtre au premier plan."
+    "window-on-top": "Épingler cette fenêtre au premier plan."
   },
   "note_detail": {
     "could_not_find_typewidget": "Impossible de trouver typeWidget pour le type '{{type}}'"
@@ -1400,5 +1428,74 @@
   },
   "sql_table_schemas": {
     "tables": "Tableaux"
+  },
+  "tab_row": {
+    "close_tab": "Close tab",
+    "add_new_tab": "Add new tab",
+    "close": "Close",
+    "close_other_tabs": "Close other tabs",
+    "close_all_tabs": "Close all tabs",
+    "move_tab_to_new_window": "Move this tab to a new window",
+    "new_tab": "New tab"
+  },
+  "toc": {
+    "table_of_contents": "Table of Contents",
+    "options": "Options"
+  },
+  "watched_file_update_status": {
+    "file_last_modified": "File <code class=\"file-path\"></code> has been last modified on <span class=\"file-last-modified\"></span>.",
+    "upload_modified_file": "Upload modified file",
+    "ignore_this_change": "Ignore this change"
+  },
+  "app_context": {
+    "please_wait_for_save": "Please wait for a couple of seconds for the save to finish, then you can try again."
+  },
+  "note_create": {
+    "duplicated": "Note \"{{title}}\" has been duplicated."
+  },
+  "image": {
+    "copied-to-clipboard": "A reference to the image has been copied to clipboard. This can be pasted in any text note.",
+    "cannot-copy": "Could not copy the image reference to clipboard."
+  },
+  "clipboard": {
+    "cut": "Note(s) have been cut into clipboard.",
+    "copied": "Note(s) have been copied into clipboard."
+  },
+  "entrypoints": {
+    "note-revision-created": "Note revision has been created.",
+    "note-executed": "Note executed.",
+    "sql-error": "Error occurred while executing SQL query: {{message}}"
+  },
+  "branches": {
+    "cannot-move-notes-here": "Cannot move notes here.",
+    "delete-status": "Delete status",
+    "delete-notes-in-progress": "Delete notes in progress: {{count}}",
+    "delete-finished-successfully": "Delete finished successfully.",
+    "undeleting-notes-in-progress": "Undeleting notes in progress: {{count}}",
+    "undeleting-notes-finished-successfully": "Undeleting notes finished successfully."
+  },
+  "frontend_script_api": {
+    "async_warning": "You're passing an async function to `api.runOnBackend()` which will likely not work as you intended.\\nEither make the function synchronous (by removing `async` keyword), or use `api.runAsyncOnBackendWithManualTransactionHandling()`.",
+    "sync_warning": "You're passing a synchronous function to `api.runAsyncOnBackendWithManualTransactionHandling()`,\\nwhile you should likely use `api.runOnBackend()` instead."
+  },
+  "ws": {
+    "sync-check-failed": "Sync check failed!",
+    "consistency-checks-failed": "Consistency checks failed! See logs for details.",
+    "encountered-error": "Encountered error \"{{message}}\", check out the console."
+  },
+  "hoisted_note": {
+    "confirm_unhoisting": "Requested note '{{requestedNote}}' is outside of hoisted note '{{hoistedNote}}' subtree and you must unhoist to access the note. Do you want to proceed with unhoisting?"
+  },
+  "launcher_context_menu": {
+    "reset_launcher_confirm": "Do you really want to reset \"{{title}}\"? All data / settings in this note (and its children) will be lost and the launcher will be returned to its original location.",
+    "add-note-launcher": "Add a note launcher",
+    "add-script-launcher": "Add a script launcher",
+    "add-custom-widget": "Add a custom widget",
+    "add-spacer": "Add spacer",
+    "delete": "Delete",
+    "reset": "Reset",
+    "move-to-visible-launchers": "Move to visible launchers",
+    "move-to-available-launchers": "Move to available launchers",
+    "duplicate-launcher": "Duplicate launcher"
   }
 }
