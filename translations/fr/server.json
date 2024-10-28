@@ -66,7 +66,7 @@
     "toggle-owned-attributes": "Afficher/masquer les Attributs propres",
     "toggle-inherited-attributes": "Afficher/masquer les Attributs hérités",
     "toggle-promoted-attributes": "Afficher/masquer les Attributs promus",
-    "toggle-link-map": "Afficher/masquer la Carte des liens",
+    "toggle-link-map": "Afficher/masquer la Carte de la note",
     "toggle-note-info": "Afficher/masquer les Informations de la note",
     "toggle-note-paths": "Afficher/masquer les Emplacements de la note",
     "toggle-similar-notes": "Afficher/masquer les Notes similaires",
@@ -157,5 +157,31 @@
     "clipped-from": "Cette note a été initialement extraite de {{- url}}",
     "child-notes": "Notes enfants :",
     "no-content": "Cette note n'a aucun contenu."
+  },
+  "weekdays": {
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
+  },
+  "special_notes": {
+    "search_prefix": "Search:"
   }
 }
