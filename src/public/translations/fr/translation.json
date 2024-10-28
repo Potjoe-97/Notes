@@ -16,11 +16,11 @@
     },
     "widget-error": {
       "title": "Impossible d'initialiser un widget",
-      "message-custom": "Custom widget from note with ID \"{{id}}\", titled \"{{title}}\" could not be initialized due to:\n\n{{message}}",
-      "message-unknown": "Unknown widget could not be initialized due to:\n\n{{message}}"
+      "message-custom": "Le widget personnalisé de la note avec l'ID \"{{id}}\", intitulée \"{{title}}\" n'a pas pu être initialisé en raison de\n\n{{message}}",
+      "message-unknown": "Le widget inconnu n'a pas pu être initialisé :\n\n{{message}}"
     },
     "bundle-error": {
-      "title": "Failed to load a custom script",
+      "title": "Echec du chargement d'un script personnalisé",
       "message": "Script from note with ID \"{{id}}\", titled \"{{title}}\" could not be executed due to:\n\n{{message}}"
     }
   },
@@ -1436,14 +1436,14 @@
     "close_other_tabs": "Close other tabs",
     "close_all_tabs": "Close all tabs",
     "move_tab_to_new_window": "Move this tab to a new window",
-    "new_tab": "New tab"
+    "new_tab": "Nouvel onglet"
   },
   "toc": {
-    "table_of_contents": "Table of Contents",
+    "table_of_contents": "Table des matières",
     "options": "Options"
   },
   "watched_file_update_status": {
-    "file_last_modified": "File <code class=\"file-path\"></code> has been last modified on <span class=\"file-last-modified\"></span>.",
+    "file_last_modified": "Le fichier <code class=\"file-path\"></code> a été modifié pour la dernière fois le <span class=\"file-last-modified\"></span>.",
     "upload_modified_file": "Upload modified file",
     "ignore_this_change": "Ignore this change"
   },
