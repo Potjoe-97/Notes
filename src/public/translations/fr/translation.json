@@ -21,7 +21,7 @@
     },
     "bundle-error": {
       "title": "Echec du chargement d'un script personnalisé",
-      "message": "Script from note with ID \"{{id}}\", titled \"{{title}}\" could not be executed due to:\n\n{{message}}"
+      "message": "Le script de la note avec l'ID \"{{id}}\", intitulé \"{{title}}\" n'a pas pu être exécuté à cause de\n\n{{message}}"
     }
   },
   "add_link": {
@@ -117,7 +117,7 @@
     "collapseSubTree": "réduire le sous-arbre",
     "tabShortcuts": "Raccourcis des onglets",
     "newTabNoteLink": "(ou clic central de la souris) sur le lien de la note ouvre la note dans un nouvel onglet",
-    "onlyInDesktop": "Only in desktop (Electron build)",
+    "onlyInDesktop": "Uniquement sur ordinateur (version Electron)",
     "openEmptyTab": "ouvrir un onglet vide",
     "closeActiveTab": "fermer l'onglet actif",
     "activateNextTab": "activer l'onglet suivant",
@@ -172,7 +172,7 @@
     "codeImportedAsCode": "Importez des fichiers de code reconnus (par exemple <code>.json</code>) en tant que notes de code si cela n'est pas clair à partir des métadonnées",
     "replaceUnderscoresWithSpaces": "Remplacez les tirets bas par des espaces dans les noms de notes importées",
     "import": "Importer",
-    "failed": "Import failed: {{message}}."
+    "failed": "Échec de l'importation : {{message}}."
   },
   "include_note": {
     "dialog_title": "Inclure une note",
@@ -639,9 +639,9 @@
     "delete_note": "Supprimer la note",
     "print_note": "Imprimer",
     "save_revision": "Enregistrer une version",
-    "convert_into_attachment_failed": "Converting note '{{title}}' failed.",
-    "convert_into_attachment_successful": "Note '{{title}}' has been converted to attachment.",
-    "convert_into_attachment_prompt": "Are you sure you want to convert note '{{title}}' into an attachment of the parent note?"
+    "convert_into_attachment_failed": "La conversion de la note '{{title}}' a échoué.",
+    "convert_into_attachment_successful": "La note '{{title}}' a été convertie en pièce jointe.",
+    "convert_into_attachment_prompt": "Êtes-vous sûr de vouloir convertir la note '{{title}}' en une pièce jointe de la note parente ?"
   },
   "onclick_button": {
     "no_click_handler": "Le widget bouton '{{componentId}}' n'a pas de gestionnaire de clic défini"
@@ -897,7 +897,7 @@
     "label_year_comparison": "comparaison numérique (également >, >=, <).",
     "label_date_created": "notes créées le mois dernier",
     "error": "Erreur de recherche : {{error}}",
-    "search_prefix": "Search:"
+    "search_prefix": "Recherche :"
   },
   "attachment_detail": {
     "open_help_page": "Ouvrir la page d'aide sur les pièces jointes",
