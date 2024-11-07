@@ -414,17 +414,16 @@
     "undelete_notes_instruction": "După ștergere, se pot recupera din ecranul Schimbări recente."
   },
   "delete_notes": {
-    "broken_relations_to_be_deleted": "Următoarele relații vor fi întrerupte și șterse (<span class=\"broke-relations-count\"></span>)",
+    "broken_relations_to_be_deleted": "Următoarele relații vor fi întrerupte și șterse ({{- relationCount}})",
     "cancel": "Anulează",
     "delete_all_clones_description": "Șterge și toate clonele (se pot recupera în ecranul Schimbări recente)",
-    "delete_notes_preview": "Șterge previzualizările notițelor",
+    "delete_notes_preview": "Previzualizare ștergerea notițelor",
     "erase_notes_description": "Ștergerea obișnuită doar marchează notițele ca fiind șterse și pot fi recuperate (în ecranul Schimbări recente) pentru o perioadă de timp. Dacă se bifează această opțiune, notițele vor fi șterse imediat fără posibilitatea de a le recupera.",
-    "erase_notes_warning": "șterge notițele permanent (nu se mai pot recupera), incluzând toate clonele. Va forța reîncărcarea aplicației.",
+    "erase_notes_warning": "Șterge notițele permanent (nu se mai pot recupera), incluzând toate clonele. Va forța reîncărcarea aplicației.",
     "no_note_to_delete": "Nicio notiță nu va fi ștearsă (doar clonele).",
-    "note": "Notiță",
-    "notes_to_be_deleted": "Următoarele notițe vor fi șterse (<span class=\"deleted-notes-count\"></span>)",
+    "notes_to_be_deleted": "Următoarele notițe vor fi șterse ({{- noteCount}})",
     "ok": "OK",
-    "to_be_deleted": " (pentru ștergere) este referențiat(ă) de relația <code>{{attrName}}</code> originând de la "
+    "deleted_relation_text": "Notița {{- note}} ce va fi ștearsă este referențiată de relația {{- relation}}, originând din {{- source}}."
   },
   "delete_relation": {
     "allowed_characters": "Se permit caractere alfanumerice, underline și două puncte.",
@@ -554,7 +553,7 @@
     "open_sql_console": "Deschide consola SQL",
     "open_sql_console_history": "Deschide istoricul consolei SQL",
     "options": "Opțiuni",
-    "reload_frontend": "Reîncarcă interfață",
+    "reload_frontend": "Reîncarcă interfața",
     "reload_hint": "Reîncărcarea poate ajuta atunci când există ceva probleme vizuale fără a trebui repornită întreaga aplicație.",
     "reset_zoom_level": "Resetează nivelul de zoom",
     "show_backend_log": "Afișează log-ul din backend",
@@ -1182,7 +1181,7 @@
     "light_theme": "Temă luminoasă",
     "override_theme_fonts_label": "Suprascrie fonturile temei",
     "theme_label": "Temă",
-    "title": "Temă"
+    "title": "Tema aplicației"
   },
   "toast": {
     "critical-error": {
@@ -1439,7 +1438,8 @@
     "close_other_tabs": "Închide celelalte taburi",
     "close_tab": "Închide tab",
     "move_tab_to_new_window": "Mută acest tab în altă fereastră",
-    "new_tab": "Tab nou"
+    "new_tab": "Tab nou",
+    "close_right_tabs": "Închide taburile din dreapta"
   },
   "toc": {
     "options": "Setări",
@@ -1497,5 +1497,16 @@
     "move-to-available-launchers": "Mută în Lansatoare disponibile",
     "move-to-visible-launchers": "Mută în Lansatoare vizibile",
     "reset": "Resetează"
+  },
+  "editable-text": {
+    "auto-detect-language": "Automat"
+  },
+  "highlighting": {
+    "color-scheme": "Temă de culori",
+    "title": "Evidențiere de sintaxă pentru notițele de tip text",
+    "description": "Controlează evidențierea de sintaxă pentru blocurile de cod în interiorul notițelor text, notițele de tip cod nu vor fi afectate de aceste setări."
+  },
+  "code_block": {
+    "word_wrapping": "Încadrare text"
   }
 }

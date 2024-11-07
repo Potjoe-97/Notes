@@ -75,16 +75,15 @@
   },
   "delete_notes": {
     "delete_notes_preview": "Delete notes preview",
-    "delete_all_clones_description": "delete also all clones (can be undone in recent changes)",
+    "delete_all_clones_description": "Delete also all clones (can be undone in recent changes)",
     "erase_notes_description": "Normal (soft) deletion only marks the notes as deleted and they can be undeleted (in recent changes dialog) within a period of time. Checking this option will erase the notes immediately and it won't be possible to undelete the notes.",
-    "erase_notes_warning": "erase notes permanently (can't be undone), including all clones. This will force application reload.",
-    "notes_to_be_deleted": "Following notes will be deleted (<span class=\"deleted-notes-count\"></span>)",
+    "erase_notes_warning": "Erase notes permanently (can't be undone), including all clones. This will force application reload.",
+    "notes_to_be_deleted": "Following notes will be deleted ({{- noteCount}})",
     "no_note_to_delete": "No note will be deleted (only clones).",
-    "broken_relations_to_be_deleted": "Following relations will be broken and deleted (<span class=\"broke-relations-count\"></span>)",
+    "broken_relations_to_be_deleted": "Following relations will be broken and deleted ({{- relationCount}})",
     "cancel": "Cancel",
     "ok": "OK",
-    "note": "Note",
-    "to_be_deleted": " (to be deleted) is referenced by relation <code>{{attrName}}</code> originating from "
+    "deleted_relation_text": "Note {{- note}} (to be deleted) is referenced by relation {{- relation}} originating from {{- source}}."
   },
   "export": {
     "export_note_title": "Export note",
@@ -1054,7 +1053,7 @@
     "edited_notes_message": "Edited Notes ribbon tab will automatically open on day notes"
   },
   "theme": {
-    "title": "Theme",
+    "title": "Application Theme",
     "theme_label": "Theme",
     "override_theme_fonts_label": "Override theme fonts",
     "light_theme": "Light",
@@ -1434,6 +1433,7 @@
     "add_new_tab": "Add new tab",
     "close": "Close",
     "close_other_tabs": "Close other tabs",
+    "close_right_tabs": "Close tabs to the right",
     "close_all_tabs": "Close all tabs",
     "move_tab_to_new_window": "Move this tab to a new window",
     "new_tab": "New tab"
@@ -1497,5 +1497,16 @@
     "move-to-visible-launchers": "Move to visible launchers",
     "move-to-available-launchers": "Move to available launchers",
     "duplicate-launcher": "Duplicate launcher"
+  },
+  "editable-text": {
+    "auto-detect-language": "Auto-detected"
+  },
+  "highlighting": {
+    "title": "Code Syntax Highlighting for Text Notes",
+    "description": "Controls the syntax highlighting for code blocks inside text notes, code notes will not be affected.",
+    "color-scheme": "Color Scheme"
+  },
+  "code_block": {
+    "word_wrapping": "Word wrapping"
   }
 }

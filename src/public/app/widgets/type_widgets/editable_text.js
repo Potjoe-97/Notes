@@ -10,6 +10,9 @@ import AbstractTextTypeWidget from "./abstract_text_type_widget.js";
 import link from "../../services/link.js";
 import appContext from "../../components/app_context.js";
 import dialogService from "../../services/dialog.js";
+import { initSyntaxHighlighting } from "./ckeditor/syntax_highlight.js";
+import options from "../../services/options.js";
+import { isSyntaxHighlightEnabled } from "../../services/syntax_highlight.js";
 
 const ENABLE_INSPECTOR = false;
 
@@ -87,6 +90,23 @@ const TPL = `
 </div>
 `;
 
+function buildListOfLanguages() {
+    const userLanguages = (mimeTypesService.getMimeTypes())
+        .filter(mt => mt.enabled)
+        .map(mt => ({
+                language: mimeTypesService.normalizeMimeTypeForCKEditor(mt.mime),
+                label: mt.title
+            }));
+
+    return [
+        {
+            language: mimeTypesService.MIME_TYPE_AUTO,
+            label: t("editable-text.auto-detect-language")
+        },
+        ...userLanguages
+    ];
+}
+
 export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
     static getType() { return "editableText"; }
 
@@ -106,13 +126,7 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
     async initEditor() {
         await libraryLoader.requireLibrary(libraryLoader.CKEDITOR);
 
-        const codeBlockLanguages =
-            (await mimeTypesService.getMimeTypes())
-                .filter(mt => mt.enabled)
-                .map(mt => ({
-                        language: mt.mime.toLowerCase().replace(/[\W_]+/g,"-"),
-                        label: mt.title
-                    }));
+        const codeBlockLanguages = buildListOfLanguages();
 
         // CKEditor since version 12 needs the element to be visible before initialization. At the same time,
         // we want to avoid flicker - i.e., show editor only once everything is ready. That's why we have separate
@@ -156,6 +170,8 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
 
         this.watchdog.setCreator(async (elementOrData, editorConfig) => {
             const editor = await BalloonEditor.create(elementOrData, editorConfig);
+
+            await initSyntaxHighlighting(editor);
 
             editor.model.document.on('change:data', () => this.spacedUpdate.scheduleUpdate());
 

@@ -6,6 +6,7 @@ import searchService from "../../services/search/services/search.js";
 import ValidationError from "../../errors/validation_error.js";
 import { Request } from 'express';
 import { changeLanguage } from "../../services/i18n.js";
+import { listSyntaxHighlightingThemes } from "../../services/code_block_theme.js";
 
 // options allowed to be updated directly in the Options dialog
 const ALLOWED_OPTIONS = new Set([
@@ -15,6 +16,8 @@ const ALLOWED_OPTIONS = new Set([
     'revisionSnapshotNumberLimit',
     'zoomFactor',
     'theme',
+    'codeBlockTheme',
+    "codeBlockWordWrap",
     'syncServerHost',
     'syncServerTimeout',
     'syncProxy',
@@ -138,6 +141,10 @@ function getUserThemes() {
     return ret;
 }
 
+function getSyntaxHighlightingThemes() {
+    return listSyntaxHighlightingThemes();
+}
+
 function getSupportedLocales() {
     // TODO: Currently hardcoded, needs to read the list of available languages.
     return [
@@ -176,5 +183,6 @@ export default {
     updateOption,
     updateOptions,
     getUserThemes,
+    getSyntaxHighlightingThemes,
     getSupportedLocales
 };

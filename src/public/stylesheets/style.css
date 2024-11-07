@@ -382,7 +382,7 @@ button.btn, button.btn-sm {
     padding: 0;
 }
 
-pre:not(.CodeMirror-line) {
+pre:not(.CodeMirror-line):not(.hljs) {
     color: var(--main-text-color) !important;
     white-space: pre-wrap;
     font-size: 100%;
@@ -807,6 +807,65 @@ a.external:not(.no-arrow):after, a[href^="http://"]:not(.no-arrow):after, a[href
     vertical-align: baseline !important;
 }
 
+.ck-content pre {
+    border: 0;
+    border-radius: 6px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1), 0px 0px 2px rgba(0, 0, 0, 0.2);
+    padding: 0 !important;
+    margin-top: 2px !important;
+    overflow: unset;
+}
+
+html .note-detail-editable-text :not(figure, .include-note):first-child {
+    /* Create some space for the top-side shadow */
+    margin-top: 1px !important;
+}
+
+.ck.ck-editor__editable pre[data-language]::after {
+    --ck-color-code-block-label-background: rgba(128, 128, 128, .5);
+    border-radius: 0 0 5px 5px;
+    padding: 0px 10px;
+    letter-spacing: .5px;
+    font-weight: bold;
+}
+
+.ck-content pre code {
+    display: block;
+    padding: 1em;
+    overflow: auto;
+}
+
+.ck-content pre code::-webkit-scrollbar {
+    height: 6px;
+}
+
+.ck-content pre code::-webkit-scrollbar-thumb {
+    height: 4px;
+    border: none !important;
+    background: gray !important;
+}
+
+.ck-content pre code::-webkit-scrollbar-track, ::-webkit-scrollbar-thumb {
+    cursor: default;
+}
+
+.note-detail-printable:not(.word-wrap) pre code {
+    white-space: pre;
+    margin-right: 1em;
+}
+
+.code-sample-wrapper .hljs {
+    transition: background-color linear 100ms;
+}
+
+.side-checkbox {
+    display: flex;
+    align-items: end;
+    padding-top: .375rem;
+    padding-bottom: .375rem;
+    line-height: 1.5;
+}
+
 .ck-content .todo-list .todo-list__label > input:before {
     border: 1px solid var(--muted-text-color) !important;
 }
@@ -1140,6 +1199,10 @@ button.close:hover {
     flex-grow: 0 !important;
 }
 
+.options-mime-types {
+    column-width: 250px;
+}
+
 textarea {
     cursor: auto;
 }
@@ -1174,3 +1237,4 @@ textarea {
 .jump-to-note-results .aa-suggestions {
     padding: 1rem;
 }
+

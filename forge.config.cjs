@@ -15,7 +15,8 @@ module.exports = {
       ...getExtraResourcesForPlatform(),
 
       // Moved to resources (TriliumNext Notes.app/Contents/Resources on macOS)
-      "translations/"
+      "translations/",
+      "node_modules/@highlightjs/cdn-assets/styles"
     ],
     afterComplete: [(buildPath, _electronVersion, platform, _arch, callback) => {
       const extraResources = getExtraResourcesForPlatform();

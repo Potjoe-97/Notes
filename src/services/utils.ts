@@ -7,6 +7,9 @@ import escape from "escape-html";
 import sanitize from "sanitize-filename";
 import mimeTypes from "mime-types";
 import path from "path";
+import { fileURLToPath } from "url";
+import env from "./env.js";
+import { dirname, join } from "path";
 
 const randtoken = generator({source: 'crypto'});
 
@@ -315,6 +318,20 @@ function isString(x: any) {
     return Object.prototype.toString.call(x) === "[object String]";
 }
 
+/**
+ * Returns the directory for resources. On Electron builds this corresponds to the `resources` subdirectory inside the distributable package.
+ * On development builds, this simply refers to the root directory of the application.
+ * 
+ * @returns the resource dir.
+ */
+export function getResourceDir() {
+    if (isElectron() && !env.isDev()) {
+        return process.resourcesPath;
+    } else {
+        return join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+    }    
+}
+
 export default {
     randomSecureToken,
     randomString,
@@ -347,5 +364,6 @@ export default {
     normalize,
     hashedBlobId,
     toMap,
-    isString
+    isString,
+    getResourceDir
 };

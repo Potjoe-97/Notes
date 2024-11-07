@@ -366,7 +366,7 @@ class NoteListRenderer {
                     separateWordSearch: false,
                     caseSensitive: false
                 });
-            }
+            }            
 
             $content.append($renderedContent);
             $content.addClass(`type-${type}`);

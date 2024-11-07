@@ -34,6 +34,7 @@ import BackendLogWidget from "./content/backend_log.js";
 import AttachmentErasureTimeoutOptions from "./options/other/attachment_erasure_timeout.js";
 import RibbonOptions from "./options/appearance/ribbon.js";
 import LocalizationOptions from "./options/appearance/i18n.js";
+import CodeBlockOptions from "./options/appearance/code_block.js";
 
 const TPL = `<div class="note-detail-content-widget note-detail-printable">
     <style>
@@ -59,6 +60,7 @@ const CONTENT_WIDGETS = {
         LocalizationOptions,
         ThemeOptions,
         FontsOptions,
+        CodeBlockOptions,
         ZoomFactorOptions,
         NativeTitleBarOptions,
         MaxContentWidthOptions,

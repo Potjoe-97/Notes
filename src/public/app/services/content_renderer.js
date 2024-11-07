@@ -10,6 +10,7 @@ import treeService from "./tree.js";
 import FNote from "../entities/fnote.js";
 import FAttachment from "../entities/fattachment.js";
 import imageContextMenuService from "../menus/image_context_menu.js";
+import { applySyntaxHighlight } from "./syntax_highlight.js";
 
 let idCounter = 1;
 
@@ -105,6 +106,8 @@ async function renderText(note, $renderedContent) {
         for (const el of referenceLinks) {
             await linkService.loadReferenceLinkTitle($(el));
         }
+
+        await applySyntaxHighlight($renderedContent);
     } else {
         await renderChildrenList($renderedContent, note);
     }

@@ -50,11 +50,11 @@ function setupGlobs() {
     };
 
     window.addEventListener("unhandledrejection", (e) => {
-        const string = e.reason.message.toLowerCase();
+        const string = e?.reason?.message?.toLowerCase();
 
         let message = "Uncaught error: ";
 
-        if (string.includes("script error")) {
+        if (string?.includes("script error")) {
             message += 'No details available';
         } else {
             message += [

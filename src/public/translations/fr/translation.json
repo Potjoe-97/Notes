@@ -77,14 +77,13 @@
     "delete_notes_preview": "Supprimer la note",
     "delete_all_clones_description": "supprime également tous les clones (peut être annulé depuis les Modifications récentes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
-    "erase_notes_warning": "efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
-    "notes_to_be_deleted": "Les notes suivantes seront supprimées (<span class=\"deleted-notes-count\"></span>)",
+    "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
+    "notes_to_be_deleted": "Les notes suivantes seront supprimées ({{- noteCount}})",
     "no_note_to_delete": "Aucune note ne sera supprimée (uniquement les clones).",
-    "broken_relations_to_be_deleted": "Les relations suivantes seront rompues et supprimées (<span class=\"broke-relations-count\"></span>)",
+    "broken_relations_to_be_deleted": "Les relations suivantes seront rompues et supprimées ({{- relationCount}})",
     "cancel": "Annuler",
     "ok": "OK",
-    "note": "Note",
-    "to_be_deleted": " (à supprimer) est référencé par la relation <code>{{attrName}}</code> provenant de "
+    "deleted_relation_text": "Note {{- note}} (à supprimer) est référencé par la relation {{- relation}} provenant de {{- source}}."
   },
   "export": {
     "export_note_title": "Exporter la note",

@@ -41,6 +41,8 @@ jobs:
         run: npm ci
       - name: Update build info
         run: npm run update-build-info
+      - name: Update nightly version
+        run: npm run ci-update-nightly-version
       - name: Run electron-forge
         run: npm run make-electron -- --arch=${{ matrix.arch }}
       - name: Prepare artifacts (Unix)
@@ -103,6 +105,7 @@ jobs:
       - name: Run Linux server build (x86_64)
         run: |
           npm run update-build-info
+          npm run ci-update-nightly-version
           ./bin/build-server.sh
       - name: Prepare artifacts
         if: runner.os != 'windows'

@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import server from './server.js';
 import toastService from "./toast.js";
 

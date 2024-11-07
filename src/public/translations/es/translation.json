@@ -75,16 +75,15 @@
   },
   "delete_notes": {
     "delete_notes_preview": "Eliminar vista previa de notas",
-    "delete_all_clones_description": "eliminar también todos los clones (se puede deshacer en cambios recientes)",
+    "delete_all_clones_description": "Eliminar también todos los clones (se puede deshacer en cambios recientes)",
     "erase_notes_description": "La eliminación normal (suave) solo marca las notas como eliminadas y se pueden recuperar (en el cuadro de diálogo de cambios recientes) dentro de un periodo de tiempo. Al marcar esta opción se borrarán las notas inmediatamente y no será posible recuperarlas.",
-    "erase_notes_warning": "eliminar notas permanentemente (no se puede deshacer), incluidos todos los clones. Esto forzará la recarga de la aplicación.",
-    "notes_to_be_deleted": "Las siguientes notas serán eliminadas (<span class=\"deleted-notes-count\"></span>)",
+    "erase_notes_warning": "Eliminar notas permanentemente (no se puede deshacer), incluidos todos los clones. Esto forzará la recarga de la aplicación.",
+    "notes_to_be_deleted": "Las siguientes notas serán eliminadas ({{- noteCount}})",
     "no_note_to_delete": "No se eliminará ninguna nota (solo clones).",
-    "broken_relations_to_be_deleted": "Las siguientes relaciones se romperán y serán eliminadas (<span class=\"broke-relations-count\"></span>)",
+    "broken_relations_to_be_deleted": "Las siguientes relaciones se romperán y serán eliminadas ({{- relationCount}})",
     "cancel": "Cancelar",
     "ok": "Aceptar",
-    "note": "Nota",
-    "to_be_deleted": " (para ser eliminada) está referenciado por la relación <code>{{attrName}}</code> que se origina en "
+    "deleted_relation_text": "Nota {{- note}} (para ser eliminada) está referenciado por la relación {{- relation}} que se origina en {{- source}}."
   },
   "export": {
     "export_note_title": "Exportar nota",
@@ -896,7 +895,8 @@
     "label_rock_or_pop": "sólo una de las etiquetas debe estar presente",
     "label_year_comparison": "comparación numérica (también >, >=, <).",
     "label_date_created": "notas creadas en el último mes",
-    "error": "Error de búsqueda: {{error}}"
+    "error": "Error de búsqueda: {{error}}",
+    "search_prefix": "Buscar:"
   },
   "attachment_detail": {
     "open_help_page": "Abrir página de ayuda en archivos adjuntos",
@@ -1433,6 +1433,7 @@
     "add_new_tab": "Agregar nueva pestaña",
     "close": "Cerrar",
     "close_other_tabs": "Cerrar otras pestañas",
+    "close_right_tabs": "Cerrar pestañas a la derecha",
     "close_all_tabs": "Cerras todas las pestañas",
     "move_tab_to_new_window": "Mover esta pestaña a una nueva ventana",
     "new_tab": "Nueva pestaña"
@@ -1496,5 +1497,16 @@
     "move-to-visible-launchers": "Mover a lanzadores visibles",
     "move-to-available-launchers": "Mover a lanzadores disponibles",
     "duplicate-launcher": "Duplicar lanzador"
+  },
+  "editable-text": {
+    "auto-detect-language": "Detectado automaticamente"
+  },
+  "highlighting": {
+    "title": "Resaltado de sintaxis de de código para Notas de Texto",
+    "description": "Controla el resaltado de sintaxis para bloques de código dentro de las notas de texto, las notas de código no serán afectadas.",
+    "color-scheme": "Esquema de color"
+  },
+  "code_block": {
+    "word_wrapping": "Ajuste de palabras"
   }
 }

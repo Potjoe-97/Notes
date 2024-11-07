@@ -3,6 +3,7 @@ import toastService from "./toast.js";
 import froca from "./froca.js";
 import linkService from "./link.js";
 import utils from "./utils.js";
+import { t } from "./i18n.js";
 
 let clipboardBranchIds = [];
 let clipboardMode = null;
