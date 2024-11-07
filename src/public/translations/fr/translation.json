@@ -16,12 +16,12 @@
     },
     "widget-error": {
       "title": "Impossible d'initialiser un widget",
-      "message-custom": "Custom widget from note with ID \"{{id}}\", titled \"{{title}}\" could not be initialized due to:\n\n{{message}}",
-      "message-unknown": "Unknown widget could not be initialized due to:\n\n{{message}}"
+      "message-custom": "Le widget personnalisé de la note avec l'ID \"{{id}}\", intitulée \"{{title}}\" n'a pas pu être initialisé en raison de\n\n{{message}}",
+      "message-unknown": "Le widget inconnu n'a pas pu être initialisé :\n\n{{message}}"
     },
     "bundle-error": {
-      "title": "Failed to load a custom script",
-      "message": "Script from note with ID \"{{id}}\", titled \"{{title}}\" could not be executed due to:\n\n{{message}}"
+      "title": "Echec du chargement d'un script personnalisé",
+      "message": "Le script de la note avec l'ID \"{{id}}\", intitulé \"{{title}}\" n'a pas pu être exécuté à cause de\n\n{{message}}"
     }
   },
   "add_link": {
@@ -117,7 +117,7 @@
     "collapseSubTree": "réduire le sous-arbre",
     "tabShortcuts": "Raccourcis des onglets",
     "newTabNoteLink": "(ou clic central de la souris) sur le lien de la note ouvre la note dans un nouvel onglet",
-    "onlyInDesktop": "Only in desktop (Electron build)",
+    "onlyInDesktop": "Uniquement sur ordinateur (version Electron)",
     "openEmptyTab": "ouvrir un onglet vide",
     "closeActiveTab": "fermer l'onglet actif",
     "activateNextTab": "activer l'onglet suivant",
@@ -172,7 +172,7 @@
     "codeImportedAsCode": "Importez des fichiers de code reconnus (par exemple <code>.json</code>) en tant que notes de code si cela n'est pas clair à partir des métadonnées",
     "replaceUnderscoresWithSpaces": "Remplacez les tirets bas par des espaces dans les noms de notes importées",
     "import": "Importer",
-    "failed": "Import failed: {{message}}."
+    "failed": "Échec de l'importation : {{message}}."
   },
   "include_note": {
     "dialog_title": "Inclure une note",
@@ -559,7 +559,7 @@
     "febuary": "Février",
     "march": "Mars",
     "april": "Avril",
-    "may": "Peut",
+    "may": "Mai",
     "june": "Juin",
     "july": "Juillet",
     "august": "Août",
@@ -639,9 +639,9 @@
     "delete_note": "Supprimer la note",
     "print_note": "Imprimer",
     "save_revision": "Enregistrer une version",
-    "convert_into_attachment_failed": "Converting note '{{title}}' failed.",
-    "convert_into_attachment_successful": "Note '{{title}}' has been converted to attachment.",
-    "convert_into_attachment_prompt": "Are you sure you want to convert note '{{title}}' into an attachment of the parent note?"
+    "convert_into_attachment_failed": "La conversion de la note '{{title}}' a échoué.",
+    "convert_into_attachment_successful": "La note '{{title}}' a été convertie en pièce jointe.",
+    "convert_into_attachment_prompt": "Êtes-vous sûr de vouloir convertir la note '{{title}}' en une pièce jointe de la note parente ?"
   },
   "onclick_button": {
     "no_click_handler": "Le widget bouton '{{componentId}}' n'a pas de gestionnaire de clic défini"
@@ -657,7 +657,7 @@
     "update_available": "Mise à jour disponible"
   },
   "note_launcher": {
-    "this_launcher_doesnt_define_target_note": "Ce lanceur ne définit pas de note cible."
+    "this_launcher_doesnt_define_target_note": "Ce raccourci ne définit pas de note cible."
   },
   "code_buttons": {
     "execute_button_title": "Exécuter le script",
@@ -897,7 +897,7 @@
     "label_year_comparison": "comparaison numérique (également >, >=, <).",
     "label_date_created": "notes créées le mois dernier",
     "error": "Erreur de recherche : {{error}}",
-    "search_prefix": "Search:"
+    "search_prefix": "Recherche :"
   },
   "attachment_detail": {
     "open_help_page": "Ouvrir la page d'aide sur les pièces jointes",
@@ -932,14 +932,14 @@
   "protected_session": {
     "enter_password_instruction": "L'affichage de la note protégée nécessite la saisie de votre mot de passe :",
     "start_session_button": "Démarrer une session protégée",
-    "started": "Protected session has been started.",
-    "wrong_password": "Wrong password.",
-    "protecting-finished-successfully": "Protecting finished successfully.",
-    "unprotecting-finished-successfully": "Unprotecting finished successfully.",
-    "protecting-in-progress": "Protecting in progress: {{count}}",
-    "unprotecting-in-progress-count": "Unprotecting in progress: {{count}}",
-    "protecting-title": "Protecting status",
-    "unprotecting-title": "Unprotecting status"
+    "started": "La session protégée a démarré.",
+    "wrong_password": "Mot de passe incorrect.",
+    "protecting-finished-successfully": "La protection de la note s'est terminée avec succès.",
+    "unprotecting-finished-successfully": "La protection de la note a été retirée avec succès.",
+    "protecting-in-progress": "Protection en cours : {{count}}",
+    "unprotecting-in-progress-count": "Retrait de la protection en cours : {{count}}",
+    "protecting-title": "Statut de la protection",
+    "unprotecting-title": "Statut de la non-protection"
   },
   "relation_map": {
     "open_in_new_tab": "Ouvrir dans un nouvel onglet",
@@ -994,7 +994,7 @@
     "error_creating_anonymized_database": "Impossible de créer une base de données anonymisée, vérifiez les journaux backend pour plus de détails",
     "successfully_created_fully_anonymized_database": "Base de données entièrement anonymisée crée dans {{anonymizedFilePath}}",
     "successfully_created_lightly_anonymized_database": "Base de données partiellement anonymisée crée dans {{anonymizedFilePath}}",
-    "no_anonymized_database_yet": "Aucune base de données anonymisée"
+    "no_anonymized_database_yet": "Aucune base de données anonymisée."
   },
   "database_integrity_check": {
     "title": "Vérification de l'intégrité de la base de données",
@@ -1011,8 +1011,8 @@
     "full_sync_triggered": "Synchronisation complète déclenchée",
     "filling_entity_changes": "Remplissage changements de ligne d'entité ...",
     "sync_rows_filled_successfully": "Synchronisation avec succès des lignes remplies",
-    "finished-successfully": "Sync finished successfully.",
-    "failed": "Sync failed: {{message}}"
+    "finished-successfully": "Synchronisation terminée avec succès.",
+    "failed": "Échec de la synchronisation : {{message}}"
   },
   "vacuum_database": {
     "title": "Nettoyage la base de donnée",
@@ -1131,7 +1131,7 @@
     "custom_name_label": "Nom du moteur de recherche personnalisé",
     "custom_name_placeholder": "Personnaliser le nom du moteur de recherche",
     "custom_url_label": "L'URL du moteur de recherche personnalisé doit inclure {keyword} comme espace réservé pour le terme de recherche.",
-    "custom_url_placeholder": "Customize search engine url",
+    "custom_url_placeholder": "Personnaliser l'url du moteur de recherche",
     "save_button": "Sauvegarder"
   },
   "tray": {
@@ -1219,7 +1219,7 @@
   "password": {
     "heading": "Mot de passe",
     "alert_message": "Prenez soin de mémoriser votre nouveau mot de passe. Le mot de passe est utilisé pour se connecter à l'interface Web et pour crypter les notes protégées. Si vous oubliez votre mot de passe, toutes vos notes protégées seront définitivement perdues.",
-    "reset_link": "Click here to reset it.",
+    "reset_link": "Cliquez ici pour le réinitialiser.",
     "old_password": "Ancien mot de passe",
     "new_password": "Nouveau mot de passe",
     "new_password_confirmation": "Confirmation du nouveau mot de passe",
@@ -1310,8 +1310,8 @@
     "insert-child-note": "Insérer une note enfant",
     "delete": "Supprimer",
     "search-in-subtree": "Rechercher dans le sous-arbre",
-    "hoist-note": "Hoist note",
-    "unhoist-note": "Unhoist note",
+    "hoist-note": "Focus sur la note",
+    "unhoist-note": "Ne plus focus la note",
     "edit-branch-prefix": "Modifier le préfixe de branche",
     "advanced": "Avancé",
     "expand-subtree": "Développer le sous-arbre",
@@ -1332,8 +1332,8 @@
     "export": "Exporter",
     "import-into-note": "Importer dans la note",
     "apply-bulk-actions": "Actions groupées",
-    "converted-to-attachments": "{{count}} notes have been converted to attachments.",
-    "convert-to-attachment-confirm": "Are you sure you want to convert note selected notes into attachments of their parent notes?"
+    "converted-to-attachments": "Les notes {{count}} ont été converties en pièces jointes.",
+    "convert-to-attachment-confirm": "Êtes-vous sûr de vouloir convertir les notes sélectionnées en pièces jointes de leurs notes parentes ?"
   },
   "shared_info": {
     "shared_publicly": "Cette note est partagée publiquement sur",
@@ -1346,7 +1346,7 @@
     "saved-search": "Recherche enregistrée",
     "relation-map": "Carte des relations",
     "note-map": "Carte de notes",
-    "render-note": "Render Note",
+    "render-note": "Rendre la note",
     "book": "Livre",
     "mermaid-diagram": "Diagramme Mermaid",
     "canvas": "Canevas",
@@ -1357,7 +1357,7 @@
     "launcher": "Raccourci",
     "doc": "Doc",
     "widget": "Widget",
-    "confirm-change": "It is not recommended to change note type when note content is not empty. Do you want to continue anyway?"
+    "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?"
   },
   "protect_note": {
     "toggle-on": "Protéger la note",
@@ -1404,8 +1404,8 @@
     "automatically-collapse-notes": "Réduire automatiquement les notes",
     "automatically-collapse-notes-title": "Les notes seront réduites après une période d'inactivité pour désencombrer l'arborescence.",
     "save-changes": "Enregistrer et appliquer les modifications",
-    "auto-collapsing-notes-after-inactivity": "Auto collapsing notes after inactivity...",
-    "saved-search-note-refreshed": "Saved search note refreshed."
+    "auto-collapsing-notes-after-inactivity": "Réduction automatique des notes après inactivité...",
+    "saved-search-note-refreshed": "Note de recherche enregistrée actualisée."
   },
   "title_bar_buttons": {
     "window-on-top": "Épingler cette fenêtre au premier plan."
@@ -1430,72 +1430,72 @@
     "tables": "Tableaux"
   },
   "tab_row": {
-    "close_tab": "Close tab",
-    "add_new_tab": "Add new tab",
-    "close": "Close",
-    "close_other_tabs": "Close other tabs",
-    "close_all_tabs": "Close all tabs",
-    "move_tab_to_new_window": "Move this tab to a new window",
-    "new_tab": "New tab"
+    "close_tab": "Fermer l'onglet",
+    "add_new_tab": "Ajouter un nouvel onglet",
+    "close": "Fermer",
+    "close_other_tabs": "Fermer les autres onglets",
+    "close_all_tabs": "Fermer tous les onglets",
+    "move_tab_to_new_window": "Déplacer cet onglet vers une nouvelle fenêtre",
+    "new_tab": "Nouvel onglet"
   },
   "toc": {
-    "table_of_contents": "Table of Contents",
+    "table_of_contents": "Table des matières",
     "options": "Options"
   },
   "watched_file_update_status": {
-    "file_last_modified": "File <code class=\"file-path\"></code> has been last modified on <span class=\"file-last-modified\"></span>.",
-    "upload_modified_file": "Upload modified file",
-    "ignore_this_change": "Ignore this change"
+    "file_last_modified": "Le fichier <code class=\"file-path\"></code> a été modifié pour la dernière fois le <span class=\"file-last-modified\"></span>.",
+    "upload_modified_file": "Téléverser le fichier modifié",
+    "ignore_this_change": "Ignorer ce changement"
   },
   "app_context": {
-    "please_wait_for_save": "Please wait for a couple of seconds for the save to finish, then you can try again."
+    "please_wait_for_save": "Veuillez patienter quelques secondes la fin de la sauvegarde, puis réessayer."
   },
   "note_create": {
-    "duplicated": "Note \"{{title}}\" has been duplicated."
+    "duplicated": "La note «{{title}}» a été dupliquée."
   },
   "image": {
-    "copied-to-clipboard": "A reference to the image has been copied to clipboard. This can be pasted in any text note.",
-    "cannot-copy": "Could not copy the image reference to clipboard."
+    "copied-to-clipboard": "Une référence à l'image a été copiée dans le presse-papiers. Elle peut être collée dans n'importe quelle note texte.",
+    "cannot-copy": "Impossible de copier la référence d'image dans le presse-papiers."
   },
   "clipboard": {
-    "cut": "Note(s) have been cut into clipboard.",
-    "copied": "Note(s) have been copied into clipboard."
+    "cut": "Les note(s) ont été coupées dans le presse-papiers.",
+    "copied": "Les note(s) ont été coupées dans le presse-papiers."
   },
   "entrypoints": {
-    "note-revision-created": "Note revision has been created.",
-    "note-executed": "Note executed.",
-    "sql-error": "Error occurred while executing SQL query: {{message}}"
+    "note-revision-created": "La version de la note a été créée.",
+    "note-executed": "Note exécutée.",
+    "sql-error": "Erreur lors de l'exécution de la requête SQL: {{message}}"
   },
   "branches": {
-    "cannot-move-notes-here": "Cannot move notes here.",
-    "delete-status": "Delete status",
-    "delete-notes-in-progress": "Delete notes in progress: {{count}}",
-    "delete-finished-successfully": "Delete finished successfully.",
-    "undeleting-notes-in-progress": "Undeleting notes in progress: {{count}}",
-    "undeleting-notes-finished-successfully": "Undeleting notes finished successfully."
+    "cannot-move-notes-here": "Impossible de déplacer les notes ici.",
+    "delete-status": "Etat de la suppression",
+    "delete-notes-in-progress": "Suppression des notes en cours : {{count}}",
+    "delete-finished-successfully": "Suppression terminée avec succès.",
+    "undeleting-notes-in-progress": "Restauration des notes en cours : {{count}}",
+    "undeleting-notes-finished-successfully": "Restauration des notes terminée avec succès."
   },
   "frontend_script_api": {
-    "async_warning": "You're passing an async function to `api.runOnBackend()` which will likely not work as you intended.\\nEither make the function synchronous (by removing `async` keyword), or use `api.runAsyncOnBackendWithManualTransactionHandling()`.",
-    "sync_warning": "You're passing a synchronous function to `api.runAsyncOnBackendWithManualTransactionHandling()`,\\nwhile you should likely use `api.runOnBackend()` instead."
+    "async_warning": "Vous passez une fonction asynchrone à `api.runOnBackend()`, ce qui ne fonctionnera probablement pas comme vous le souhaitez.\\n Rendez la fonction synchronisée (en supprimant le mot-clé `async`), ou bien utilisez `api.runAsyncOnBackendWithManualTransactionHandling()`.",
+    "sync_warning": "Vous passez une fonction synchrone à `api.runAsyncOnBackendWithManualTransactionHandling()`,\\nalors que vous devriez probablement utiliser `api.runOnBackend()` à la place."
   },
   "ws": {
-    "sync-check-failed": "Sync check failed!",
-    "consistency-checks-failed": "Consistency checks failed! See logs for details.",
-    "encountered-error": "Encountered error \"{{message}}\", check out the console."
+    "sync-check-failed": "Le test de synchronisation a échoué !",
+    "consistency-checks-failed": "Les tests de cohérence ont échoué ! Consultez les journaux pour plus de détails.",
+    "encountered-error": "Erreur \"{{message}}\", consultez la console."
   },
   "hoisted_note": {
-    "confirm_unhoisting": "Requested note '{{requestedNote}}' is outside of hoisted note '{{hoistedNote}}' subtree and you must unhoist to access the note. Do you want to proceed with unhoisting?"
+    "confirm_unhoisting": "La note demandée «{{requestedNote}}» est en dehors du sous-arbre de la note focus «{{hoistedNote}}». Le focus doit être désactivé pour accéder à la note. Voulez-vous enlever le focus ?"
   },
   "launcher_context_menu": {
-    "reset_launcher_confirm": "Do you really want to reset \"{{title}}\"? All data / settings in this note (and its children) will be lost and the launcher will be returned to its original location.",
-    "add-note-launcher": "Add a note launcher",
-    "add-script-launcher": "Add a script launcher",
-    "add-custom-widget": "Add a custom widget",
-    "add-spacer": "Add spacer",
-    "delete": "Delete",
-    "reset": "Reset",
-    "move-to-visible-launchers": "Move to visible launchers",
-    "move-to-available-launchers": "Move to available launchers",
-    "duplicate-launcher": "Duplicate launcher"
+    "reset_launcher_confirm": "Voulez-vous vraiment réinitialiser \"{{title}}\" ? Toutes les données / paramètres de cette note (et de ses enfants) seront perdus et le raccourci retrouvera son emplacement d'origine.",
+    "add-note-launcher": "Ajouter un raccourci de note",
+    "add-script-launcher": "Ajouter un raccourci de script",
+    "add-custom-widget": "Ajouter un widget personnalisé",
+    "add-spacer": "Ajouter un séparateur",
+    "delete": "Supprimer",
+    "reset": "Réinitialiser",
+    "move-to-visible-launchers": "Déplacer vers les raccourcis visibles",
+    "move-to-available-launchers": "Déplacer vers les raccourcis disponibles",
+    "duplicate-launcher": "Dupliquer le raccourci"
   }
 }
