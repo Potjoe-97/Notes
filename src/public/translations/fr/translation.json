@@ -12,10 +12,10 @@
   "toast": {
     "critical-error": {
       "title": "Erreur critique",
-      "message": "Une erreur critique s'est produite qui empêche l'application client de démarrer :\n\n{{message}}\n\nCeci est probablement dû à un échec inattendu d'un script. Essayez de démarrer l'application en mode sans échec et de résoudre le problème."
+      "message": "Une erreur critique s'est produite et empêche l'application client de démarrer :\n\n{{message}}\n\nCeci est probablement dû à un échec inattendu d'un script. Essayez de démarrer l'application en mode sans échec et de résoudre le problème."
     },
     "widget-error": {
-      "title": "Impossible d'initialiser un widget",
+      "title": "Échec de l'initialisation d'un widget",
       "message-custom": "Le widget personnalisé de la note avec l'ID \"{{id}}\", intitulée \"{{title}}\" n'a pas pu être initialisé en raison de\n\n{{message}}",
       "message-unknown": "Le widget inconnu n'a pas pu être initialisé :\n\n{{message}}"
     },
@@ -359,7 +359,7 @@
     "search_home": "les nouvelles notes de recherche seront créées en tant qu'enfants de cette note",
     "workspace_search_home": "de nouvelles notes de recherche seront créées en tant qu'enfants de cette note, lorsqu'une note ancêtre de cet espace de travail est focus",
     "inbox": "emplacement par défaut pour les nouvelles notes - lorsque vous créez une note à l'aide du bouton \"nouvelle note\" dans la barre latérale, les notes seront créées en tant que notes enfants dans la note marquée avec le label <code>#inbox</code>.",
-    "workspace_inbox": "default inbox location for new notes when hoisted to some ancestor of this workspace note",
+    "workspace_inbox": "emplacement par défaut des nouvelles notes lorsque le focus est sur une note ancêtre de cet espace de travail",
     "sql_console_home": "emplacement par défaut des notes de la console SQL",
     "bookmark_folder": "une note avec ce label apparaîtra dans les favoris sous forme de dossier (permettant l'accès à ses notes enfants)",
     "share_hidden_from_tree": "cette note est masquée dans l'arbre de navigation de gauche, mais toujours accessible avec son URL",
