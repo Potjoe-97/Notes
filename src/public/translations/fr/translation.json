@@ -51,7 +51,11 @@
     "chosen_actions": "Actions choisies",
     "execute_bulk_actions": "Exécuter des Actions groupées",
     "bulk_actions_executed": "Les actions groupées ont été exécutées avec succès.",
-    "none_yet": "Aucune pour l'instant... ajoutez une action en cliquant sur l'une des actions disponibles ci-dessus."
+    "none_yet": "Aucune pour l'instant... ajoutez une action en cliquant sur l'une des actions disponibles ci-dessus.",
+    "labels": "Labels",
+    "relations": "Relations",
+    "notes": "Notes",
+    "other": "Other"
   },
   "clone_to": {
     "clone_notes_to": "Cloner des notes dans...",
@@ -75,16 +79,15 @@
   },
   "delete_notes": {
     "delete_notes_preview": "Supprimer l'aperçu des notes",
-    "delete_all_clones_description": "supprime également tous les clones (peut être annulé depuis les Modifications récentes)",
+    "delete_all_clones_description": "Delete also all clones (can be undone in recent changes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
-    "erase_notes_warning": "efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
+    "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
     "notes_to_be_deleted": "Les notes suivantes seront supprimées ({{- noteCount}})",
     "no_note_to_delete": "Aucune note ne sera supprimée (uniquement les clones).",
     "broken_relations_to_be_deleted": "Les relations suivantes seront rompues et supprimées ({{- relationCount}})",
     "cancel": "Annuler",
     "ok": "OK",
-    "note": "Note",
-    "to_be_deleted": " (à supprimer) est référencé par la relation <code>{{attrName}}</code> provenant de "
+    "deleted_relation_text": "Note {{- note}} (à supprimer) est référencé par la relation {{- relation}} provenant de {{- source}}."
   },
   "export": {
     "export_note_title": "Exporter la note",
@@ -239,7 +242,7 @@
     "confirm_undelete": "Voulez-vous restaurer cette note et ses sous-notes ?"
   },
   "revisions": {
-    "note_revisions": "Versions des notes",
+    "note_revisions": "Versions de la note",
     "delete_all_revisions": "Supprimer toutes les versions de cette note",
     "delete_all_button": "Supprimer toutes les versions",
     "help_title": "Aide sur les versions de notes",
@@ -253,7 +256,7 @@
     "revisions_deleted": "Les versions de notes ont été supprimées.",
     "revision_restored": "La version de la note a été restaurée.",
     "revision_deleted": "La version de la note a été supprimée.",
-    "snapshot_interval": "Intervalle d'instantané des versions de notes : {{seconds}}s.",
+    "snapshot_interval": "Intervalle d'enregistrement des versions de notes : {{seconds}}s.",
     "maximum_revisions": "Nombre maximal de versions pour la note actuelle : {{number}}.",
     "settings": "Paramètres pour les versions de notes",
     "download_button": "Télécharger",
@@ -312,6 +315,7 @@
     "boolean": "Booléen",
     "date": "Date",
     "date_time": "Date et heure",
+    "time": "Heure",
     "url": "URL",
     "precision_title": "Nombre de chiffres après la virgule devant être disponible dans l'interface définissant la valeur.",
     "precision": "Précision",
@@ -1058,7 +1062,12 @@
     "theme_label": "Thème",
     "override_theme_fonts_label": "Remplacer les polices du thème",
     "light_theme": "Lumière",
-    "dark_theme": "Sombre"
+    "dark_theme": "Sombre",
+    "layout": "Layout",
+    "layout-vertical-title": "Vertical",
+    "layout-horizontal-title": "Horizontal",
+    "layout-vertical-description": "launcher bar is on the left (default)",
+    "layout-horizontal-description": "launcher bar is underneath the tab bar, the tab bar is now full width."
   },
   "zoom_factor": {
     "title": "Facteur de zoom (version bureau uniquement)",
@@ -1109,12 +1118,12 @@
     "deleted_notes_erased": "Les notes supprimées ont été effacées."
   },
   "revisions_snapshot_interval": {
-    "note_revisions_snapshot_interval_title": "Intervalle d’instantané des Versions de notes",
-    "note_revisions_snapshot_description": "L'intervalle de temps de l'instantané de version de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
+    "note_revisions_snapshot_interval_title": "Intervalle d'enregistrement automatique des versions des notes",
+    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
     "snapshot_time_interval_label": "Intervalle de temps entre deux instantanés de version de note (en secondes) :"
   },
   "revisions_snapshot_limit": {
-    "note_revisions_snapshot_limit_title": "Limite des instantanés de version de note",
+    "note_revisions_snapshot_limit_title": "Limite des enregistrements de version de note",
     "note_revisions_snapshot_limit_description": "La limite du nombre d’instantanés de version de note désigne le nombre maximum de versions pouvant être enregistrées pour chaque note. -1 signifie aucune limite, 0 signifie supprimer toutes les versions. Vous pouvez définir le nombre maximal de versions pour une seule note via le label #versioningLimit.",
     "snapshot_number_limit_label": "Nombre limite d'instantanés de version de la note :",
     "erase_excess_revision_snapshots": "Effacez maintenant les instantanés de version en excès",
@@ -1184,6 +1193,8 @@
     "backup_now": "Sauvegarder maintenant",
     "backup_database_now": "Sauvegarder la base de données maintenant",
     "existing_backups": "Sauvegardes existantes",
+    "date-and-time": "Date & time",
+    "path": "Path",
     "database_backed_up_to": "La base de données a été sauvegardée sur",
     "no_backup_yet": "pas encore de sauvegarde"
   },
@@ -1379,8 +1390,12 @@
   },
   "open-help-page": "Ouvrir la page d'aide",
   "find": {
-    "case_sensitive": "sensible aux majuscules et minuscules",
-    "match_words": "faire correspondre les mots"
+    "case_sensitive": "Case sensitive",
+    "match_words": "Match words",
+    "find_placeholder": "Find in text...",
+    "replace_placeholder": "Replace with...",
+    "replace": "Replace",
+    "replace_all": "Replace all"
   },
   "highlights_list_2": {
     "title": "Accentuations",
@@ -1434,8 +1449,11 @@
     "add_new_tab": "Ajouter un nouvel onglet",
     "close": "Fermer",
     "close_other_tabs": "Fermer les autres onglets",
+    "close_right_tabs": "Close tabs to the right",
     "close_all_tabs": "Fermer tous les onglets",
+    "reopen_last_tab": "Reopen last closed tab",
     "move_tab_to_new_window": "Déplacer cet onglet vers une nouvelle fenêtre",
+    "copy_tab_to_new_window": "Copy this tab to a new window",
     "new_tab": "Nouvel onglet"
   },
   "toc": {
@@ -1497,5 +1515,53 @@
     "move-to-visible-launchers": "Déplacer vers les raccourcis visibles",
     "move-to-available-launchers": "Déplacer vers les raccourcis disponibles",
     "duplicate-launcher": "Dupliquer le raccourci"
+  },
+  "editable-text": {
+    "auto-detect-language": "Auto-detected"
+  },
+  "highlighting": {
+    "title": "Code Syntax Highlighting for Text Notes",
+    "description": "Controls the syntax highlighting for code blocks inside text notes, code notes will not be affected.",
+    "color-scheme": "Color Scheme"
+  },
+  "code_block": {
+    "word_wrapping": "Word wrapping"
+  },
+  "classic_editor_toolbar": {
+    "title": "Formatting"
+  },
+  "editor": {
+    "title": "Editor"
+  },
+  "editing": {
+    "editor_type": {
+      "label": "Formatting toolbar",
+      "floating": {
+        "title": "Floating",
+        "description": "editing tools appear near the cursor;"
+      },
+      "fixed": {
+        "title": "Fixed",
+        "description": "editing tools appear in the \"Formatting\" ribbon tab."
+      }
+    }
+  },
+  "electron_context_menu": {
+    "add-term-to-dictionary": "Add \"{{term}}\" to dictionary",
+    "cut": "Cut",
+    "copy": "Copy",
+    "copy-link": "Copy link",
+    "paste": "Paste",
+    "paste-as-plain-text": "Paste as plain text",
+    "search_online": "Search for \"{{term}}\" with {{searchEngine}}"
+  },
+  "image_context_menu": {
+    "copy_reference_to_clipboard": "Copy reference to clipboard",
+    "copy_image_to_clipboard": "Copy image to clipboard"
+  },
+  "link_context_menu": {
+    "open_note_in_new_tab": "Open note in a new tab",
+    "open_note_in_new_split": "Open note in a new split",
+    "open_note_in_new_window": "Open note in a new window"
   }
 }
