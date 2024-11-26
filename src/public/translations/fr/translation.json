@@ -55,7 +55,7 @@
     "labels": "Labels",
     "relations": "Relations",
     "notes": "Notes",
-    "other": "Other"
+    "other": "Autre"
   },
   "clone_to": {
     "clone_notes_to": "Cloner des notes dans...",
@@ -79,7 +79,7 @@
   },
   "delete_notes": {
     "delete_notes_preview": "Supprimer l'aperçu des notes",
-    "delete_all_clones_description": "Delete also all clones (can be undone in recent changes)",
+    "delete_all_clones_description": "Supprimer aussi tous les clones (peut être annulé lors des modifications récentes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
     "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
     "notes_to_be_deleted": "Les notes suivantes seront supprimées ({{- noteCount}})",
@@ -1063,11 +1063,11 @@
     "override_theme_fonts_label": "Remplacer les polices du thème",
     "light_theme": "Lumière",
     "dark_theme": "Sombre",
-    "layout": "Layout",
+    "layout": "Disposition",
     "layout-vertical-title": "Vertical",
     "layout-horizontal-title": "Horizontal",
-    "layout-vertical-description": "launcher bar is on the left (default)",
-    "layout-horizontal-description": "launcher bar is underneath the tab bar, the tab bar is now full width."
+    "layout-vertical-description": "la barre de raccourcis est à gauche (défaut)",
+    "layout-horizontal-description": "la barre de raccourcis est sous la barre des onglets, cette-dernière est s'affiche en pleine largeur."
   },
   "zoom_factor": {
     "title": "Facteur de zoom (version bureau uniquement)",
@@ -1193,8 +1193,8 @@
     "backup_now": "Sauvegarder maintenant",
     "backup_database_now": "Sauvegarder la base de données maintenant",
     "existing_backups": "Sauvegardes existantes",
-    "date-and-time": "Date & time",
-    "path": "Path",
+    "date-and-time": "Date & heure",
+    "path": "Chemin",
     "database_backed_up_to": "La base de données a été sauvegardée sur",
     "no_backup_yet": "pas encore de sauvegarde"
   },
@@ -1390,12 +1390,12 @@
   },
   "open-help-page": "Ouvrir la page d'aide",
   "find": {
-    "case_sensitive": "Case sensitive",
-    "match_words": "Match words",
-    "find_placeholder": "Find in text...",
-    "replace_placeholder": "Replace with...",
-    "replace": "Replace",
-    "replace_all": "Replace all"
+    "case_sensitive": "Sensible à la casse",
+    "match_words": "Mots exacts",
+    "find_placeholder": "Chercher dans le texte...",
+    "replace_placeholder": "Remplacer par...",
+    "replace": "Remplacer",
+    "replace_all": "Tout remplacer"
   },
   "highlights_list_2": {
     "title": "Accentuations",
@@ -1449,11 +1449,11 @@
     "add_new_tab": "Ajouter un nouvel onglet",
     "close": "Fermer",
     "close_other_tabs": "Fermer les autres onglets",
-    "close_right_tabs": "Close tabs to the right",
+    "close_right_tabs": "Fermer les onglets à droite",
     "close_all_tabs": "Fermer tous les onglets",
-    "reopen_last_tab": "Reopen last closed tab",
+    "reopen_last_tab": "Rouvrir le dernier onglet fermé",
     "move_tab_to_new_window": "Déplacer cet onglet vers une nouvelle fenêtre",
-    "copy_tab_to_new_window": "Copy this tab to a new window",
+    "copy_tab_to_new_window": "Copier cet onglet dans une nouvelle fenêtre",
     "new_tab": "Nouvel onglet"
   },
   "toc": {
@@ -1517,21 +1517,21 @@
     "duplicate-launcher": "Dupliquer le raccourci"
   },
   "editable-text": {
-    "auto-detect-language": "Auto-detected"
+    "auto-detect-language": "Détecté automatiquement"
   },
   "highlighting": {
-    "title": "Code Syntax Highlighting for Text Notes",
-    "description": "Controls the syntax highlighting for code blocks inside text notes, code notes will not be affected.",
-    "color-scheme": "Color Scheme"
+    "title": "Coloration syntaxique du code pour les notes texte",
+    "description": "Contrôle la coloration syntaxique des blocs de code à l'intérieur des notes texte, les notes de code ne seront pas affectées.",
+    "color-scheme": "Jeu de couleurs"
   },
   "code_block": {
-    "word_wrapping": "Word wrapping"
+    "word_wrapping": "Saut à la ligne automatique suivant la largeur"
   },
   "classic_editor_toolbar": {
-    "title": "Formatting"
+    "title": "Mise en forme"
   },
   "editor": {
-    "title": "Editor"
+    "title": "Éditeur"
   },
   "editing": {
     "editor_type": {
