@@ -23,32 +23,47 @@ export function getStylesheetUrl(theme) {
 export async function applySyntaxHighlight($container) {
     if (!isSyntaxHighlightEnabled()) {
         return;
-    }
-
-    await library_loader.requireLibrary(library_loader.HIGHLIGHT_JS);
+    }    
 
     const codeBlocks = $container.find("pre code");
     for (const codeBlock of codeBlocks) {
-        $(codeBlock).parent().toggleClass("hljs");
-
-        const text = codeBlock.innerText;
-
         const normalizedMimeType = extractLanguageFromClassList(codeBlock);
         if (!normalizedMimeType) {
             continue;
         }
-
-        let highlightedText = null;
-        if (normalizedMimeType === mime_types.MIME_TYPE_AUTO) {
-            highlightedText = hljs.highlightAuto(text);
-        } else if (normalizedMimeType) {
-            const language = mime_types.getHighlightJsNameForMime(normalizedMimeType);
-            highlightedText = hljs.highlight(text, { language });
-        }
         
-        if (highlightedText) {            
-            codeBlock.innerHTML = highlightedText.value;
+        applySingleBlockSyntaxHighlight($(codeBlock, normalizedMimeType));
+    }
+}
+
+/**
+ * Applies syntax highlight to the given code block (assumed to be <pre><code>), using highlight.js.
+ * 
+ * @param {*} $codeBlock 
+ * @param {*} normalizedMimeType 
+ */
+export async function applySingleBlockSyntaxHighlight($codeBlock, normalizedMimeType) {
+    $codeBlock.parent().toggleClass("hljs");
+    const text = $codeBlock.text();
+
+    if (!window.hljs) {
+        await library_loader.requireLibrary(library_loader.HIGHLIGHT_JS);
+    }
+
+    let highlightedText = null;
+    if (normalizedMimeType === mime_types.MIME_TYPE_AUTO) {
+        highlightedText = hljs.highlightAuto(text);
+    } else if (normalizedMimeType) {
+        const language = mime_types.getHighlightJsNameForMime(normalizedMimeType);
+        if (language) {
+            highlightedText = hljs.highlight(text, { language });
+        } else {
+            console.warn(`Unknown mime type: ${normalizedMimeType}.`);
         }
+    }
+    
+    if (highlightedText) {            
+        $codeBlock.html(highlightedText.value);
     }
 }
 

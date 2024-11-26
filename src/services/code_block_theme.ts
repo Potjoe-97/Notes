@@ -9,6 +9,7 @@ import themeNames from "./code_block_theme_names.json" with { type: "json" }
 import { t } from "i18next";
 import { join } from "path";
 import utils from "./utils.js";
+import env from "./env.js";
 
 /**
  * Represents a color scheme for the code block syntax highlight.
@@ -30,8 +31,7 @@ interface ColorTheme {
  * @returns the supported themes, grouped.
  */
 export function listSyntaxHighlightingThemes() {
-    const stylesDir = (!utils.isElectron() ? "node_modules/@highlightjs/cdn-assets/styles" : "styles");
-    const path = join(utils.getResourceDir(), stylesDir);
+    const path = join(utils.getResourceDir(), getStylesDirectory());
     const systemThemes = readThemesFromFileSystem(path);
 
     return {
@@ -43,6 +43,14 @@ export function listSyntaxHighlightingThemes() {
         ],
         ...groupThemesByLightOrDark(systemThemes)
     }
+}
+
+function getStylesDirectory() {
+    if (utils.isElectron() && !env.isDev()) {
+        return "styles";
+    }
+
+    return "node_modules/@highlightjs/cdn-assets/styles";
 }
 
 /**

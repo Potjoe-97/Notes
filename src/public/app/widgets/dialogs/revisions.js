@@ -54,7 +54,7 @@ const TPL = `
                             data-bs-toggle="dropdown" data-bs-display="static">
                     </button>
 
-                    <div class="revision-list dropdown-menu" style="position: static; height: 100%; overflow: auto;"></div>
+                    <div class="revision-list dropdown-menu static" style="position: static; height: 100%; overflow: auto;"></div>
                 </div>
 
                 <div class="revision-content-wrapper">

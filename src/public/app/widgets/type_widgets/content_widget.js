@@ -35,6 +35,7 @@ import AttachmentErasureTimeoutOptions from "./options/other/attachment_erasure_
 import RibbonOptions from "./options/appearance/ribbon.js";
 import LocalizationOptions from "./options/appearance/i18n.js";
 import CodeBlockOptions from "./options/appearance/code_block.js";
+import EditorOptions from "./options/text_notes/editor.js";
 
 const TPL = `<div class="note-detail-content-widget note-detail-printable">
     <style>
@@ -68,6 +69,7 @@ const CONTENT_WIDGETS = {
     ],
     _optionsShortcuts: [ KeyboardShortcutsOptions ],
     _optionsTextNotes: [
+        EditorOptions,
         HeadingStyleOptions,
         TableOfContentsOptions,
         HighlightsListOptions,

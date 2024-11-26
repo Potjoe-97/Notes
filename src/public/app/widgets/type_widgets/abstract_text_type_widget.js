@@ -32,7 +32,7 @@ export default class AbstractTextTypeWidget extends TypeWidget {
 
     async openImageInCurrentTab($img) {
         const { noteId, viewScope } = await this.parseFromImage($img);
-
+        
         if (noteId) {
             appContext.tabManager.getActiveContext().setNote(noteId, { viewScope });
         } else {
@@ -40,8 +40,8 @@ export default class AbstractTextTypeWidget extends TypeWidget {
         }
     }
 
-    openImageInNewTab($img) {
-        const { noteId, viewScope } = this.parseFromImage($img);
+    async openImageInNewTab($img) {
+        const { noteId, viewScope } = await this.parseFromImage($img);
 
         if (noteId) {
             appContext.tabManager.openTabWithNoteWithHoisting(noteId, { viewScope });

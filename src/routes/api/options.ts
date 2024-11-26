@@ -65,7 +65,9 @@ const ALLOWED_OPTIONS = new Set([
     'promotedAttributesOpenInRibbon',
     'editedNotesOpenInRibbon',
     'locale',
-    'firstDayOfWeek'
+    'firstDayOfWeek',
+    'textNoteEditorType',
+    'layoutOrientation'
 ]);
 
 function getOptions() {
@@ -151,6 +153,10 @@ function getSupportedLocales() {
         {
             "id": "en",
             "name": "English"
+        },
+        {
+            "id": "de",
+            "name": "Deutsch"
         },
         {
             "id": "es",

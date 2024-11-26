@@ -12,7 +12,6 @@ import appContext from "../../components/app_context.js";
 import dialogService from "../../services/dialog.js";
 import { initSyntaxHighlighting } from "./ckeditor/syntax_highlight.js";
 import options from "../../services/options.js";
-import { isSyntaxHighlightEnabled } from "../../services/syntax_highlight.js";
 
 const ENABLE_INSPECTOR = false;
 
@@ -107,6 +106,12 @@ function buildListOfLanguages() {
     ];
 }
 
+/**
+ * The editor can operate into two distinct modes:
+ * 
+ * - Ballon block mode, in which there is a floating toolbar for the selected text, but another floating button for the entire block (i.e. paragraph).
+ * - Decoupled mode, in which the editing toolbar is actually added on the client side (in {@link ClassicEditorToolbar}), see https://ckeditor.com/docs/ckeditor5/latest/examples/framework/bottom-toolbar-editor.html for an example on how the decoupled editor works.
+ */
 export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
     static getType() { return "editableText"; }
 
@@ -125,6 +130,8 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
 
     async initEditor() {
         await libraryLoader.requireLibrary(libraryLoader.CKEDITOR);
+        const isClassicEditor = (options.get("textNoteEditorType") === "ckeditor-classic")
+        const editorClass = (isClassicEditor ? CKEditor.DecoupledEditor : CKEditor.BalloonEditor);
 
         const codeBlockLanguages = buildListOfLanguages();
 
@@ -133,7 +140,7 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
         // display of $widget in both branches.
         this.$widget.show();
 
-        this.watchdog = new EditorWatchdog(BalloonEditor, {
+        this.watchdog = new CKEditor.EditorWatchdog(editorClass, {
             // An average number of milliseconds between the last editor errors (defaults to 5000).
             // When the period of time between errors is lower than that and the crashNumberLimit
             // is also reached, the watchdog changes its state to crashedPermanently, and it stops
@@ -169,9 +176,22 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
         });
 
         this.watchdog.setCreator(async (elementOrData, editorConfig) => {
-            const editor = await BalloonEditor.create(elementOrData, editorConfig);
+            const editor = await editorClass.create(elementOrData, editorConfig);
 
             await initSyntaxHighlighting(editor);
+
+            if (isClassicEditor) {
+                let $classicToolbarWidget;
+                if (!utils.isMobile()) {
+                    const $parentSplit = this.$widget.parents(".note-split.type-text");
+                    $classicToolbarWidget = $parentSplit.find("> .ribbon-container .classic-toolbar-widget");
+                } else {
+                    $classicToolbarWidget = $("body").find(".classic-toolbar-widget");
+                }
+                
+                $classicToolbarWidget.empty();
+                $classicToolbarWidget[0].appendChild(editor.ui.view.toolbar.element);
+            }
 
             editor.model.document.on('change:data', () => this.spacedUpdate.scheduleUpdate());
 

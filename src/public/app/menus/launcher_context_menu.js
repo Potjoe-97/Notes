@@ -37,18 +37,22 @@ export default class LauncherContextMenu {
         const canBeReset = !canBeDeleted && note.isLaunchBarConfig();
 
         return [
-            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-note-launcher"), command: 'addNoteLauncher', uiIcon: "bx bx-plus" } : null,
-            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-script-launcher"), command: 'addScriptLauncher', uiIcon: "bx bx-plus" } : null,
-            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-custom-widget"), command: 'addWidgetLauncher', uiIcon: "bx bx-plus" } : null,
-            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-spacer"), command: 'addSpacerLauncher', uiIcon: "bx bx-plus" } : null,
+            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-note-launcher"), command: 'addNoteLauncher', uiIcon: "bx bx-note" } : null,
+            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-script-launcher"), command: 'addScriptLauncher', uiIcon: "bx bx-code-curly" } : null,
+            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-custom-widget"), command: 'addWidgetLauncher', uiIcon: "bx bx-customize" } : null,
+            (isVisibleRoot || isAvailableRoot) ? { title: t("launcher_context_menu.add-spacer"), command: 'addSpacerLauncher', uiIcon: "bx bx-dots-horizontal" } : null,
             (isVisibleRoot || isAvailableRoot) ? { title: "----" } : null,
-            { title: `${t("launcher_context_menu.delete")} <kbd data-command="deleteNotes"></kbd>`, command: "deleteNotes", uiIcon: "bx bx-trash", enabled: canBeDeleted },
-            { title: t("launcher_context_menu.reset"), command: "resetLauncher", uiIcon: "bx bx-empty", enabled: canBeReset},
-            { title: "----" },
+
             isAvailableItem ? { title: t("launcher_context_menu.move-to-visible-launchers"), command: "moveLauncherToVisible", uiIcon: "bx bx-show", enabled: true } : null,
             isVisibleItem ? { title: t("launcher_context_menu.move-to-available-launchers"), command: "moveLauncherToAvailable", uiIcon: "bx bx-hide", enabled: true } : null,
-            { title: `${t("launcher_context_menu.duplicate-launcher")} <kbd data-command="duplicateSubtree">`, command: "duplicateSubtree", uiIcon: "bx bx-empty",
-                enabled: isItem }
+            (isVisibleItem || isAvailableItem) ? { title: "----" } : null,
+
+            { title: `${t("launcher_context_menu.duplicate-launcher")} <kbd data-command="duplicateSubtree">`, command: "duplicateSubtree", uiIcon: "bx bx-outline", enabled: isItem },
+            { title: `${t("launcher_context_menu.delete")} <kbd data-command="deleteNotes"></kbd>`, command: "deleteNotes", uiIcon: "bx bx-trash destructive-action-icon", enabled: canBeDeleted },
+           
+            { title: "----" },
+           
+            { title: t("launcher_context_menu.reset"), command: "resetLauncher", uiIcon: "bx bx-reset destructive-action-icon", enabled: canBeReset}
         ].filter(row => row !== null);
     }
 

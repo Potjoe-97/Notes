@@ -371,7 +371,8 @@ class NoteListRenderer {
             $content.append($renderedContent);
             $content.addClass(`type-${type}`);
         } catch (e) {
-            console.log(`Caught error while rendering note '${note.noteId}' of type '${note.type}': ${e.message}, stack: ${e.stack}`);
+            console.warn(`Caught error while rendering note '${note.noteId}' of type '${note.type}'`);
+            console.error(e);
 
             $content.append("rendering error");
         }

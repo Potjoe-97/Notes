@@ -70,6 +70,7 @@ export default class EmptyTypeWidget extends TypeWidget {
         noteAutocompleteService.initNoteAutocomplete(this.$autoComplete, {
             hideGoToSelectedNoteButton: true,
             allowCreatingNotes: true,
+            allowSearchNotes: true,
             container: this.$results
         })
             .on('autocomplete:noteselected', function(event, suggestion, dataset) {

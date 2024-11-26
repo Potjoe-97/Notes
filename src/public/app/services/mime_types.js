@@ -5,6 +5,10 @@ import options from "./options.js";
  */
 const MIME_TYPE_AUTO = "text-x-trilium-auto";
 
+/**
+ * For highlight.js-supported languages, see https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md.
+ */
+
 const MIME_TYPES_DICT = [
     { default: true, title: "Plain text", mime: "text/plain", highlightJs: "plaintext" },
     { title: "APL", mime: "text/apl" },
@@ -119,7 +123,7 @@ const MIME_TYPES_DICT = [
     { title: "Scala", mime: "text/x-scala" },
     { title: "Scheme", mime: "text/x-scheme" },
     { title: "SCSS", mime: "text/x-scss", highlightJs: "scss" },
-    { default: true, title: "Shell (bash)", mime: "text/x-sh", highlightJs: "shell" },
+    { default: true, title: "Shell (bash)", mime: "text/x-sh", highlightJs: "bash" },
     { title: "Sieve", mime: "application/sieve" },
     { title: "Slim", mime: "text/x-slim" },
     { title: "Smalltalk", mime: "text/x-stsrc", highlightJs: "smalltalk" },

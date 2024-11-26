@@ -89,7 +89,8 @@
     "copy-without-formatting": "Copiar el texto seleccionado sin formatear",
     "force-save-revision": "Forzar la creación/guardado de una nueva revisión de nota de la nota activa",
     "show-help": "Muestra ayuda/hoja de referencia integrada",
-    "toggle-book-properties": "Alternar propiedades del libro"
+    "toggle-book-properties": "Alternar propiedades del libro",
+    "toggle-classic-editor-toolbar": "Alternar la pestaña de formato por el editor con barra de herramientas fija"
   },
   "login": {
     "title": "Iniciar sesión",

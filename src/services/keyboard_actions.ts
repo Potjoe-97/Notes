@@ -421,6 +421,12 @@ function getDefaultKeyboardActions() {
         },
     
         {
+            actionName: "toggleRibbonTabClassicEditor",
+            defaultShortcuts: [],
+            description: t("keyboard_actions.toggle-classic-editor-toolbar"),
+            scope: "window"
+        },
+        {
             actionName: "toggleRibbonTabBasicProperties",
             defaultShortcuts: [],
             description: t("keyboard_actions.toggle-basic-properties"),

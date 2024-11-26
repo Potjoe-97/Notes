@@ -51,7 +51,7 @@ export default class ReadOnlyCodeTypeWidget extends AbstractCodeTypeWidget {
 
         await this.initialized;
 
-        resolve(this.$content);
+        resolve(this.$editor);
     }
 
     format(html) {
