@@ -89,7 +89,8 @@
     "copy-without-formatting": "Copier le texte sélectionné sans mise en forme",
     "force-save-revision": "Forcer la création / sauvegarde d'une nouvelle version de la note active",
     "show-help": "Afficher l'aide intégrée / l'aide-mémoire",
-    "toggle-book-properties": "Afficher/masquer les Propriétés du Livre"
+    "toggle-book-properties": "Afficher/masquer les Propriétés du Livre",
+    "toggle-classic-editor-toolbar": "Toggle the Formatting tab for the editor with fixed toolbar"
   },
   "login": {
     "title": "Connexion",
@@ -183,5 +184,14 @@
   },
   "special_notes": {
     "search_prefix": "Recherche :"
+  },
+  "code_block": {
+    "theme_none": "No syntax highlighting",
+    "theme_group_light": "Light themes",
+    "theme_group_dark": "Dark themes"
+  },
+  "test_sync": {
+    "not-configured": "Sync server host is not configured. Please configure sync first.",
+    "successful": "Sync server handshake has been successful, sync has been started."
   }
 }
