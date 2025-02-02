@@ -6,7 +6,7 @@ import protectedSessionService from "./protected_session.js";
 import noteService from "./notes.js";
 import optionService from "./options.js";
 import sql from "./sql.js";
-import jimp from "jimp";
+import { Jimp } from "jimp";
 import imageType from "image-type";
 import sanitizeFilename from "sanitize-filename";
 import isSvg from "is-svg";
@@ -15,12 +15,11 @@ import htmlSanitizer from "./html_sanitizer.js";
 
 async function processImage(uploadBuffer: Buffer, originalName: string, shrinkImageSwitch: boolean) {
     const compressImages = optionService.getOptionBool("compressImages");
-    const origImageFormat = getImageType(uploadBuffer);
+    const origImageFormat = await getImageType(uploadBuffer);
 
     if (!origImageFormat || !["jpg", "png"].includes(origImageFormat.ext)) {
         shrinkImageSwitch = false;
-    }
-    else if (isAnimated(uploadBuffer)) {
+    } else if (isAnimated(uploadBuffer)) {
         // recompression of animated images will make them static
         shrinkImageSwitch = false;
     }
@@ -30,11 +29,11 @@ async function processImage(uploadBuffer: Buffer, originalName: string, shrinkIm
 
     if (compressImages && shrinkImageSwitch) {
         finalImageBuffer = await shrinkImage(uploadBuffer, originalName);
-        imageFormat = getImageType(finalImageBuffer);
+        imageFormat = await getImageType(finalImageBuffer);
     } else {
         finalImageBuffer = uploadBuffer;
         imageFormat = origImageFormat || {
-            ext: 'dat'
+            ext: "dat"
         };
     }
 
@@ -44,23 +43,18 @@ async function processImage(uploadBuffer: Buffer, originalName: string, shrinkIm
     };
 }
 
-function getImageType(buffer: Buffer) {
-    if (isSvg(buffer)) {
-        return {
-            ext: 'svg'
-        }
-    }
-    else {
-        return imageType(buffer) || {
-            ext: "jpg"
-        }; // optimistic JPG default
+async function getImageType(buffer: Buffer) {
+    if (isSvg(buffer.toString())) {
+        return { ext: "svg" };
+    } else {
+        return (await imageType(buffer)) || { ext: "jpg" }; // optimistic JPG default
     }
 }
 
 function getImageMimeFromExtension(ext: string) {
     ext = ext.toLowerCase();
 
-    return `image/${ext === 'svg' ? 'svg+xml' : ext}`;
+    return `image/${ext === "svg" ? "svg+xml" : ext}`;
 }
 
 function updateImage(noteId: string, uploadBuffer: Buffer, originalName: string) {
@@ -69,14 +63,16 @@ function updateImage(noteId: string, uploadBuffer: Buffer, originalName: string)
     originalName = htmlSanitizer.sanitize(originalName);
 
     const note = becca.getNote(noteId);
-    if (!note) { throw new Error("Unable to find note."); }
+    if (!note) {
+        throw new Error("Unable to find note.");
+    }
 
     note.saveRevision();
 
-    note.setLabel('originalFileName', originalName);
+    note.setLabel("originalFileName", originalName);
 
     // resizing images asynchronously since JIMP does not support sync operation
-    processImage(uploadBuffer, originalName, true).then(({buffer, imageFormat}) => {
+    processImage(uploadBuffer, originalName, true).then(({ buffer, imageFormat }) => {
         sql.transactional(() => {
             note.mime = getImageMimeFromExtension(imageFormat.ext);
             note.save();
@@ -96,28 +92,30 @@ function saveImage(parentNoteId: string, uploadBuffer: Buffer, originalName: str
 
     const fileName = sanitizeFilename(originalName);
     const parentNote = becca.getNote(parentNoteId);
-    if (!parentNote) { throw new Error("Unable to find parent note."); }
+    if (!parentNote) {
+        throw new Error("Unable to find parent note.");
+    }
 
-    const {note} = noteService.createNewNote({
+    const { note } = noteService.createNewNote({
         parentNoteId,
         title: fileName,
-        type: 'image',
-        mime: 'unknown',
-        content: '',
+        type: "image",
+        mime: "unknown",
+        content: "",
         isProtected: parentNote.isProtected && protectedSessionService.isProtectedSessionAvailable()
     });
 
-    note.addLabel('originalFileName', originalName);
+    note.addLabel("originalFileName", originalName);
 
     // resizing images asynchronously since JIMP does not support sync operation
-    processImage(uploadBuffer, originalName, shrinkImageSwitch).then(({buffer, imageFormat}) => {
+    processImage(uploadBuffer, originalName, shrinkImageSwitch).then(({ buffer, imageFormat }) => {
         sql.transactional(() => {
             note.mime = getImageMimeFromExtension(imageFormat.ext);
 
             if (!originalName.includes(".")) {
                 originalName += `.${imageFormat.ext}`;
 
-                note.setLabel('originalFileName', originalName);
+                note.setLabel("originalFileName", originalName);
                 note.title = sanitizeFilename(originalName);
             }
 
@@ -145,8 +143,8 @@ function saveImageToAttachment(noteId: string, uploadBuffer: Buffer, originalNam
     const note = becca.getNoteOrThrow(noteId);
 
     let attachment = note.saveAttachment({
-        role: 'image',
-        mime: 'unknown',
+        role: "image",
+        mime: "unknown",
         title: fileName
     });
 
@@ -161,10 +159,12 @@ function saveImageToAttachment(noteId: string, uploadBuffer: Buffer, originalNam
     }, 5000);
 
     // resizing images asynchronously since JIMP does not support sync operation
-    processImage(uploadBuffer, originalName, !!shrinkImageSwitch).then(({buffer, imageFormat}) => {
+    processImage(uploadBuffer, originalName, !!shrinkImageSwitch).then(({ buffer, imageFormat }) => {
         sql.transactional(() => {
             // re-read, might be changed in the meantime
-            if (!attachment.attachmentId) { throw new Error("Missing attachment ID."); }
+            if (!attachment.attachmentId) {
+                throw new Error("Missing attachment ID.");
+            }
             attachment = becca.getAttachmentOrThrow(attachment.attachmentId);
 
             attachment.mime = getImageMimeFromExtension(imageFormat.ext);
@@ -182,7 +182,7 @@ function saveImageToAttachment(noteId: string, uploadBuffer: Buffer, originalNam
 }
 
 async function shrinkImage(buffer: Buffer, originalName: string) {
-    let jpegQuality = optionService.getOptionInt('imageJpegQuality', 0);
+    let jpegQuality = optionService.getOptionInt("imageJpegQuality", 0);
 
     if (jpegQuality < 10 || jpegQuality > 100) {
         jpegQuality = 75;
@@ -191,8 +191,7 @@ async function shrinkImage(buffer: Buffer, originalName: string) {
     let finalImageBuffer;
     try {
         finalImageBuffer = await resize(buffer, jpegQuality);
-    }
-    catch (e: any) {
+    } catch (e: any) {
         log.error(`Failed to resize image '${originalName}', stack: ${e.stack}`);
 
         finalImageBuffer = buffer;
@@ -208,25 +207,22 @@ async function shrinkImage(buffer: Buffer, originalName: string) {
 }
 
 async function resize(buffer: Buffer, quality: number) {
-    const imageMaxWidthHeight = optionService.getOptionInt('imageMaxWidthHeight');
+    const imageMaxWidthHeight = optionService.getOptionInt("imageMaxWidthHeight");
 
     const start = Date.now();
 
-    const image = await jimp.read(buffer);
+    const image = await Jimp.read(buffer);
 
     if (image.bitmap.width > image.bitmap.height && image.bitmap.width > imageMaxWidthHeight) {
-        image.resize(imageMaxWidthHeight, jimp.AUTO);
+        image.resize({ w: imageMaxWidthHeight });
+    } else if (image.bitmap.height > imageMaxWidthHeight) {
+        image.resize({ h: imageMaxWidthHeight });
     }
-    else if (image.bitmap.height > imageMaxWidthHeight) {
-        image.resize(jimp.AUTO, imageMaxWidthHeight);
-    }
-
-    image.quality(quality);
 
     // when converting PNG to JPG, we lose the alpha channel, this is replaced by white to match Trilium white background
-    image.background(0xFFFFFFFF);
+    image.background = 0xffffffff;
 
-    const resultBuffer = await image.getBufferAsync(jimp.MIME_JPEG);
+    const resultBuffer = await image.getBuffer("image/jpeg", { quality });
 
     log.info(`Resizing image of ${resultBuffer.byteLength} took ${Date.now() - start}ms`);
 

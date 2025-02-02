@@ -3,10 +3,13 @@
 <head>
     <meta charset="utf-8">
     <link rel="shortcut icon" href="favicon.ico">
+    <meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
     <link rel="manifest" crossorigin="use-credentials" href="manifest.webmanifest">
     <title>TriliumNext Notes</title>
 </head>
-<body class="desktop heading-style-<%= headingStyle %>">
+<body class="desktop heading-style-<%= headingStyle %> layout-<%= layoutOrientation %> platform-<%= platform %> <%= isElectron ? 'electron' : '' %> <%= hasNativeTitleBar ? 'native-titlebar' : '' %> <%= hasBackgroundEffects ? 'background-effects' : '' %>">
 <noscript><%= t("javascript-required") %></noscript>
 
 <script>
@@ -18,27 +21,7 @@
 
 <div class="dropdown-menu dropdown-menu-sm" id="context-menu-container"></div>
 
-<script type="text/javascript">
-    global = globalThis; /* fixes https://github.com/webpack/webpack/issues/10035 */
-
-    window.glob = {
-        device: "desktop",
-        baseApiUrl: 'api/',
-        activeDialog: null,
-        maxEntityChangeIdAtLoad: <%= maxEntityChangeIdAtLoad %>,
-        maxEntityChangeSyncIdAtLoad: <%= maxEntityChangeSyncIdAtLoad %>,
-        instanceName: '<%= instanceName %>',
-        csrfToken: '<%= csrfToken %>',
-        isDev: <%= isDev %>,
-        appCssNoteIds: <%- JSON.stringify(appCssNoteIds) %>,
-        isMainWindow: <%= isMainWindow %>,
-        isProtectedSessionAvailable: <%= isProtectedSessionAvailable %>,
-        triliumVersion: "<%= triliumVersion %>",
-        assetPath: "<%= assetPath %>",
-        appPath: "<%= appPath %>",
-        TRILIUM_SAFE_MODE: <%= !!process.env.TRILIUM_SAFE_MODE %>
-    };
-</script>
+<%- include("./partials/windowGlobal.ejs", locals) %>
 
 <style>
     .note-split {
@@ -74,7 +57,12 @@
 <link href="<%= themeCssUrl %>" rel="stylesheet">
 <% } %>
 
+<% if (themeUseNextAsBase) { %>
+<link href="<%= assetPath %>/stylesheets/theme-next.css" rel="stylesheet">
+<% } %>
+
 <link href="<%= assetPath %>/stylesheets/style.css" rel="stylesheet">
+<link href="<%= assetPath %>/stylesheets/print.css" rel="stylesheet" media="print">
 
 <script>
     $("body").show();
@@ -84,5 +72,5 @@
 
 <link rel="stylesheet" type="text/css" href="<%= assetPath %>/node_modules/boxicons/css/boxicons.min.css">
 
-</body>
+</>
 </html>

@@ -11,21 +11,20 @@ import beccaLoader from "../../becca/becca_loader.js";
 import log from "../../services/log.js";
 import TaskContext from "../../services/task_context.js";
 import ValidationError from "../../errors/validation_error.js";
-import { Request } from 'express';
-import BNote from "../../becca/entities/bnote.js";
-import { AppRequest } from '../route-interface.js';
+import type { Request } from "express";
+import type BNote from "../../becca/entities/bnote.js";
 
-async function importNotesToBranch(req: AppRequest) {
+async function importNotesToBranch(req: Request) {
     const { parentNoteId } = req.params;
     const { taskId, last } = req.body;
 
     const options = {
-        safeImport: req.body.safeImport !== 'false',
-        shrinkImages: req.body.shrinkImages !== 'false',
-        textImportedAsText: req.body.textImportedAsText !== 'false',
-        codeImportedAsCode: req.body.codeImportedAsCode !== 'false',
-        explodeArchives: req.body.explodeArchives !== 'false',
-        replaceUnderscoresWithSpaces: req.body.replaceUnderscoresWithSpaces !== 'false'
+        safeImport: req.body.safeImport !== "false",
+        shrinkImages: req.body.shrinkImages !== "false",
+        textImportedAsText: req.body.textImportedAsText !== "false",
+        codeImportedAsCode: req.body.codeImportedAsCode !== "false",
+        explodeArchives: req.body.explodeArchives !== "false",
+        replaceUnderscoresWithSpaces: req.body.replaceUnderscoresWithSpaces !== "false"
     };
 
     const file = req.file;
@@ -47,19 +46,19 @@ async function importNotesToBranch(req: AppRequest) {
 
     let note: BNote | null; // typically root of the import - client can show it after finishing the import
 
-    const taskContext = TaskContext.getInstance(taskId, 'importNotes', options);
+    const taskContext = TaskContext.getInstance(taskId, "importNotes", options);
 
     try {
-        if (extension === '.zip' && options.explodeArchives && typeof file.buffer !== "string") {
+        if (extension === ".zip" && options.explodeArchives && typeof file.buffer !== "string") {
             note = await zipImportService.importZip(taskContext, file.buffer, parentNote);
-        } else if (extension === '.opml' && options.explodeArchives) {
+        } else if (extension === ".opml" && options.explodeArchives) {
             const importResult = await opmlImportService.importOpml(taskContext, file.buffer, parentNote);
             if (!Array.isArray(importResult)) {
                 note = importResult;
             } else {
                 return importResult;
             }
-        } else if (extension === '.enex' && options.explodeArchives) {
+        } else if (extension === ".enex" && options.explodeArchives) {
             const importResult = await enexImportService.importEnex(taskContext, file, parentNote);
             if (!Array.isArray(importResult)) {
                 note = importResult;
@@ -69,8 +68,7 @@ async function importNotesToBranch(req: AppRequest) {
         } else {
             note = await singleImportService.importSingleFile(taskContext, file, parentNote);
         }
-    }
-    catch (e: any) {
+    } catch (e: any) {
         const message = `Import failed with following error: '${e.message}'. More details might be in the logs.`;
         taskContext.reportError(message);
 
@@ -85,10 +83,14 @@ async function importNotesToBranch(req: AppRequest) {
 
     if (last === "true") {
         // small timeout to avoid race condition (the message is received before the transaction is committed)
-        setTimeout(() => taskContext.taskSucceeded({
-            parentNoteId: parentNoteId,
-            importedNoteId: note?.noteId
-        }), 1000);
+        setTimeout(
+            () =>
+                taskContext.taskSucceeded({
+                    parentNoteId: parentNoteId,
+                    importedNoteId: note?.noteId
+                }),
+            1000
+        );
     }
 
     // import has deactivated note events so becca is not updated, instead we force it to reload
@@ -97,12 +99,12 @@ async function importNotesToBranch(req: AppRequest) {
     return note.getPojo();
 }
 
-async function importAttachmentsToNote(req: AppRequest) {
+async function importAttachmentsToNote(req: Request) {
     const { parentNoteId } = req.params;
     const { taskId, last } = req.body;
 
     const options = {
-        shrinkImages: req.body.shrinkImages !== 'false',
+        shrinkImages: req.body.shrinkImages !== "false"
     };
 
     const file = req.file;
@@ -112,14 +114,13 @@ async function importAttachmentsToNote(req: AppRequest) {
     }
 
     const parentNote = becca.getNoteOrThrow(parentNoteId);
-    const taskContext = TaskContext.getInstance(taskId, 'importAttachment', options);
+    const taskContext = TaskContext.getInstance(taskId, "importAttachment", options);
 
     // unlike in note import, we let the events run, because a huge number of attachments is not likely
 
     try {
         await singleImportService.importAttachment(taskContext, file, parentNote);
-    }
-    catch (e: any) {
+    } catch (e: any) {
         const message = `Import failed with following error: '${e.message}'. More details might be in the logs.`;
         taskContext.reportError(message);
 
@@ -130,9 +131,13 @@ async function importAttachmentsToNote(req: AppRequest) {
 
     if (last === "true") {
         // small timeout to avoid race condition (the message is received before the transaction is committed)
-        setTimeout(() => taskContext.taskSucceeded({
-            parentNoteId: parentNoteId
-        }), 1000);
+        setTimeout(
+            () =>
+                taskContext.taskSucceeded({
+                    parentNoteId: parentNoteId
+                }),
+            1000
+        );
     }
 }
 

@@ -12,7 +12,7 @@ const TPL = `
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">${t("markdown_import.dialog_title")}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="${t("markdown_import.close")}"></button>
             </div>
             <div class="modal-body">
                 <p>${t("markdown_import.modal_body_text")}</p>
@@ -36,18 +36,18 @@ export default class MarkdownImportDialog extends BasicWidget {
     doRender() {
         this.$widget = $(TPL);
         this.modal = bootstrap.Modal.getOrCreateInstance(this.$widget);
-        this.$importTextarea = this.$widget.find('.markdown-import-textarea');
-        this.$importButton = this.$widget.find('.markdown-import-button');
+        this.$importTextarea = this.$widget.find(".markdown-import-textarea");
+        this.$importButton = this.$widget.find(".markdown-import-button");
 
-        this.$importButton.on('click', () => this.sendForm());
+        this.$importButton.on("click", () => this.sendForm());
 
-        this.$widget.on('shown.bs.modal', () => this.$importTextarea.trigger('focus'));
+        this.$widget.on("shown.bs.modal", () => this.$importTextarea.trigger("focus"));
 
-        shortcutService.bindElShortcut(this.$widget, 'ctrl+return', () => this.sendForm());
+        shortcutService.bindElShortcut(this.$widget, "ctrl+return", () => this.sendForm());
     }
 
     async convertMarkdownToHtml(markdownContent) {
-        const { htmlContent } = await server.post('other/render-markdown', { markdownContent });
+        const { htmlContent } = await server.post("other/render-markdown", { markdownContent });
 
         const textEditor = await appContext.tabManager.getActiveContext().getTextEditor();
 
@@ -64,17 +64,16 @@ export default class MarkdownImportDialog extends BasicWidget {
     }
 
     async importMarkdownInlineEvent() {
-        if (appContext.tabManager.getActiveContextNoteType() !== 'text') {
+        if (appContext.tabManager.getActiveContextNoteType() !== "text") {
             return;
         }
 
         if (utils.isElectron()) {
-            const { clipboard } = utils.dynamicRequire('electron');
+            const { clipboard } = utils.dynamicRequire("electron");
             const text = clipboard.readText();
 
             this.convertMarkdownToHtml(text);
-        }
-        else {
+        } else {
             utils.openDialog(this.$widget);
         }
     }
@@ -86,6 +85,6 @@ export default class MarkdownImportDialog extends BasicWidget {
 
         await this.convertMarkdownToHtml(text);
 
-        this.$importTextarea.val('');
+        this.$importTextarea.val("");
     }
 }

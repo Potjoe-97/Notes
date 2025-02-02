@@ -1,14 +1,15 @@
 "use strict";
 
 import hoistedNoteService from "../hoisted_note.js";
-import { SearchParams } from './services/types.js';
+import type { SearchParams } from "./services/types.js";
 
 class SearchContext {
-    
     fastSearch: boolean;
     includeArchivedNotes: boolean;
     includeHiddenNotes: boolean;
     ignoreHoistedNote: boolean;
+    /** Whether to ignore certain attributes from the search such as ~internalLink. */
+    ignoreInternalAttributes: boolean;
     ancestorNoteId?: string;
     ancestorDepth?: string;
     orderBy?: string;
@@ -21,13 +22,14 @@ class SearchContext {
     originalQuery: string;
     fulltextQuery: string;
     dbLoadNeeded: boolean;
-    private error: string | null;
+    error: string | null;
 
     constructor(params: SearchParams = {}) {
         this.fastSearch = !!params.fastSearch;
         this.includeArchivedNotes = !!params.includeArchivedNotes;
         this.includeHiddenNotes = !!params.includeHiddenNotes;
         this.ignoreHoistedNote = !!params.ignoreHoistedNote;
+        this.ignoreInternalAttributes = !!params.ignoreInternalAttributes;
         this.ancestorNoteId = params.ancestorNoteId;
 
         if (!this.ancestorNoteId && !this.ignoreHoistedNote) {

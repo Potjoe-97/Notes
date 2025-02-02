@@ -8,7 +8,7 @@ const TPL = `
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">${t("password_not_set.title")}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="${t("password_not_set.close")}"></button>
             </div>
             <div class="modal-body">
                 ${t("password_not_set.body1")}
@@ -27,7 +27,7 @@ export default class PasswordNoteSetDialog extends BasicWidget {
         this.$openPasswordOptionsButton = this.$widget.find(".open-password-options-button");
         this.$openPasswordOptionsButton.on("click", () => {
             this.modal.hide();
-            this.triggerCommand("showOptions", { section: '_optionsPassword' });
+            this.triggerCommand("showOptions", { section: "_optionsPassword" });
         });
     }
 

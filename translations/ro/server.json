@@ -90,7 +90,8 @@
     "unhoist": "Defocalizează complet",
     "zoom-in": "Mărește zoom-ul",
     "zoom-out": "Micșorează zoom-ul",
-    "toggle-classic-editor-toolbar": "Comută tab-ul „Formatare” pentru editorul cu bară fixă"
+    "toggle-classic-editor-toolbar": "Comută tab-ul „Formatare” pentru editorul cu bară fixă",
+    "export-as-pdf": "Exportă notița curentă ca PDF"
   },
   "login": {
     "button": "Autentifică",
@@ -101,6 +102,7 @@
     "title": "Autentificare"
   },
   "set_password": {
+    "title": "Setare parolă",
     "heading": "Setare parolă",
     "button": "Setează parola",
     "description": "Înainte de a putea utiliza Trilium din navigator, trebuie mai întâi setată o parolă. Ulterior această parolă va fi folosită la autentificare.",
@@ -193,5 +195,80 @@
   "test_sync": {
     "not-configured": "Calea către serverul de sincronizare nu este configurată. Configurați sincronizarea înainte.",
     "successful": "Comunicarea cu serverul de sincronizare a avut loc cu succes, s-a început sincronizarea."
+  },
+  "hidden-subtree": {
+    "advanced-title": "Setări avansate",
+    "appearance-title": "Aspect",
+    "available-launchers-title": "Lansatoare disponibile",
+    "backup-title": "Copii de siguranță",
+    "base-abstract-launcher-title": "Lansator abstract de bază",
+    "bookmarks-title": "Semne de carte",
+    "built-in-widget-title": "Widget predefinit",
+    "bulk-action-title": "Acțiuni în masă",
+    "calendar-title": "Calendar",
+    "code-notes-title": "Notițe de cod",
+    "command-launcher-title": "Lansator de comenzi",
+    "custom-widget-title": "Widget personalizat",
+    "etapi-title": "ETAPI",
+    "go-to-previous-note-title": "Mergi la notița anterioară",
+    "images-title": "Imagini",
+    "jump-to-note-title": "Sari la notiță",
+    "launch-bar-title": "Bară de lansare",
+    "new-note-title": "Notiță nouă",
+    "note-launcher-title": "Lansator de notițe",
+    "note-map-title": "Harta notițelor",
+    "open-today-journal-note-title": "Deschide notița de astăzi",
+    "options-title": "Opțiuni",
+    "other": "Diverse",
+    "password-title": "Parolă",
+    "protected-session-title": "Sesiune protejată",
+    "recent-changes-title": "Schimbări recente",
+    "script-launcher-title": "Lansator de script-uri",
+    "search-history-title": "Istoric de căutare",
+    "settings-title": "Setări",
+    "shared-notes-title": "Notițe partajate",
+    "quick-search-title": "Căutare rapidă",
+    "root-title": "Notițe ascunse",
+    "search-notes-title": "Căutare notițe",
+    "shortcuts-title": "Scurtături",
+    "spellcheck-title": "Corectare gramaticală",
+    "sync-status-title": "Starea sincronizării",
+    "sync-title": "Sincronizare",
+    "text-notes": "Notițe text",
+    "user-hidden-title": "Definite de utilizator",
+    "backend-log-title": "Log backend",
+    "spacer-title": "Separator",
+    "sql-console-history-title": "Istoricul consolei SQL",
+    "go-to-next-note-title": "Mergi la notița următoare",
+    "launch-bar-templates-title": "Șabloane bară de lansare",
+    "visible-launchers-title": "Lansatoare vizibile"
+  },
+  "notes": {
+    "new-note": "Notiță nouă"
+  },
+  "backend_log": {
+    "log-does-not-exist": "Fișierul de loguri de backend „{{ fileName }}” nu există (încă).",
+    "reading-log-failed": "Nu s-a putut citi fișierul de loguri de backend „{{fileName}}”."
+  },
+  "geo-map": {
+    "create-child-note-instruction": "Clic pe hartă pentru a crea o nouă notiță la acea poziție sau apăsați Escape pentru a renunța."
+  },
+  "content_renderer": {
+    "note-cannot-be-displayed": "Acest tip de notiță nu poate fi afișat."
+  },
+  "pdf": {
+    "export_filter": "Document PDF (*.pdf)",
+    "unable-to-export-message": "Notița curentă nu a putut fi exportată ca PDF.",
+    "unable-to-export-title": "Nu s-a putut exporta ca PDF",
+    "unable-to-save-message": "Nu s-a putut scrie fișierul selectat. Încercați din nou sau selectați altă destinație."
+  },
+  "tray": {
+    "bookmarks": "Semne de carte",
+    "close": "Închide Trilium",
+    "new-note": "Notiță nouă",
+    "recents": "Notițe recente",
+    "today": "Mergi la notița de astăzi",
+    "tooltip": "TriliumNext Notes",
+    "show-windows": "Afișează ferestrele"
   }
 }

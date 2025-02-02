@@ -1,6 +1,5 @@
 import TypeWidget from "./type_widget.js";
-import ZoomFactorOptions from "./options/appearance/zoom_factor.js";
-import NativeTitleBarOptions from "./options/appearance/native_title_bar.js";
+import ElectronIntegrationOptions from "./options/appearance/electron_integration.js";
 import ThemeOptions from "./options/appearance/theme.js";
 import FontsOptions from "./options/appearance/fonts.js";
 import MaxContentWidthOptions from "./options/appearance/max_content_width.js";
@@ -25,9 +24,9 @@ import NoteErasureTimeoutOptions from "./options/other/note_erasure_timeout.js";
 import RevisionsSnapshotIntervalOptions from "./options/other/revisions_snapshot_interval.js";
 import RevisionSnapshotsLimitOptions from "./options/other/revision_snapshots_limit.js";
 import NetworkConnectionsOptions from "./options/other/network_connections.js";
+import HtmlImportTagsOptions from "./options/other/html_import_tags.js";
 import AdvancedSyncOptions from "./options/advanced/sync.js";
 import DatabaseIntegrityCheckOptions from "./options/advanced/database_integrity_check.js";
-import ConsistencyChecksOptions from "./options/advanced/consistency_checks.js";
 import VacuumDatabaseOptions from "./options/advanced/vacuum_database.js";
 import DatabaseAnonymizationOptions from "./options/advanced/database_anonymization.js";
 import BackendLogWidget from "./content/backend_log.js";
@@ -57,36 +56,16 @@ const TPL = `<div class="note-detail-content-widget note-detail-printable">
 </div>`;
 
 const CONTENT_WIDGETS = {
-    _optionsAppearance: [
-        LocalizationOptions,
-        ThemeOptions,
-        FontsOptions,
-        CodeBlockOptions,
-        ZoomFactorOptions,
-        NativeTitleBarOptions,
-        MaxContentWidthOptions,
-        RibbonOptions
-    ],
-    _optionsShortcuts: [ KeyboardShortcutsOptions ],
-    _optionsTextNotes: [
-        EditorOptions,
-        HeadingStyleOptions,
-        TableOfContentsOptions,
-        HighlightsListOptions,
-        TextAutoReadOnlySizeOptions
-    ],
-    _optionsCodeNotes: [
-        VimKeyBindingsOptions,
-        WrapLinesOptions,
-        CodeAutoReadOnlySizeOptions,
-        CodeMimeTypesOptions
-    ],
-    _optionsImages: [ ImageOptions ],
-    _optionsSpellcheck: [ SpellcheckOptions ],
-    _optionsPassword: [ PasswordOptions ],
-    _optionsEtapi: [ EtapiOptions ],
-    _optionsBackup: [ BackupOptions ],
-    _optionsSync: [ SyncOptions ],
+    _optionsAppearance: [LocalizationOptions, ThemeOptions, FontsOptions, CodeBlockOptions, ElectronIntegrationOptions, MaxContentWidthOptions, RibbonOptions],
+    _optionsShortcuts: [KeyboardShortcutsOptions],
+    _optionsTextNotes: [EditorOptions, HeadingStyleOptions, TableOfContentsOptions, HighlightsListOptions, TextAutoReadOnlySizeOptions],
+    _optionsCodeNotes: [VimKeyBindingsOptions, WrapLinesOptions, CodeAutoReadOnlySizeOptions, CodeMimeTypesOptions],
+    _optionsImages: [ImageOptions],
+    _optionsSpellcheck: [SpellcheckOptions],
+    _optionsPassword: [PasswordOptions],
+    _optionsEtapi: [EtapiOptions],
+    _optionsBackup: [BackupOptions],
+    _optionsSync: [SyncOptions],
     _optionsOther: [
         SearchEngineOptions,
         TrayOptions,
@@ -94,20 +73,17 @@ const CONTENT_WIDGETS = {
         AttachmentErasureTimeoutOptions,
         RevisionsSnapshotIntervalOptions,
         RevisionSnapshotsLimitOptions,
-        NetworkConnectionsOptions
+        NetworkConnectionsOptions,
+        HtmlImportTagsOptions
     ],
-    _optionsAdvanced: [
-        DatabaseIntegrityCheckOptions,
-        ConsistencyChecksOptions,
-        DatabaseAnonymizationOptions,
-        AdvancedSyncOptions,
-        VacuumDatabaseOptions
-    ],
-    _backendLog: [ BackendLogWidget ]
+    _optionsAdvanced: [DatabaseIntegrityCheckOptions, DatabaseAnonymizationOptions, AdvancedSyncOptions, VacuumDatabaseOptions],
+    _backendLog: [BackendLogWidget]
 };
 
 export default class ContentWidgetTypeWidget extends TypeWidget {
-    static getType() { return "contentWidget"; }
+    static getType() {
+        return "contentWidget";
+    }
 
     doRender() {
         this.$widget = $(TPL);
@@ -121,12 +97,13 @@ export default class ContentWidgetTypeWidget extends TypeWidget {
         this.children = [];
 
         const contentWidgets = CONTENT_WIDGETS[note.noteId];
+        this.$content.toggleClass("options", note.noteId.startsWith("_options"));
 
         if (contentWidgets) {
             for (const clazz of contentWidgets) {
                 const widget = new clazz();
 
-                await widget.handleEvent('setNoteContext', { noteContext: this.noteContext });
+                await widget.handleEvent("setNoteContext", { noteContext: this.noteContext });
                 this.child(widget);
 
                 this.$content.append(widget.render());

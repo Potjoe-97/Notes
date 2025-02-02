@@ -6,17 +6,16 @@ import log from "../../services/log.js";
 import noteService from "../../services/notes.js";
 import tmp from "tmp";
 import fs from "fs";
-import { Readable } from 'stream';
+import { Readable } from "stream";
 import chokidar from "chokidar";
 import ws from "../../services/ws.js";
 import becca from "../../becca/becca.js";
 import ValidationError from "../../errors/validation_error.js";
-import { Request, Response } from 'express';
-import BNote from "../../becca/entities/bnote.js";
-import BAttachment from "../../becca/entities/battachment.js";
-import { AppRequest } from '../route-interface.js';
+import type { Request, Response } from "express";
+import type BNote from "../../becca/entities/bnote.js";
+import type BAttachment from "../../becca/entities/battachment.js";
 
-function updateFile(req: AppRequest) {
+function updateFile(req: Request) {
     const note = becca.getNoteOrThrow(req.params.noteId);
 
     const file = req.file;
@@ -34,7 +33,7 @@ function updateFile(req: AppRequest) {
 
     note.setContent(file.buffer);
 
-    note.setLabel('originalFileName', file.originalname);
+    note.setLabel("originalFileName", file.originalname);
 
     noteService.asyncPostProcessContent(note, file.buffer);
 
@@ -43,7 +42,7 @@ function updateFile(req: AppRequest) {
     };
 }
 
-function updateAttachment(req: AppRequest) {
+function updateAttachment(req: Request) {
     const attachment = becca.getAttachmentOrThrow(req.params.attachmentId);
     const file = req.file;
     if (!file) {
@@ -56,7 +55,7 @@ function updateAttachment(req: AppRequest) {
     attachment.getNote().saveRevision();
 
     attachment.mime = file.mimetype.toLowerCase();
-    attachment.setContent(file.buffer, {forceSave: true});
+    attachment.setContent(file.buffer, { forceSave: true });
 
     return {
         uploaded: true
@@ -71,11 +70,11 @@ function downloadData(noteOrAttachment: BNote | BAttachment, res: Response, cont
     if (contentDisposition) {
         const fileName = noteOrAttachment.getFileName();
 
-        res.setHeader('Content-Disposition', utils.getContentDisposition(fileName));
+        res.setHeader("Content-Disposition", utils.getContentDisposition(fileName));
     }
 
     res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    res.setHeader('Content-Type', noteOrAttachment.mime);
+    res.setHeader("Content-Type", noteOrAttachment.mime);
 
     res.send(noteOrAttachment.getContent());
 }
@@ -84,9 +83,7 @@ function downloadNoteInt(noteId: string, res: Response, contentDisposition = tru
     const note = becca.getNote(noteId);
 
     if (!note) {
-        return res.setHeader("Content-Type", "text/plain")
-            .status(404)
-            .send(`Note '${noteId}' doesn't exist.`);
+        return res.setHeader("Content-Type", "text/plain").status(404).send(`Note '${noteId}' doesn't exist.`);
     }
 
     return downloadData(note, res, contentDisposition);
@@ -96,9 +93,7 @@ function downloadAttachmentInt(attachmentId: string, res: Response, contentDispo
     const attachment = becca.getAttachment(attachmentId);
 
     if (!attachment) {
-        return res.setHeader("Content-Type", "text/plain")
-            .status(404)
-            .send(`Attachment '${attachmentId}' doesn't exist.`);
+        return res.setHeader("Content-Type", "text/plain").status(404).send(`Attachment '${attachmentId}' doesn't exist.`);
     }
 
     return downloadData(attachment, res, contentDisposition);
@@ -126,21 +121,21 @@ function attachmentContentProvider(req: Request) {
 
 async function streamContent(content: string | Buffer, fileName: string, mimeType: string) {
     if (typeof content === "string") {
-        content = Buffer.from(content, 'utf8');
+        content = Buffer.from(content, "utf8");
     }
 
     const totalSize = content.byteLength;
 
-    const getStream = (range: { start: number, end: number }) => {
+    const getStream = (range: { start: number; end: number }) => {
         if (!range) {
             // Request if for complete content.
             return Readable.from(content);
         }
         // Partial content request.
-        const {start, end} = range;
+        const { start, end } = range;
 
         return Readable.from(content.slice(start, end + 1));
-    }
+    };
 
     return {
         fileName,
@@ -155,7 +150,7 @@ function saveNoteToTmpDir(req: Request) {
     const fileName = note.getFileName();
     const content = note.getContent();
 
-    return saveToTmpDir(fileName, content, 'notes', note.noteId);
+    return saveToTmpDir(fileName, content, "notes", note.noteId);
 }
 
 function saveAttachmentToTmpDir(req: Request) {
@@ -166,7 +161,7 @@ function saveAttachmentToTmpDir(req: Request) {
     if (!attachment.attachmentId) {
         throw new ValidationError("Missing attachment ID.");
     }
-    return saveToTmpDir(fileName, content, 'attachments', attachment.attachmentId);
+    return saveToTmpDir(fileName, content, "attachments", attachment.attachmentId);
 }
 
 const createdTemporaryFiles = new Set<string>();
@@ -177,7 +172,7 @@ function saveToTmpDir(fileName: string, content: string | Buffer, entityType: st
     if (typeof content === "string") {
         fs.writeSync(tmpObj.fd, content);
     } else {
-        fs.writeSync(tmpObj.fd, content);   
+        fs.writeSync(tmpObj.fd, content);
     }
 
     fs.closeSync(tmpObj.fd);
@@ -186,10 +181,10 @@ function saveToTmpDir(fileName: string, content: string | Buffer, entityType: st
 
     log.info(`Saved temporary file ${tmpObj.name}`);
 
-    if (utils.isElectron()) {
-        chokidar.watch(tmpObj.name).on('change', (path, stats) => {
+    if (utils.isElectron) {
+        chokidar.watch(tmpObj.name).on("change", (path, stats) => {
             ws.sendMessageToAllClients({
-                type: 'openedFileUpdated',
+                type: "openedFileUpdated",
                 entityType: entityType,
                 entityId: entityId,
                 lastModifiedMs: stats?.atimeMs,
@@ -205,7 +200,7 @@ function saveToTmpDir(fileName: string, content: string | Buffer, entityType: st
 
 function uploadModifiedFileToNote(req: Request) {
     const noteId = req.params.noteId;
-    const {filePath} = req.body;
+    const { filePath } = req.body;
 
     if (!createdTemporaryFiles.has(filePath)) {
         throw new ValidationError(`File '${filePath}' is not a temporary file.`);
@@ -227,8 +222,8 @@ function uploadModifiedFileToNote(req: Request) {
 }
 
 function uploadModifiedFileToAttachment(req: Request) {
-    const {attachmentId} = req.params;
-    const {filePath} = req.body;
+    const { attachmentId } = req.params;
+    const { filePath } = req.body;
 
     const attachment = becca.getAttachmentOrThrow(attachmentId);
 

@@ -16,9 +16,28 @@ env:
   TEST_TAG: ${{ github.repository_owner }}/notes:test
 
 jobs:
+  test_dev:
+    name: Test development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Set up node & dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - run: npm ci
+
+      - name: Run the TypeScript build
+        run: npx tsc
   build_docker:
     name: Build Docker image
     runs-on: ubuntu-latest
+    needs:
+      - test_dev
     steps:
       - uses: actions/checkout@v4
       - name: Set up node & dependencies
@@ -36,10 +55,12 @@ jobs:
         with:
           context: .
           cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-to: type=gha,mode=max  
   test_docker:
     name: Check Docker build
     runs-on: ubuntu-latest
+    needs:
+      - build_docker
     strategy:
       matrix:
         include:
@@ -87,7 +108,7 @@ jobs:
           echo "Container ID: $CONTAINER_ID"
       
       - name: Wait for the healthchecks to pass
-        uses: stringbean/docker-healthcheck-action@v1
+        uses: stringbean/docker-healthcheck-action@v3
         with:
           container: trilium_local
           wait-time: 50
