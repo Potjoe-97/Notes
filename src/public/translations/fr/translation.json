@@ -1,6 +1,7 @@
 {
   "about": {
     "title": "À propos de TriliumNotes",
+    "close": "Fermer",
     "homepage": "Page d'accueil :",
     "app_version": "Version de l'application :",
     "db_version": "Version de la base de données :",
@@ -32,7 +33,8 @@
     "search_note": "rechercher une note par son nom",
     "link_title_mirrors": "le titre du lien reflète le titre actuel de la note",
     "link_title_arbitrary": "le titre du lien peut être modifié arbitrairement",
-    "link_title": "Titre du lien"
+    "link_title": "Titre du lien",
+    "button_add_link": "Ajouter un lien <kbd>Entrée</kbd>"
   },
   "branch_prefix": {
     "edit_branch_prefix": "Modifier le préfixe de branche",
@@ -59,6 +61,7 @@
   },
   "clone_to": {
     "clone_notes_to": "Cloner des notes dans...",
+    "close": "Fermer",
     "help_on_links": "Aide sur les liens",
     "notes_to_clone": "Notes à cloner",
     "target_parent_note": "Note parent cible",
@@ -71,6 +74,7 @@
   },
   "confirm": {
     "confirmation": "Confirmation",
+    "close": "Fermer",
     "cancel": "Annuler",
     "ok": "OK",
     "are_you_sure_remove_note": "Voulez-vous vraiment supprimer la note « {{title}} » de la carte des relations ? ",
@@ -79,6 +83,7 @@
   },
   "delete_notes": {
     "delete_notes_preview": "Supprimer l'aperçu des notes",
+    "close": "Fermer",
     "delete_all_clones_description": "Supprimer aussi tous les clones (peut être annulé lors des modifications récentes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
     "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
@@ -92,25 +97,27 @@
   "export": {
     "export_note_title": "Exporter la note",
     "close": "Fermer",
-    "export_type_subtree": "cette note et tous ses descendants",
-    "format_html": "HTML dans l'archive ZIP - recommandé car cela préserve tout le formatage.",
+    "export_type_subtree": "Cette note et tous ses descendants",
+    "format_html": "HTML - recommandé car il conserve la mise en forme",
+    "format_html_zip": "HTML dans l'archive ZIP - recommandé car cela préserve tout le formatage.",
     "format_markdown": "Markdown - préserve la majeure partie du formatage.",
     "format_opml": "OPML - format d'échange pour les outlineurs, uniquement pour le texte. Les mises en forme, images et fichiers ne sont pas inclus.",
     "opml_version_1": "OPML v1.0 - texte brut uniquement",
     "opml_version_2": "OPML v2.0 - HTML également autorisé",
-    "export_type_single": "seulement cette note sans ses descendants",
+    "export_type_single": "Seulement cette note sans ses descendants",
     "export": "Exporter",
     "choose_export_type": "Choisissez d'abord le type d'export",
     "export_status": "Statut d'exportation",
     "export_in_progress": "Exportation en cours : {{progressCount}}",
-    "export_finished_successfully": "L'exportation s'est terminée avec succès."
+    "export_finished_successfully": "L'exportation s'est terminée avec succès.",
+    "format_pdf": "PDF - pour l'impression ou le partage de documents."
   },
   "help": {
     "fullDocumentation": "Aide (la documentation complète est disponible <a class=\"external\" href=\"https://triliumnext.github.io/Docs/\">en ligne</a>)",
     "close": "Fermer",
     "noteNavigation": "Navigation dans les notes",
-    "goUpDown": "aller vers le haut/bas dans la liste des notes",
-    "collapseExpand": "réduire/développer le nœud",
+    "goUpDown": "<kbd>UP</kbd>, <kbd>DOWN</kbd> - aller vers le haut/bas dans la liste des notes",
+    "collapseExpand": "<kbd>LEFT</kbd>, <kbd>RIGHT</kbd> - réduire/développer le nœud",
     "notSet": "non défini",
     "goBackForwards": "reculer/avancer dans l'historique",
     "showJumpToNoteDialog": "afficher la <a class=\"external\" href=\"https://triliumnext.github.io/Docs/Wiki/note-navigation.html#jump-to-note\">boîte de dialogue \"Aller à la note\"</a>",
@@ -119,7 +126,7 @@
     "collapseWholeTree": "réduire tout l'arbre des notes",
     "collapseSubTree": "réduire le sous-arbre",
     "tabShortcuts": "Raccourcis des onglets",
-    "newTabNoteLink": "(ou clic central de la souris) sur le lien de la note ouvre la note dans un nouvel onglet",
+    "newTabNoteLink": "<kbd>CTRL+clic</kbd> - (ou clic central de la souris) sur le lien de la note ouvre la note dans un nouvel onglet",
     "onlyInDesktop": "Uniquement sur ordinateur (version Electron)",
     "openEmptyTab": "ouvrir un onglet vide",
     "closeActiveTab": "fermer l'onglet actif",
@@ -141,16 +148,16 @@
     "deleteNotes": "supprimer une note / un sous-arbre",
     "editingNotes": "Édition des notes",
     "editNoteTitle": "dans le volet de l'arborescence, basculera du volet au titre de la note. Presser Entrer à partir du titre de la note basculera vers l’éditeur de texte. <kbd>Ctrl+.</kbd> bascule de l'éditeur au volet arborescent.",
-    "createEditLink": "créer/éditer un lien externe",
+    "createEditLink": "<kbd>Ctrl+K</kbd> - créer/éditer un lien externe",
     "createInternalLink": "créer un lien interne",
     "followLink": "suivre le lien sous le curseur",
     "insertDateTime": "insérer la date et l'heure courante à la position du curseur",
     "jumpToTreePane": "passer au volet de l'arborescence et aller jusqu'à la note active",
     "markdownAutoformat": "Formatage automatique (comme Markdown)",
     "headings": " etc. suivi d'un espace pour les titres",
-    "bulletList": "<kbd>*</kbd> ou <kbd>-</kbd> suivi d'un espace pour la liste à puces",
-    "numberedList": "<kbd>1.</kbd> ou <kbd>1)</kbd> suivi d'un espace pour la liste numérotée",
-    "blockQuote": "commencez une ligne avec <kbd>></kbd> suivi d'un espace pour les guillemets",
+    "bulletList": "<code>*</code> ou <code>-</code> suivi d'un espace pour la liste à puces",
+    "numberedList": "<code>1.</code> ou <code>1)</code> suivi d'un espace pour la liste numérotée",
+    "blockQuote": "commencez une ligne avec <code>></code> suivi d'un espace pour les guillemets",
     "troubleshooting": "Dépannage",
     "reloadFrontend": "recharger l'interface Trilium",
     "showDevTools": "afficher les outils de développement",
@@ -175,17 +182,27 @@
     "codeImportedAsCode": "Importez des fichiers de code reconnus (par exemple <code>.json</code>) en tant que notes de code si cela n'est pas clair à partir des métadonnées",
     "replaceUnderscoresWithSpaces": "Remplacez les tirets bas par des espaces dans les noms de notes importées",
     "import": "Importer",
-    "failed": "Échec de l'importation : {{message}}."
+    "failed": "Échec de l'importation : {{message}}.",
+    "html_import_tags": {
+      "title": "Tags d'importation HTML",
+      "description": "Configurer quelles balises HTML doivent être préservées lors de l'importation des notes. Les balises qui ne sont pas dans cette liste seront supprimées pendant l'importation. Certaines balises (comme 'script') sont toujours supprimées pour des raisons de sécurité.",
+      "placeholder": "Saisir les balises HTML, une par ligne",
+      "reset_button": "Réinitialiser à la liste par défaut"
+    },
+    "import-status": "Statut d'importation",
+    "in-progress": "Importation en cours : {{progress}}",
+    "successful": "Importation terminée avec succès."
   },
   "include_note": {
     "dialog_title": "Inclure une note",
+    "close": "Fermer",
     "label_note": "Note",
     "placeholder_search": "rechercher une note par son nom",
     "box_size_prompt": "Taille de la boîte de la note incluse :",
     "box_size_small": "petit (~ 10 lignes)",
     "box_size_medium": "moyen (~ 30 lignes)",
     "box_size_full": "complet (la boîte affiche le texte complet)",
-    "button_include": "Inclure une note"
+    "button_include": "Inclure une note <kbd>Entrée</kbd>"
   },
   "info": {
     "modalTitle": "Message d'information",
@@ -194,16 +211,19 @@
   },
   "jump_to_note": {
     "search_placeholder": "rechercher une note par son nom",
+    "close": "Fermer",
     "search_button": "Rechercher dans le texte intégral <kbd>Ctrl+Entrée</kbd>"
   },
   "markdown_import": {
     "dialog_title": "Importation Markdown",
+    "close": "Fermer",
     "modal_body_text": "En raison du bac à sable du navigateur, il n'est pas possible de lire directement le presse-papiers à partir de JavaScript. Veuillez coller le Markdown à importer dans la zone de texte ci-dessous et cliquez sur le bouton Importer",
     "import_button": "Importer Ctrl+Entrée",
     "import_success": "Le contenu Markdown a été importé dans le document."
   },
   "move_to": {
     "dialog_title": "Déplacer les notes vers...",
+    "close": "Fermer",
     "notes_to_move": "Notes à déplacer",
     "target_parent_note": "Note parent cible",
     "search_placeholder": "rechercher une note par son nom",
@@ -213,16 +233,19 @@
   },
   "note_type_chooser": {
     "modal_title": "Choisissez le type de note",
+    "close": "Fermer",
     "modal_body": "Choisissez le type de note/le modèle de la nouvelle note :",
     "templates": "Modèles :"
   },
   "password_not_set": {
     "title": "Le mot de passe n'est pas défini",
+    "close": "Fermer",
     "body1": "Les notes protégées sont cryptées à l'aide d'un mot de passe utilisateur, mais le mot de passe n'a pas encore été défini.",
     "body2": "Pour pouvoir protéger les notes, cliquez <a class=\"open-password-options-button\" href=\"javascript:\">ici</a> pour ouvrir les Options et définir votre mot de passe."
   },
   "prompt": {
     "title": "Prompt",
+    "close": "Fermer",
     "ok": "OK <kbd>entrer</kbd>",
     "defaultTitle": "Prompt"
   },
@@ -236,6 +259,7 @@
   "recent_changes": {
     "title": "Modifications récentes",
     "erase_notes_button": "Effacer les notes supprimées maintenant",
+    "close": "Fermer",
     "deleted_notes_message": "Les notes supprimées ont été effacées.",
     "no_changes_message": "Aucun changement pour l'instant...",
     "undelete_link": "annuler la suppression",
@@ -246,6 +270,7 @@
     "delete_all_revisions": "Supprimer toutes les versions de cette note",
     "delete_all_button": "Supprimer toutes les versions",
     "help_title": "Aide sur les versions de notes",
+    "close": "Fermer",
     "revision_last_edited": "Cette version a été modifiée pour la dernière fois le {{date}}",
     "confirm_delete_all": "Voulez-vous supprimer toutes les versions de cette note ? Cette action effacera le titre et le contenu de la version, tout en conservant les métadonnées de la version.",
     "no_revisions": "Aucune version pour cette note pour l'instant...",
@@ -267,6 +292,7 @@
   },
   "sort_child_notes": {
     "sort_children_by": "Trier les enfants par...",
+    "close": "Fermer",
     "sorting_criteria": "Critères de tri",
     "title": "titre",
     "date_created": "date de création",
@@ -280,10 +306,11 @@
     "sort_with_respect_to_different_character_sorting": "trier en fonction de différentes règles de tri et de classement des caractères dans différentes langues ou régions.",
     "natural_sort_language": "Langage de tri naturel",
     "the_language_code_for_natural_sort": "Le code de langue pour le tri naturel, par ex. \"zh-CN\" pour le chinois.",
-    "sort": "Trier"
+    "sort": "Trier <kbd>Entrée</kbd>"
   },
   "upload_attachments": {
     "upload_attachments_to_note": "Téléverser des pièces jointes à la note",
+    "close": "Fermer",
     "choose_files": "Choisir des fichiers",
     "files_will_be_uploaded": "Les fichiers seront téléversés sous forme de pièces jointes dans",
     "options": "Options",
@@ -349,6 +376,7 @@
     "auto_read_only_disabled": "les notes textuelles/de code peuvent être automatiquement mises en mode lecture lorsqu'elles sont trop volumineuses. Vous pouvez désactiver ce comportement note par note en ajoutant ce label à la note",
     "app_css": "marque les notes CSS qui sont chargées dans l'application Trilium et peuvent ainsi être utilisées pour modifier l'apparence de Trilium.",
     "app_theme": "marque les notes CSS qui sont des thèmes Trilium complets et sont donc disponibles dans les options Trilium.",
+    "app_theme_base": "définir sur \"next\" afin d'utiliser le thème TriliumNext comme base pour un thème personnalisé au lieu du l'ancien thème.",
     "css_class": "la valeur de ce label est ensuite ajoutée en tant que classe CSS au nœud représentant la note donnée dans l'arborescence. Cela peut être utile pour les thèmes avancés. Peut être utilisé dans les notes modèle.",
     "icon_class": "la valeur de ce label est ajoutée en tant que classe CSS à l'icône dans l'arbre, ce qui peut aider à distinguer visuellement les notes dans l'arborescence. Un exemple pourrait être bx bx-home - les icônes sont extraites de boxicons. Peut être utilisé dans les notes modèle.",
     "page_size": "nombre d'éléments par page dans la liste de notes",
@@ -410,7 +438,9 @@
     "share_favicon": "Favicon de la note à définir dans la page partagée. En règle générale, vous souhaitez le configurer pour partager la racine et le rendre héritable. La note Favicon doit également figurer dans le sous-arbre partagé. Pensez à utiliser 'share_hidden_from_tree'.",
     "is_owned_by_note": "appartient à la note",
     "other_notes_with_name": "Autres notes portant le nom {{attributeType}} \"{{attributeName}}\"",
-    "and_more": "... et {{count}} plus."
+    "and_more": "... et {{count}} plus.",
+    "print_landscape": "Lors de l'exportation en PDF, change l'orientation de la page en paysage au lieu de portrait.",
+    "print_page_size": "When exporting to PDF, changes the size of the page. Supported values: <code>A0</code>, <code>A1</code>, <code>A2</code>, <code>A3</code>, <code>A4</code>, <code>A5</code>, <code>A6</code>, <code>Legal</code>, <code>Letter</code>, <code>Tabloid</code>, <code>Ledger</code>."
   },
   "attribute_editor": {
     "help_text_body1": "Pour ajouter un label, tapez simplement par ex. <code>#rock</code>, ou si vous souhaitez également ajouter une valeur, tapez par ex. <code>#année = 2020</code>",
@@ -645,7 +675,8 @@
     "save_revision": "Enregistrer la version",
     "convert_into_attachment_failed": "La conversion de la note '{{title}}' a échoué.",
     "convert_into_attachment_successful": "La note '{{title}}' a été convertie en pièce jointe.",
-    "convert_into_attachment_prompt": "Êtes-vous sûr de vouloir convertir la note '{{title}}' en une pièce jointe de la note parente ?"
+    "convert_into_attachment_prompt": "Êtes-vous sûr de vouloir convertir la note '{{title}}' en une pièce jointe de la note parente ?",
+    "print_pdf": "Export as PDF..."
   },
   "onclick_button": {
     "no_click_handler": "Le widget bouton '{{componentId}}' n'a pas de gestionnaire de clic défini"
@@ -768,7 +799,9 @@
   "note_map": {
     "open_full": "Développer au maximum",
     "collapse": "Réduire à la taille normale",
-    "title": "Carte de la Note"
+    "title": "Carte de la Note",
+    "fix-nodes": "Fix nodes",
+    "link-distance": "Link distance"
   },
   "note_paths": {
     "title": "Chemins de la Note",
@@ -816,8 +849,7 @@
     "debug": "debug",
     "debug_description": "Debug imprimera des informations supplémentaires dans la console pour faciliter le débogage des requêtes complexes",
     "action": "action",
-    "search": "Recherche",
-    "enter": "entrer",
+    "search_button": "Recherche <kbd>Entrée</kbd>",
     "search_execute": "Rechercher et exécuter des actions",
     "save_to_note": "Enregistrer dans la note",
     "search_parameters": "Paramètres de recherche",
@@ -935,7 +967,7 @@
   },
   "protected_session": {
     "enter_password_instruction": "L'affichage de la note protégée nécessite la saisie de votre mot de passe :",
-    "start_session_button": "Démarrer une session protégée",
+    "start_session_button": "Démarrer une session protégée <kbd>Entrée</kbd>",
     "started": "La session protégée a démarré.",
     "wrong_password": "Mot de passe incorrect.",
     "protecting-finished-successfully": "La protection de la note s'est terminée avec succès.",
@@ -1037,7 +1069,16 @@
     "note_tree_and_detail_font_sizing": "Notez que la taille de la police de l’arborescence et des détails est relative au paramètre de taille de police principal.",
     "not_all_fonts_available": "Toutes les polices répertoriées peuvent ne pas être disponibles sur votre système.",
     "apply_font_changes": "Pour appliquer les modifications de police, cliquez sur",
-    "reload_frontend": "recharger l'interface"
+    "reload_frontend": "recharger l'interface",
+    "generic-fonts": "Generic fonts",
+    "sans-serif-system-fonts": "Sans-serif system fonts",
+    "serif-system-fonts": "Serif system fonts",
+    "monospace-system-fonts": "Monospace system fonts",
+    "handwriting-system-fonts": "Handwriting system fonts",
+    "serif": "Serif",
+    "sans-serif": "Sans Serif",
+    "monospace": "Monospace",
+    "system-default": "System default"
   },
   "max_content_width": {
     "title": "Largeur du contenu",
@@ -1061,8 +1102,12 @@
     "title": "Thème",
     "theme_label": "Thème",
     "override_theme_fonts_label": "Remplacer les polices du thème",
+    "auto_theme": "Auto",
     "light_theme": "Lumière",
     "dark_theme": "Sombre",
+    "triliumnext": "TriliumNext Beta (Follow system color scheme)",
+    "triliumnext-light": "TriliumNext Beta (Light)",
+    "triliumnext-dark": "TriliumNext Beta (Dark)",
     "layout": "Disposition",
     "layout-vertical-title": "Vertical",
     "layout-horizontal-title": "Horizontal",
@@ -1195,7 +1240,7 @@
     "existing_backups": "Sauvegardes existantes",
     "date-and-time": "Date & heure",
     "path": "Chemin",
-    "database_backed_up_to": "La base de données a été sauvegardée sur",
+    "database_backed_up_to": "La base de données a été sauvegardée sur {{backupFilePath}}",
     "no_backup_yet": "pas encore de sauvegarde"
   },
   "etapi": {
@@ -1321,8 +1366,8 @@
     "insert-child-note": "Insérer une note enfant",
     "delete": "Supprimer",
     "search-in-subtree": "Rechercher dans le sous-arbre",
-    "hoist-note": "Focus sur la note",
-    "unhoist-note": "Ne plus focus la note",
+    "hoist-note": "Focus sur cette note",
+    "unhoist-note": "Désactiver le focus",
     "edit-branch-prefix": "Modifier le préfixe de branche",
     "advanced": "Avancé",
     "expand-subtree": "Développer le sous-arbre",
@@ -1362,13 +1407,14 @@
     "mermaid-diagram": "Diagramme Mermaid",
     "canvas": "Canevas",
     "web-view": "Affichage Web",
-    "mind-map": "Carte mentale (Beta)",
+    "mind-map": "Carte mentale",
     "file": "Fichier",
     "image": "Image",
     "launcher": "Raccourci",
     "doc": "Doc",
     "widget": "Widget",
-    "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?"
+    "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?",
+    "geo-map": "Geo Map (beta)"
   },
   "protect_note": {
     "toggle-on": "Protéger la note",
@@ -1420,10 +1466,14 @@
     "automatically-collapse-notes-title": "Les notes seront réduites après une période d'inactivité pour désencombrer l'arborescence.",
     "save-changes": "Enregistrer et appliquer les modifications",
     "auto-collapsing-notes-after-inactivity": "Réduction automatique des notes après inactivité...",
-    "saved-search-note-refreshed": "Note de recherche enregistrée actualisée."
+    "saved-search-note-refreshed": "Note de recherche enregistrée actualisée.",
+    "hoist-this-note-workspace": "Hoist this note (workspace)",
+    "refresh-saved-search-results": "Refresh saved search results",
+    "create-child-note": "Create child note",
+    "unhoist": "Unhoist"
   },
   "title_bar_buttons": {
-    "window-on-top": "Gardez cette fenêtre au premier plan."
+    "window-on-top": "Épingler cette fenêtre au premier plan"
   },
   "note_detail": {
     "could_not_find_typewidget": "Impossible de trouver typeWidget pour le type '{{type}}'"
@@ -1510,11 +1560,11 @@
     "add-script-launcher": "Ajouter un raccourci de script",
     "add-custom-widget": "Ajouter un widget personnalisé",
     "add-spacer": "Ajouter un séparateur",
-    "delete": "Supprimer",
+    "delete": "Supprimer <kbd data-command=\"deleteNotes\"></kbd>",
     "reset": "Réinitialiser",
     "move-to-visible-launchers": "Déplacer vers les raccourcis visibles",
     "move-to-available-launchers": "Déplacer vers les raccourcis disponibles",
-    "duplicate-launcher": "Dupliquer le raccourci"
+    "duplicate-launcher": "Dupliquer le raccourci <kbd data-command=\"duplicateSubtree\">"
   },
   "editable-text": {
     "auto-detect-language": "Détecté automatiquement"
@@ -1543,7 +1593,8 @@
       "fixed": {
         "title": "Fixed",
         "description": "editing tools appear in the \"Formatting\" ribbon tab."
-      }
+      },
+      "multiline-toolbar": "Display the toolbar on multiple lines if it doesn't fit."
     }
   },
   "electron_context_menu": {
@@ -1563,5 +1614,34 @@
     "open_note_in_new_tab": "Open note in a new tab",
     "open_note_in_new_split": "Open note in a new split",
     "open_note_in_new_window": "Open note in a new window"
+  },
+  "electron_integration": {
+    "desktop-application": "Desktop Application",
+    "native-title-bar": "Native title bar",
+    "native-title-bar-description": "For Windows and macOS, keeping the native title bar off makes the application look more compact. On Linux, keeping the native title bar on integrates better with the rest of the system.",
+    "background-effects": "Enable background effects (Windows 11 only)",
+    "background-effects-description": "The Mica effect adds a blurred, stylish background to app windows, creating depth and a modern look.",
+    "restart-app-button": "Restart the application to view the changes",
+    "zoom-factor": "Zoom factor"
+  },
+  "note_autocomplete": {
+    "search-for": "Search for \"{{term}}\"",
+    "create-note": "Create and link child note \"{{term}}\"",
+    "insert-external-link": "Insert external link to \"{{term}}\"",
+    "clear-text-field": "Clear text field",
+    "show-recent-notes": "Show recent notes",
+    "full-text-search": "Full text search"
+  },
+  "note_tooltip": {
+    "note-has-been-deleted": "Note has been deleted."
+  },
+  "geo-map": {
+    "create-child-note-title": "Create a new child note and add it to the map",
+    "create-child-note-instruction": "Click on the map to create a new note at that location or press Escape to dismiss.",
+    "unable-to-load-map": "Unable to load map."
+  },
+  "geo-map-context": {
+    "open-location": "Open location",
+    "remove-from-map": "Remove from map"
   }
 }
