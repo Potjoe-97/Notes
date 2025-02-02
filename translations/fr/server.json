@@ -90,7 +90,7 @@
     "force-save-revision": "Forcer la création / sauvegarde d'une nouvelle version de la note active",
     "show-help": "Afficher l'aide intégrée / l'aide-mémoire",
     "toggle-book-properties": "Afficher/masquer les Propriétés du Livre",
-    "toggle-classic-editor-toolbar": "Toggle the Formatting tab for the editor with fixed toolbar",
+    "toggle-classic-editor-toolbar": "Activer/désactiver l'onglet Mise en forme de l'éditeur avec la barre d'outils fixe",
     "export-as-pdf": "Exports the current note as a PDF"
   },
   "login": {
