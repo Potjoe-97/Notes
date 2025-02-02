@@ -99,9 +99,9 @@
     "close": "Fermer",
     "export_type_subtree": "Cette note et tous ses descendants",
     "format_html": "HTML - recommandé car il conserve la mise en forme",
-    "format_html_zip": "HTML dans l'archive ZIP - recommandé car cela préserve tout le formatage.",
+    "format_html_zip": "HTML dans l'archive ZIP - recommandé car préserve la mise en forme.",
     "format_markdown": "Markdown - préserve la majeure partie du formatage.",
-    "format_opml": "OPML - format d'échange pour les outlineurs, uniquement pour le texte. Les mises en forme, images et fichiers ne sont pas inclus.",
+    "format_opml": "OPML - format d'échange pour les outlineurs, uniquement pour le texte. La mise en forme, les images et les fichiers ne sont pas inclus.",
     "opml_version_1": "OPML v1.0 - texte brut uniquement",
     "opml_version_2": "OPML v2.0 - HTML également autorisé",
     "export_type_single": "Seulement cette note sans ses descendants",
@@ -153,7 +153,7 @@
     "followLink": "suivre le lien sous le curseur",
     "insertDateTime": "insérer la date et l'heure courante à la position du curseur",
     "jumpToTreePane": "passer au volet de l'arborescence et aller jusqu'à la note active",
-    "markdownAutoformat": "Formatage automatique (comme Markdown)",
+    "markdownAutoformat": "Mise en forme automatique (comme Markdown)",
     "headings": " etc. suivi d'un espace pour les titres",
     "bulletList": "<code>*</code> ou <code>-</code> suivi d'un espace pour la liste à puces",
     "numberedList": "<code>1.</code> ou <code>1)</code> suivi d'un espace pour la liste numérotée",
@@ -440,7 +440,7 @@
     "other_notes_with_name": "Autres notes portant le nom {{attributeType}} \"{{attributeName}}\"",
     "and_more": "... et {{count}} plus.",
     "print_landscape": "Lors de l'exportation en PDF, change l'orientation de la page en paysage au lieu de portrait.",
-    "print_page_size": "When exporting to PDF, changes the size of the page. Supported values: <code>A0</code>, <code>A1</code>, <code>A2</code>, <code>A3</code>, <code>A4</code>, <code>A5</code>, <code>A6</code>, <code>Legal</code>, <code>Letter</code>, <code>Tabloid</code>, <code>Ledger</code>."
+    "print_page_size": "Lors de l'exportation en PDF, change la taille de la page. Valeurs supportées : <code>A0</code>, <code>A1</code>, <code>A2</code>, <code>A3</code>, <code>A4</code>, <code>A5</code>, <code>A6</code>, <code>Legal</code>, <code>Letter</code>, <code>Tabloid</code>, <code>Ledger</code>."
   },
   "attribute_editor": {
     "help_text_body1": "Pour ajouter un label, tapez simplement par ex. <code>#rock</code>, ou si vous souhaitez également ajouter une valeur, tapez par ex. <code>#année = 2020</code>",
@@ -676,7 +676,7 @@
     "convert_into_attachment_failed": "La conversion de la note '{{title}}' a échoué.",
     "convert_into_attachment_successful": "La note '{{title}}' a été convertie en pièce jointe.",
     "convert_into_attachment_prompt": "Êtes-vous sûr de vouloir convertir la note '{{title}}' en une pièce jointe de la note parente ?",
-    "print_pdf": "Export as PDF..."
+    "print_pdf": "Exporter en PDF..."
   },
   "onclick_button": {
     "no_click_handler": "Le widget bouton '{{componentId}}' n'a pas de gestionnaire de clic défini"
@@ -800,8 +800,8 @@
     "open_full": "Développer au maximum",
     "collapse": "Réduire à la taille normale",
     "title": "Carte de la Note",
-    "fix-nodes": "Fix nodes",
-    "link-distance": "Link distance"
+    "fix-nodes": "Réparer les nœuds",
+    "link-distance": "Distance du lien"
   },
   "note_paths": {
     "title": "Chemins de la Note",
@@ -1070,15 +1070,15 @@
     "not_all_fonts_available": "Toutes les polices répertoriées peuvent ne pas être disponibles sur votre système.",
     "apply_font_changes": "Pour appliquer les modifications de police, cliquez sur",
     "reload_frontend": "recharger l'interface",
-    "generic-fonts": "Generic fonts",
-    "sans-serif-system-fonts": "Sans-serif system fonts",
-    "serif-system-fonts": "Serif system fonts",
-    "monospace-system-fonts": "Monospace system fonts",
-    "handwriting-system-fonts": "Handwriting system fonts",
+    "generic-fonts": "Polices génériques",
+    "sans-serif-system-fonts": "Polices système sans serif",
+    "serif-system-fonts": "Polices système Serif",
+    "monospace-system-fonts": "Polices système monospace",
+    "handwriting-system-fonts": "Polices système d'écriture manuelle",
     "serif": "Serif",
-    "sans-serif": "Sans Serif",
+    "sans-serif": "Sans sérif",
     "monospace": "Monospace",
-    "system-default": "System default"
+    "system-default": "Par défaut"
   },
   "max_content_width": {
     "title": "Largeur du contenu",
@@ -1105,9 +1105,9 @@
     "auto_theme": "Auto",
     "light_theme": "Lumière",
     "dark_theme": "Sombre",
-    "triliumnext": "TriliumNext Beta (Follow system color scheme)",
-    "triliumnext-light": "TriliumNext Beta (Light)",
-    "triliumnext-dark": "TriliumNext Beta (Dark)",
+    "triliumnext": "TriliumNext Beta (Suit le thème du système)",
+    "triliumnext-light": "TriliumNext Beta (Clair)",
+    "triliumnext-dark": "TriliumNext Beta (sombre)",
     "layout": "Disposition",
     "layout-vertical-title": "Vertical",
     "layout-horizontal-title": "Horizontal",
@@ -1414,7 +1414,7 @@
     "doc": "Doc",
     "widget": "Widget",
     "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?",
-    "geo-map": "Geo Map (beta)"
+    "geo-map": "Carte géo (beta)"
   },
   "protect_note": {
     "toggle-on": "Protéger la note",
@@ -1467,10 +1467,10 @@
     "save-changes": "Enregistrer et appliquer les modifications",
     "auto-collapsing-notes-after-inactivity": "Réduction automatique des notes après inactivité...",
     "saved-search-note-refreshed": "Note de recherche enregistrée actualisée.",
-    "hoist-this-note-workspace": "Hoist this note (workspace)",
-    "refresh-saved-search-results": "Refresh saved search results",
-    "create-child-note": "Create child note",
-    "unhoist": "Unhoist"
+    "hoist-this-note-workspace": "Focus cette note (espace de travail)",
+    "refresh-saved-search-results": "Rafraîchir les résultats de recherche enregistrée",
+    "create-child-note": "Créer une note enfant",
+    "unhoist": "Désactiver le focus"
   },
   "title_bar_buttons": {
     "window-on-top": "Épingler cette fenêtre au premier plan"
@@ -1585,39 +1585,39 @@
   },
   "editing": {
     "editor_type": {
-      "label": "Formatting toolbar",
+      "label": "Barre d'outils d'édition",
       "floating": {
-        "title": "Floating",
-        "description": "editing tools appear near the cursor;"
+        "title": "Flottante",
+        "description": "les outils d'édition apparaissent près du curseur ;"
       },
       "fixed": {
-        "title": "Fixed",
-        "description": "editing tools appear in the \"Formatting\" ribbon tab."
+        "title": "Fixe",
+        "description": "les outils d'édition apparaissent dans l'onglet \"Mise en forme\"."
       },
-      "multiline-toolbar": "Display the toolbar on multiple lines if it doesn't fit."
+      "multiline-toolbar": "Afficher la barre d'outils sur plusieurs lignes si elle est trop grande."
     }
   },
   "electron_context_menu": {
-    "add-term-to-dictionary": "Add \"{{term}}\" to dictionary",
-    "cut": "Cut",
-    "copy": "Copy",
-    "copy-link": "Copy link",
-    "paste": "Paste",
-    "paste-as-plain-text": "Paste as plain text",
-    "search_online": "Search for \"{{term}}\" with {{searchEngine}}"
+    "add-term-to-dictionary": "Ajouter «{{term}}» au dictionnaire",
+    "cut": "Couper",
+    "copy": "Copier",
+    "copy-link": "Copier le lien",
+    "paste": "Coller",
+    "paste-as-plain-text": "Coller comme texte brut",
+    "search_online": "Rechercher «{{term}}» avec {{searchEngine}}"
   },
   "image_context_menu": {
-    "copy_reference_to_clipboard": "Copy reference to clipboard",
-    "copy_image_to_clipboard": "Copy image to clipboard"
+    "copy_reference_to_clipboard": "Copier la référence dans le presse-papiers",
+    "copy_image_to_clipboard": "Copier l'image dans le presse-papiers"
   },
   "link_context_menu": {
-    "open_note_in_new_tab": "Open note in a new tab",
-    "open_note_in_new_split": "Open note in a new split",
-    "open_note_in_new_window": "Open note in a new window"
+    "open_note_in_new_tab": "Ouvrir la note dans un nouvel onglet",
+    "open_note_in_new_split": "Ouvrir la note dans une nouvelle division",
+    "open_note_in_new_window": "Ouvrir la note dans une nouvelle fenêtre"
   },
   "electron_integration": {
-    "desktop-application": "Desktop Application",
-    "native-title-bar": "Native title bar",
+    "desktop-application": "Application de bureau",
+    "native-title-bar": "Barre de titre native",
     "native-title-bar-description": "For Windows and macOS, keeping the native title bar off makes the application look more compact. On Linux, keeping the native title bar on integrates better with the rest of the system.",
     "background-effects": "Enable background effects (Windows 11 only)",
     "background-effects-description": "The Mica effect adds a blurred, stylish background to app windows, creating depth and a modern look.",
