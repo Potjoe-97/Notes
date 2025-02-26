@@ -15,6 +15,7 @@ import options from "../../services/options.js";
 import toast from "../../services/toast.js";
 import { getMermaidConfig } from "../mermaid.js";
 import { normalizeMimeTypeForCKEditor } from "../../services/mime_type_definitions.js";
+import { buildConfig, buildToolbarConfig } from "./ckeditor/toolbars.js";
 
 const ENABLE_INSPECTOR = false;
 
@@ -183,16 +184,11 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
 
         this.watchdog.setCreator(async (elementOrData, editorConfig) => {
             logInfo("Creating new CKEditor");
-            const extraOpts = {};
-            if (isClassicEditor) {
-                extraOpts.toolbar = {
-                    shouldNotGroupWhenFull: utils.isDesktop() && options.get("textNoteEditorMultilineToolbar") === "true"
-                };
-            }
 
             const editor = await editorClass.create(elementOrData, {
                 ...editorConfig,
-                ...extraOpts,
+                ...buildConfig(),
+                ...buildToolbarConfig(isClassicEditor),
                 htmlSupport: {
                     allow: JSON.parse(options.get("allowedHtmlTags")),
                     styles: true,
@@ -227,7 +223,9 @@ export default class EditableTextTypeWidget extends AbstractTextTypeWidget {
                 }
 
                 $classicToolbarWidget.empty();
-                $classicToolbarWidget[0].appendChild(editor.ui.view.toolbar.element);
+                if ($classicToolbarWidget.length) {
+                    $classicToolbarWidget[0].appendChild(editor.ui.view.toolbar.element);
+                }
 
                 if (utils.isMobile()) {
                     $classicToolbarWidget.addClass("visible");

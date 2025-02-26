@@ -4,6 +4,7 @@ import treeService from "../../services/tree.js";
 import importService from "../../services/import.js";
 import options from "../../services/options.js";
 import BasicWidget from "../basic_widget.js";
+import { Modal, Tooltip } from "bootstrap";
 
 const TPL = `
 <div class="upload-attachments-dialog modal fade mx-auto" tabindex="-1" role="dialog">
@@ -17,14 +18,16 @@ const TPL = `
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="upload-attachment-file-upload-input"><strong>${t("upload_attachments.choose_files")}</strong></label>
-                        <input type="file" class="upload-attachment-file-upload-input form-control-file" multiple />
+                            <label class="tn-file-input tn-input-field">
+                                <input type="file" class="upload-attachment-file-upload-input form-control-file" multiple />
+                            </label>
                         <p>${t("upload_attachments.files_will_be_uploaded")} <strong class="upload-attachment-note-title"></strong>.</p>
                     </div>
 
                     <div class="form-group">
                         <strong>${t("upload_attachments.options")}:</strong>
                         <div class="checkbox">
-                            <label data-bs-toggle="tooltip" title="${escapeQuotes(t("upload_attachments.tooltip"))}">
+                            <label class="tn-checkbox" data-bs-toggle="tooltip" title="${escapeQuotes(t("upload_attachments.tooltip"))}">
                                 <input class="shrink-images-checkbox form-check-input" value="1" type="checkbox" checked> <span>${t("upload_attachments.shrink_images")}</span>
                             </label>
                         </div>
@@ -47,7 +50,7 @@ export default class UploadAttachmentsDialog extends BasicWidget {
 
     doRender() {
         this.$widget = $(TPL);
-        this.modal = bootstrap.Modal.getOrCreateInstance(this.$widget);
+        this.modal = Modal.getOrCreateInstance(this.$widget);
 
         this.$form = this.$widget.find(".upload-attachment-form");
         this.$noteTitle = this.$widget.find(".upload-attachment-note-title");
@@ -70,7 +73,7 @@ export default class UploadAttachmentsDialog extends BasicWidget {
             }
         });
 
-        bootstrap.Tooltip.getOrCreateInstance(this.$widget.find('[data-bs-toggle="tooltip"]'), {
+        Tooltip.getOrCreateInstance(this.$widget.find('[data-bs-toggle="tooltip"]'), {
             html: true
         });
     }

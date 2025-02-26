@@ -78,18 +78,26 @@ button.btn.btn-success kbd {
  * Icon buttons
  */
 
-:root .icon-action:not(.global-menu-button) {
+:root .icon-action:not(.global-menu-button),
+:root .tn-tool-button,
+:root .btn-group .tn-tool-button:not(:last-child),
+:root .btn-group .tn-tool-button:last-child {
     width: var(--icon-button-size);
     height: var(--icon-button-size);
-    border: unset;
+    border: unset !important;
     border-radius: 8px;
     padding: 0;
     text-align: center;
     color: var(--icon-button-color);
 }
 
+.btn-group .tn-tool-button + .tn-tool-button {
+    margin-left: 4px !important;
+}
+
 /* The "x" icon button */
-:root .icon-action.bx-x {
+:root .icon-action.bx-x,
+:root .tn-tool-button.bx-x {
     --icon-button-hover-background: var(--tab-close-button-hover-background);
     --icon-button-hover-color: var(--tab-close-button-hover-color);
     --icon-button-size: 24px;
@@ -99,23 +107,28 @@ button.btn.btn-success kbd {
 }
 
 /* The icon */
-:root .icon-action:not(.global-menu-button)::before {
+:root .icon-action:not(.global-menu-button)::before,
+:root .tn-tool-button::before {
     display: block;
     line-height: var(--icon-button-size);
     font-size: calc(var(--icon-button-size) * var(--icon-button-icon-ratio));
 }
 
 :root .icon-action:not(.global-menu-button):hover,
-:root .icon-action:not(.global-menu-button).show {
+:root .icon-action:not(.global-menu-button).show,
+:root .tn-tool-button:hover,
+:root .tn-tool-button.show {
     background: var(--icon-button-hover-background);
     color: var(--icon-button-hover-color);
 }
 
-:root .icon-action:not(.global-menu-button):active::before {
+:root .icon-action:not(.global-menu-button):active::before,
+:root .tn-tool-button:active::before {
     transform: scale(.85);
 }
 
-:root .icon-action:not(.global-menu-button):focus-visible {
+:root .icon-action:not(.global-menu-button):focus-visible,
+:root .tn-tool-button:focus-visible {
     outline: 2px solid var(--input-focus-outline-color);
 }
 
@@ -133,11 +146,16 @@ input:not([type]),
 input[type="text"],
 input[type="number"],
 input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
 textarea.form-control,
-textarea {
+textarea,
+.tn-input-field {
     outline: 3px solid transparent;
     outline-offset: 6px;
     border: unset;
+    border-radius: var(--bs-border-radius);
     background: var(--input-background-color);
     color: var(--input-text-color);
 }
@@ -146,8 +164,12 @@ input:not([type]):hover,
 input[type="text"]:hover,
 input[type="number"]:hover,
 input[type="password"]:hover,
+input[type="date"]:hover,
+input[type="time"]:hover,
+input[type="datetime-local"]:hover,
 textarea.form-control:hover,
-textarea:hover {
+textarea:hover,
+.tn-input-field:hover {
     background: var(--input-hover-background);
     color: var(--input-hover-color);
 }
@@ -156,8 +178,13 @@ input:not([type]):focus,
 input[type="text"]:focus,
 input[type="number"]:focus,
 input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="datetime-local"]:focus,
 textarea.form-control:focus,
-textarea:focus {
+textarea:focus,
+.tn-input-field:focus,
+.tn-input-field:focus-within {
     box-shadow: unset;
     outline: 3px solid var(--input-focus-outline-color);
     outline-offset: 0;
@@ -176,6 +203,11 @@ input::selection,
 .form-control::selection {
     background: var(--input-selection-background);
     color: var(--input-selection-text-color);
+}
+
+.form-text {
+    color: var(--main-text-color);
+    opacity: 0.8;
 }
 
 /* Input groups */
@@ -216,6 +248,7 @@ input::selection,
 .input-group button,
 .input-group a {
     display: flex;
+    align-items: center;
     --bs-border-width: 0;
     --accented-background-color: transparent;
     background: transparent;
@@ -228,41 +261,47 @@ input::selection,
 .input-group button:hover,
 .input-group a:hover {
     --muted-text-color: var(--input-action-button-hover);
+    color: var(--input-action-button-hover);
 }
 
 .input-group button:focus-visible,
 .input-group a:focus-visible {
+    box-shadow: unset;
     outline: transparent;
     border: transparent;
     text-shadow: 0 0 3px var(--input-action-button-hover);
+}
+
+.input-group button:active {
+    background: transparent !important;
 }
 
 .input-group a.disabled {
     opacity: .5;
     /* Workaround to set the "background" property. */
     --button-disabled-background-color: transparent;
+    --button-disabled-text-color: var(--input-action-button-color);
 }
 
 .input-group .input-clearer-button {
     background: transparent !important;
 }
 
-.input-group .input-group-text:not(button):not(a) {
+.input-group .input-group-text {
     /* Background color hijack */
     --accented-background-color: transparent;
     
     border: none;
-    font-style: italic;
     color: var(--input-placeholder-color);
     user-select: none;
     cursor: default;
 }
 
-/* Combo box-like dropdown buttons */
-
-.select-button.dropdown-toggle {
-    padding-right: 40px;
+.input-group .input-group-text:not(button):not(a):not(.bx) {
+    font-style: italic;
 }
+
+/* Combo box-like dropdown buttons */
 
 .select-button.dropdown-toggle::after {
     /* Remove the original arrow */
@@ -273,11 +312,15 @@ input::selection,
 
 select,
 select.form-select,
+select.form-control,
 .select-button.dropdown-toggle.btn {
+    --dropdown-arrow: var(--select-arrow-svg) right 0.75rem center/15px 20px no-repeat;
+
     outline: 3px solid transparent;
     outline-offset: 6px;
+    padding-right: calc(15px + 1.5rem);
     background: var(--input-background-color)
-                var(--select-arrow-svg) right 0.75rem center/15px 20px no-repeat;
+                var(--dropdown-arrow);
     color: var(--input-text-color);
     border: unset;
     border-radius: 0.375rem;
@@ -285,8 +328,10 @@ select.form-select,
 
 select:hover,
 select.form-select:hover,
+select.form-control:hover,
 .select-button.dropdown-toggle.btn:hover {
-    background-color: var(--input-hover-background);
+    background: var(--input-hover-background)
+                var(--dropdown-arrow);
     color: var(--input-hover-color);
 }
 
@@ -297,11 +342,13 @@ button.select-button.dropdown-toggle.btn:active {
 
 select:focus,
 select.form-select:focus,
+select.form-control:focus,
 .select-button.dropdown-toggle.btn:focus {
     box-shadow: unset;
     outline: 3px solid var(--input-focus-outline-color);
     outline-offset: 0;
-    background-color: var(--select-focus-background);
+    background: var(--select-focus-background)
+                var(--dropdown-arrow);
     color: var(--select-focus-text-color);
     transition: outline-color 50ms linear,
                 outline-offset 200ms ease-out;
@@ -317,6 +364,53 @@ optgroup {
     font-weight: normal;
     font-style: normal;
     line-height: 40px;
+}
+
+/* 
+ * File input
+ *
+ * <label class="tn-file-input tn-input-field">
+ *     <input type="file" />
+ * </label>
+ */
+
+ .tn-file-input {
+    position: relative;
+    padding: .375rem 2.25rem .375rem .75rem;
+}
+
+.tn-file-input input[type="file"] {
+    background: transparent;
+}
+
+.tn-file-input input[type="file"]::file-selector-button {
+    /* Hide the "Browse..." button */
+    display: none;
+}
+
+.tn-file-input:hover input[type="file"] {
+    color: var(--input-hover-color);
+}
+
+.tn-file-input input[type="file"]:focus,
+.tn-file-input input[type="file"]:active {
+    outline: none;
+    color: var(--input-focus-color);
+}
+
+/* The browse icon */
+.tn-file-input::before {
+    display: flex;
+    position: absolute;
+    justify-content: center;
+    align-items: center;
+    content: "\eae1";
+    width: 2em;
+    height: 100%;
+    right: 0;
+    top: 0;
+    font-size: 1.2em;
+    font-family: boxicons;
 }
 
 /* Check boxes and radio buttons */
@@ -532,4 +626,12 @@ a.tn-link:hover[href^="https://"]:not(.no-arrow)::after,
 .use-tn-links a:hover[href^="http://"]:not(.no-arrow)::after,
 .use-tn-links a:hover[href^="https://"]:not(.no-arrow)::after {
     animation: link-arrow-blink 500ms linear alternate infinite;
+}
+
+/*
+ * Range inputs (sliders)
+ */
+
+input[type="range"] {
+    background: transparent;
 }

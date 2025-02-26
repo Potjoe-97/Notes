@@ -153,7 +153,7 @@ export default class HelpDialog extends BasicWidget {
         this.$widget = $(TPL);
     }
 
-    showHelpEvent() {
+    showCheatsheetEvent() {
         utils.openDialog(this.$widget);
     }
 }

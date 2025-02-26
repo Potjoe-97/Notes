@@ -7,24 +7,24 @@ const TPL = `
         .floating-buttons {
             position: relative;
         }
-        
+
         .floating-buttons-children,.show-floating-buttons {
-            position: absolute; 
-            top: 10px; 
+            position: absolute;
+            top: 10px;
             right: 10px;
             display: flex;
             flex-direction: row;
             z-index: 100;
         }
-        
+
         .type-canvas .floating-buttons-children {
-            top: 70px; 
+            top: 70px;
         }
-        
+
         .floating-buttons-children > *:not(.hidden-int):not(.no-content-hidden) {
-            margin-left: 10px;
+            margin: 2px;
         }
-        
+
         .floating-buttons-children > button, .floating-buttons-children .floating-button {
             font-size: 150%;
             padding: 5px 10px 4px 10px;
@@ -37,17 +37,17 @@ const TPL = `
             display: flex;
             justify-content: space-around;
         }
-        
+
         .floating-buttons-children > button:hover, .floating-buttons-children .floating-button:hover {
             text-decoration: none;
             border-color: var(--button-border-color);
         }
-        
+
         .floating-buttons .floating-buttons-children.temporarily-hidden {
             display: none;
         }
     </style>
-    
+
     <div class="floating-buttons-children"></div>
 
     <!-- Show button that displays floating button after click on close button -->

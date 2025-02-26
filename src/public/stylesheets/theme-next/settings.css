@@ -80,3 +80,9 @@
 .monospace-font-size-input-group {
     width: fit-content;
 }
+
+/* Advanced */
+
+.options-section ul.existing-anonymized-databases {
+    margin: 1em;
+}

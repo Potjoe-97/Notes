@@ -12,12 +12,17 @@ describe("#getMime", () => {
         ],
 
         [
-            "File extension that is defined in EXTENSION_TO_MIME",
+            "File extension ('.py')  that is defined in EXTENSION_TO_MIME",
             ["test.py"], "text/x-python"
         ],
 
         [
-            "File extension with inconsisten capitalization that is defined in EXTENSION_TO_MIME",
+            "File extension ('.ts') that is defined in EXTENSION_TO_MIME",
+            ["test.ts"], "text/x-typescript"
+        ],
+
+        [
+            "File extension with inconsistent capitalization that is defined in EXTENSION_TO_MIME",
             ["test.gRoOvY"], "text/x-groovy"
         ],
 

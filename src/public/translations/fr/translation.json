@@ -966,9 +966,7 @@
   "web_view": {
     "web_view": "Affichage Web",
     "embed_websites": "Les notes de type Affichage Web vous permet d'intégrer des sites Web dans Trilium.",
-    "create_label": "Pour commencer, veuillez créer un label avec l'adresse URL que vous souhaitez intégrer, par ex. #webViewSrc=\"https://www.google.com\"",
-    "disclaimer": "Avertissement sur le statut expérimental",
-    "experimental_note": "Affichage Web est un type de note expérimental et il pourrait être supprimé ou considérablement modifié à l'avenir. Affichage Web ne fonctionne que dans la version de bureau."
+    "create_label": "Pour commencer, veuillez créer un label avec l'adresse URL que vous souhaitez intégrer, par ex. #webViewSrc=\"https://www.google.com\""
   },
   "backend_log": {
     "refresh": "Rafraîchir"
@@ -1091,7 +1089,7 @@
   "attachment_erasure_timeout": {
     "attachment_erasure_timeout": "Délai d'effacement des pièces jointes",
     "attachment_auto_deletion_description": "Les pièces jointes sont automatiquement supprimées (et effacées) si elles ne sont plus référencées par leur note après un certain délai.",
-    "erase_attachments_after_x_seconds": "Effacer les pièces jointes après X secondes sans utilisation dans sa note",
+    "erase_attachments_after": "Erase unused attachments after:",
     "manual_erasing_description": "Vous pouvez également déclencher l'effacement manuellement (sans tenir compte du délai défini ci-dessus) :",
     "erase_unused_attachments_now": "Effacez maintenant les pièces jointes inutilisées",
     "unused_attachments_erased": "Les pièces jointes inutilisées ont été effacées."
@@ -1103,15 +1101,15 @@
   "note_erasure_timeout": {
     "note_erasure_timeout_title": "Délai d'effacement des notes",
     "note_erasure_description": "Les notes supprimées (et les attributs, versions...) sont seulement marquées comme supprimées et il est possible de les récupérer à partir de la boîte de dialogue Notes récentes. Après un certain temps, les notes supprimées sont « effacées », ce qui signifie que leur contenu n'est plus récupérable. Ce paramètre vous permet de configurer la durée entre la suppression et l'effacement de la note.",
-    "erase_notes_after_x_seconds": "Effacer les notes après X secondes",
+    "erase_notes_after": "Effacer les notes après:",
     "manual_erasing_description": "Vous pouvez également déclencher l'effacement manuellement (sans tenir compte de la durée définie ci-dessus) :",
     "erase_deleted_notes_now": "Effacer les notes supprimées maintenant",
     "deleted_notes_erased": "Les notes supprimées ont été effacées."
   },
   "revisions_snapshot_interval": {
     "note_revisions_snapshot_interval_title": "Intervalle d'enregistrement automatique des versions des notes",
-    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
-    "snapshot_time_interval_label": "Intervalle de temps entre deux enregistrements de version de note (en secondes) :"
+    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
+    "snapshot_time_interval_label": "Intervalle de temps entre deux enregistrements de version de note :"
   },
   "revisions_snapshot_limit": {
     "note_revisions_snapshot_limit_title": "Limite des enregistrements de version de note",
@@ -1228,7 +1226,7 @@
     "protected_session_timeout_description": "Le délai d'expiration de la session protégée est une période de temps après laquelle la session protégée est effacée de la mémoire du navigateur. Il est mesuré à partir de la dernière interaction avec des notes protégées. Voir",
     "wiki": "wiki",
     "for_more_info": "pour plus d'informations.",
-    "protected_session_timeout_label": "Délai d'expiration de la session protégée (en secondes)",
+    "protected_session_timeout_label": "Délai d'expiration de la session protégée :",
     "reset_confirmation": "En réinitialisant le mot de passe, vous perdrez à jamais l'accès à toutes vos notes protégées existantes. Voulez-vous vraiment réinitialiser le mot de passe ?",
     "reset_success_message": "Le mot de passe a été réinitialisé. Veuillez définir un nouveau mot de passe",
     "change_password_heading": "Changer le mot de passe",

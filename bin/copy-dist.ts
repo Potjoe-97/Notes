@@ -7,9 +7,9 @@ const DEST_DIR_NODE_MODULES = path.join(DEST_DIR, "node_modules");
 
 const VERBOSE = process.env.VERBOSE;
 
-function log(...args) {
+function log(...args: any[]) {
     if (VERBOSE) {
-        console.log(args);
+        console.log(...args);
     }
 }
 
@@ -29,7 +29,12 @@ const copy = async () => {
         fs.copySync(path.join("build", srcFile), destFile, { recursive: true });
     }
 
-    const filesToCopy = ["config-sample.ini", "tsconfig.webpack.json"];
+    const filesToCopy = [
+        "config-sample.ini",
+        "tsconfig.webpack.json",
+        "./src/etapi/etapi.openapi.yaml",
+        "./src/routes/api/openapi.json"
+    ];
     for (const file of filesToCopy) {
         log(`Copying ${file}`);
         await fs.copy(file, path.join(DEST_DIR, file));
@@ -90,7 +95,6 @@ const copy = async () => {
         "node_modules/mark.js/dist/",
         "node_modules/normalize.css/",
         "node_modules/jquery.fancytree/dist/",
-        "node_modules/bootstrap/dist/",
         "node_modules/autocomplete.js/dist/",
         "node_modules/codemirror/lib/",
         "node_modules/codemirror/addon/",

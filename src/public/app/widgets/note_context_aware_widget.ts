@@ -125,7 +125,7 @@ class NoteContextAwareWidget extends BasicWidget {
         }
     }
 
-    async frocaReloadedEvent() {
+    async frocaReloadedEvent(): Promise<void> {
         await this.refresh();
     }
 }

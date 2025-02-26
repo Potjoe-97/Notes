@@ -2,7 +2,7 @@ import assetPath from "../services/asset_path.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import express from "express";
-import { isDev } from "../services/utils.js";
+import { isDev, isElectron } from "../services/utils.js";
 import type serveStatic from "serve-static";
 
 const persistentCacheStatic = (root: string, options?: serveStatic.ServeStaticOptions<express.Response<any, Record<string, any>>>) => {
@@ -24,6 +24,11 @@ async function register(app: express.Application) {
 
         const frontendCompiler = webpack({
             mode: "development",
+            cache: {
+                type: "filesystem",
+                cacheDirectory: path.join(srcRoot, "..", ".cache", isElectron ? "electron" : "server")
+            },
+            plugins: productionConfig.plugins,
             entry: productionConfig.entry,
             module: productionConfig.module,
             resolve: productionConfig.resolve,
@@ -90,8 +95,6 @@ async function register(app: express.Application) {
     app.use(`/${assetPath}/node_modules/normalize.css/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/normalize.css/")));
 
     app.use(`/${assetPath}/node_modules/jquery.fancytree/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/jquery.fancytree/dist/")));
-
-    app.use(`/${assetPath}/node_modules/bootstrap/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/bootstrap/dist/")));
 
     // CodeMirror
     app.use(`/${assetPath}/node_modules/codemirror/lib/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/codemirror/lib/")));

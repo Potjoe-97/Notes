@@ -6,7 +6,6 @@ import hoistedNoteService from "./hoisted_note.js";
 import ws from "./ws.js";
 import appContext from "../components/app_context.js";
 import { t } from "./i18n.js";
-import type { Node } from "./tree.js";
 import type { ResolveOptions } from "../widgets/dialogs/delete_notes.js";
 
 // TODO: Deduplicate type with server
@@ -160,7 +159,7 @@ async function activateParentNotePath() {
     }
 }
 
-async function moveNodeUpInHierarchy(node: Node) {
+async function moveNodeUpInHierarchy(node: Fancytree.FancytreeNode) {
     if (hoistedNoteService.isHoistedNode(node) || hoistedNoteService.isTopLevelNode(node) || node.getParent().data.noteType === "search") {
         return;
     }

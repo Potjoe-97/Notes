@@ -107,7 +107,7 @@ declare global {
         }
     }
 
-    var logError: (message: string, e?: Error) => void;
+    var logError: (message: string, e?: Error | string) => void;
     var logInfo: (message: string) => void;
     var glob: CustomGlobals;
     var require: RequireMethod;
@@ -239,6 +239,9 @@ declare global {
         },
         getData(): string;
         setData(data: string): void;
+        getSelectedHtml(): string;
+        removeSelection(): void;
+        sourceElement: HTMLElement;
     }
 
     interface MentionItem {

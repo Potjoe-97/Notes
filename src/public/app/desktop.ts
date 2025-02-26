@@ -4,13 +4,13 @@ import noteTooltipService from "./services/note_tooltip.js";
 import bundleService from "./services/bundle.js";
 import toastService from "./services/toast.js";
 import noteAutocompleteService from "./services/note_autocomplete.js";
-import macInit from "./services/mac_init.js";
 import electronContextMenu from "./menus/electron_context_menu.js";
 import glob from "./services/glob.js";
 import { t } from "./services/i18n.js";
 import options from "./services/options.js";
 import type ElectronRemote from "@electron/remote";
 import type Electron from "electron";
+import "../stylesheets/bootstrap.scss";
 
 await appContext.earlyInit();
 
@@ -35,8 +35,6 @@ if (utils.isElectron()) {
     initOnElectron();
 }
 
-macInit.init();
-
 noteTooltipService.setupGlobalTooltip();
 
 noteAutocompleteService.init();
@@ -53,6 +51,7 @@ function initOnElectron() {
     const currentWindow = electronRemote.getCurrentWindow();
     const style = window.getComputedStyle(document.body);
 
+    initDarkOrLightMode(style);
     initTransparencyEffects(style, currentWindow);
 
     if (options.get("nativeTitleBarVisible") !== "true") {
@@ -93,4 +92,22 @@ function initTransparencyEffects(style: CSSStyleDeclaration, currentWindow: Elec
             currentWindow.setBackgroundMaterial(foundBgMaterialOption);
         }
     }
+}
+
+/**
+ * Informs Electron that we prefer a dark or light theme. Apart from changing prefers-color-scheme at CSS level which is a side effect,
+ * this fixes color issues with background effects or native title bars.
+ *
+ * @param style the root CSS element to read variables from.
+ */
+function initDarkOrLightMode(style: CSSStyleDeclaration) {
+    let themeSource: typeof nativeTheme.themeSource = "system";
+
+    const themeStyle = style.getPropertyValue("--theme-style");
+    if (style.getPropertyValue("--theme-style-auto") !== "true" && (themeStyle === "light" || themeStyle === "dark")) {
+        themeSource = themeStyle;
+    }
+
+    const { nativeTheme } = utils.dynamicRequire("@electron/remote") as typeof ElectronRemote;
+    nativeTheme.themeSource = themeSource;
 }

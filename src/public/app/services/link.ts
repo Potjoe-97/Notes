@@ -4,6 +4,16 @@ import appContext, { type NoteCommandData } from "../components/app_context.js";
 import froca from "./froca.js";
 import utils from "./utils.js";
 
+// Be consistent with `allowedSchemes` in `src\services\html_sanitizer.ts`
+// TODO: Deduplicate with server once we can.
+export const ALLOWED_PROTOCOLS = [
+    'http', 'https', 'ftp', 'ftps', 'mailto', 'data', 'evernote', 'file', 'facetime', 'gemini', 'git',
+    'gopher', 'imap', 'irc', 'irc6', 'jabber', 'jar', 'lastfm', 'ldap', 'ldaps', 'magnet', 'message',
+    'mumble', 'nfs', 'onenote', 'pop', 'rmi', 's3', 'sftp', 'skype', 'sms', 'spotify', 'steam', 'svn', 'udp',
+    'view-source', 'vlc', 'vnc', 'ws', 'wss', 'xmpp', 'jdbc', 'slack', 'tel', 'smb', 'zotero', 'geo',
+    'mid'
+];
+
 function getNotePathFromUrl(url: string) {
     const notePathMatch = /#(root[A-Za-z0-9_/]*)$/.exec(url);
 
@@ -25,14 +35,29 @@ async function getLinkIcon(noteId: string, viewMode: ViewMode | undefined) {
     return icon;
 }
 
-type ViewMode = "default" | "source" | "attachments" | string;
+// TODO: Remove `string` once all the view modes have been mapped.
+type ViewMode = "default" | "source" | "attachments" | "contextual-help" | string;
 
 export interface ViewScope {
+    /**
+     * - "source", when viewing the source code of a note.
+     * - "attachments", when viewing the attachments of a note.
+     * - "contextual-help", if the current view represents a help window that was opened to the side of the main content.
+     * - "default", otherwise.
+     */
     viewMode?: ViewMode;
     attachmentId?: string;
     readOnlyTemporarilyDisabled?: boolean;
     highlightsListPreviousVisible?: boolean;
     highlightsListTemporarilyHidden?: boolean;
+    tocTemporarilyHidden?: boolean;
+    /*
+     * The reason for adding tocPreviousVisible is to record whether the previous state of the toc is hidden or displayed,
+     * and then let it be displayed/hidden at the initial time. If there is no such value,
+     * when the right panel needs to display highlighttext but not toc, every time the note content is changed,
+     * toc will appear and then close immediately, because getToc(html) function will consume time
+     */
+    tocPreviousVisible?: boolean;
 }
 
 interface CreateLinkOptions {
@@ -45,7 +70,7 @@ interface CreateLinkOptions {
     viewScope?: ViewScope;
 }
 
-async function createLink(notePath: string, options: CreateLinkOptions = {}) {
+async function createLink(notePath: string | undefined, options: CreateLinkOptions = {}) {
     if (!notePath || !notePath.trim()) {
         logError("Missing note path");
 
@@ -281,58 +306,7 @@ function goToLinkExt(evt: MouseEvent | JQuery.ClickEvent | JQuery.MouseDownEvent
                 electron.shell.openPath(hrefLink);
             } else {
                 // Enable protocols supported by CKEditor 5 to be clickable.
-                // Refer to `allowedProtocols` in https://github.com/TriliumNext/trilium-ckeditor5/blob/main/packages/ckeditor5-build-balloon-block/src/ckeditor.ts.
-                // And be consistent with `allowedSchemes` in `src\services\html_sanitizer.ts`
-                const allowedSchemes = [
-                    "http",
-                    "https",
-                    "ftp",
-                    "ftps",
-                    "mailto",
-                    "data",
-                    "evernote",
-                    "file",
-                    "facetime",
-                    "gemini",
-                    "git",
-                    "gopher",
-                    "imap",
-                    "irc",
-                    "irc6",
-                    "jabber",
-                    "jar",
-                    "lastfm",
-                    "ldap",
-                    "ldaps",
-                    "magnet",
-                    "message",
-                    "mumble",
-                    "nfs",
-                    "onenote",
-                    "pop",
-                    "rmi",
-                    "s3",
-                    "sftp",
-                    "skype",
-                    "sms",
-                    "spotify",
-                    "steam",
-                    "svn",
-                    "udp",
-                    "view-source",
-                    "vlc",
-                    "vnc",
-                    "ws",
-                    "wss",
-                    "xmpp",
-                    "jdbc",
-                    "slack",
-                    "tel",
-                    "smb",
-                    "zotero",
-                    "geo"
-                ];
-                if (allowedSchemes.some((protocol) => hrefLink.toLowerCase().startsWith(protocol + ":"))) {
+                if (ALLOWED_PROTOCOLS.some((protocol) => hrefLink.toLowerCase().startsWith(protocol + ":"))) {
                     window.open(hrefLink, "_blank");
                 }
             }
@@ -360,6 +334,10 @@ function handleFootnote(hrefLink: string, $link: JQuery<HTMLElement>) {
 function linkContextMenu(e: PointerEvent) {
     const $link = $(e.target as any).closest("a");
     const url = $link.attr("href") || $link.attr("data-href");
+
+    if ($link.attr("data-no-context-menu")) {
+        return;
+    }
 
     const { notePath, viewScope } = parseNavigationStateFromUrl(url);
 

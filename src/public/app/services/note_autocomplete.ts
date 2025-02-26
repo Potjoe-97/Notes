@@ -151,11 +151,11 @@ function initNoteAutocomplete($el: JQuery<HTMLElement>, options?: Options) {
 
     $el.addClass("note-autocomplete-input");
 
-    const $clearTextButton = $("<button>").addClass("input-group-text input-clearer-button bx bxs-tag-x").prop("title", t("note_autocomplete.clear-text-field"));
+    const $clearTextButton = $("<a>").addClass("input-group-text input-clearer-button bx bxs-tag-x").prop("title", t("note_autocomplete.clear-text-field"));
 
-    const $showRecentNotesButton = $("<button>").addClass("input-group-text show-recent-notes-button bx bx-time").prop("title", t("note_autocomplete.show-recent-notes"));
+    const $showRecentNotesButton = $("<a>").addClass("input-group-text show-recent-notes-button bx bx-time").prop("title", t("note_autocomplete.show-recent-notes"));
 
-    const $fullTextSearchButton = $("<button>")
+    const $fullTextSearchButton = $("<a>")
         .addClass("input-group-text full-text-search-button bx bx-search")
         .prop("title", `${t("note_autocomplete.full-text-search")} (Shift+Enter)`);
 

@@ -15,7 +15,8 @@ const noteTypes = [
     { type: "doc", defaultMime: "" },
     { type: "contentWidget", defaultMime: "" },
     { type: "mindMap", defaultMime: "application/json" },
-    { type: "geoMap", defaultMime: "application/json" }
+    { type: "geoMap", defaultMime: "application/json" },
+    { type: "taskList", defaultMime: "" }
 ];
 
 function getDefaultMimeForNoteType(typeName: string) {

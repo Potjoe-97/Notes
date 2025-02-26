@@ -20,6 +20,40 @@ export async function initializeTranslations() {
     });
 }
 
+export function getLocales() {
+    // TODO: Currently hardcoded, needs to read the list of available languages.
+    return [
+        {
+            id: "en",
+            name: "English"
+        },
+        {
+            id: "de",
+            name: "Deutsch"
+        },
+        {
+            id: "es",
+            name: "Español"
+        },
+        {
+            id: "fr",
+            name: "Français"
+        },
+        {
+            id: "cn",
+            name: "简体中文"
+        },
+        {
+            id: "tw",
+            name: "繁體中文"
+        },
+        {
+            id: "ro",
+            name: "Română"
+        }
+    ];
+}
+
 function getCurrentLanguage() {
     let language;
     if (sql_init.isDbInitialized()) {

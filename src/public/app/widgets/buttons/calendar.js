@@ -7,6 +7,7 @@ import appContext from "../../components/app_context.js";
 import RightDropdownButtonWidget from "./right_dropdown_button.js";
 import toastService from "../../services/toast.js";
 import options from "../../services/options.js";
+import { Dropdown } from "bootstrap";
 
 const MONTHS = [
     t("calendar.january"),
@@ -33,9 +34,9 @@ const DROPDOWN_TPL = `
 
     <div class="calendar-header">
         <div class="calendar-month-selector">
-            <button class="calendar-btn bx bx-chevron-left" data-calendar-toggle="previous"></button>
+            <button class="calendar-btn tn-tool-button bx bx-chevron-left" data-calendar-toggle="previous"></button>
 
-            <button class="btn dropdown-toggle" type="button"
+            <button class="btn dropdown-toggle select-button" type="button"
                 data-bs-toggle="dropdown" data-bs-auto-close="true"
                 aria-expanded="false"
                 data-calendar-input="month"></button>
@@ -45,15 +46,15 @@ const DROPDOWN_TPL = `
                     .join("")}
             </ul>
 
-            <button class="calendar-btn bx bx-chevron-right" data-calendar-toggle="next"></button>
+            <button class="calendar-btn tn-tool-button bx bx-chevron-right" data-calendar-toggle="next"></button>
         </div>
 
         <div class="calendar-year-selector">
-            <button class="calendar-btn bx bx-chevron-left" data-calendar-toggle="previousYear"></button>
+            <button class="calendar-btn tn-tool-button bx bx-chevron-left" data-calendar-toggle="previousYear"></button>
 
             <input type="number" min="1900" max="2999" step="1" data-calendar-input="year" />
 
-            <button class="calendar-btn bx bx-chevron-right" data-calendar-toggle="nextYear"></button>
+            <button class="calendar-btn tn-tool-button bx bx-chevron-right" data-calendar-toggle="nextYear"></button>
         </div>
     </div>
 
@@ -84,7 +85,7 @@ export default class CalendarWidget extends RightDropdownButtonWidget {
             // Don't trigger dropdownShown() at widget level when the month selection dropdown is shown, since it would cause a redundant refresh.
             e.stopPropagation();
         });
-        this.monthDropdown = bootstrap.Dropdown.getOrCreateInstance(this.$monthSelect);
+        this.monthDropdown = Dropdown.getOrCreateInstance(this.$monthSelect);
         this.$dropdownContent.find('[data-calendar-input="month-list"] button').on("click", (e) => {
             this.date.setMonth(e.target.dataset.value);
             this.createMonth();

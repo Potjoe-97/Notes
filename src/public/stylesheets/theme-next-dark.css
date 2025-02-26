@@ -19,6 +19,9 @@
 
     --accented-background-color: #555;
 
+    --tool-dialog-background-color: #262626;
+    --tool-dialog-shadow-color: black;
+
     --button-text-color: currentColor;
 
     --cmd-button-background-color: #ffffff28;
@@ -85,6 +88,7 @@
     --menu-item-keyboard-shortcut-color: #ffffff8f;
     --menu-item-arrow-color: #ffffffa3;
     --menu-item-delimiter-color: #ffffff1c;
+    --menu-item-group-header-color: #ffffff91;
 
     --modal-background-color: #333;
     --modal-backdrop-color: #444;
@@ -137,6 +141,11 @@
     --inactive-tab-background-color: transparent;
     --inactive-tab-hover-background-color: #ffffff0f;
     --inactive-tab-text-color: #7c7c7c;
+
+    --alert-bar-background: #6b6b6b3b;
+
+    --promoted-attribute-card-background-color: var(--card-background-color);
+    --promoted-attribute-card-shadow-color: #000000b3;
 
     --right-pane-item-hover-background: #ffffff26;
     --right-pane-item-hover-color: white;

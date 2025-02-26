@@ -4,6 +4,7 @@ import importService from "../../services/import.js";
 import options from "../../services/options.js";
 import BasicWidget from "../basic_widget.js";
 import { t } from "../../services/i18n.js";
+import { Modal, Tooltip } from "bootstrap";
 
 const TPL = `
 <div class="import-dialog modal fade mx-auto" tabindex="-1" role="dialog">
@@ -18,7 +19,9 @@ const TPL = `
                     <div class="form-group">
                         <label for="import-file-upload-input"><strong>${t("import.chooseImportFile")}</strong></label>
 
-                        <input type="file" class="import-file-upload-input form-control-file" multiple />
+                        <label class="tn-file-input tn-input-field">
+                            <input type="file" class="import-file-upload-input form-control-file" multiple />
+                        </label>
 
                         <p>${t("import.importDescription")} <strong class="import-note-title"></strong>.
                     </div>
@@ -84,7 +87,7 @@ export default class ImportDialog extends BasicWidget {
 
     doRender() {
         this.$widget = $(TPL);
-        bootstrap.Modal.getOrCreateInstance(this.$widget);
+        Modal.getOrCreateInstance(this.$widget);
 
         this.$form = this.$widget.find(".import-form");
         this.$noteTitle = this.$widget.find(".import-note-title");
@@ -115,7 +118,7 @@ export default class ImportDialog extends BasicWidget {
         });
 
         let _ = [...this.$widget.find('[data-bs-toggle="tooltip"]')].forEach((element) => {
-            bootstrap.Tooltip.getOrCreateInstance(element, {
+            Tooltip.getOrCreateInstance(element, {
                 html: true
             });
         });

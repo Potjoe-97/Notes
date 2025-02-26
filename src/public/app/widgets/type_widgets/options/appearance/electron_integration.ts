@@ -17,7 +17,7 @@ const TPL = `
     <hr />
 
     <div class="side-checkbox">
-        <label class="form-check">
+        <label class="form-check tn-checkbox">
             <input type="checkbox" class="native-title-bar form-check-input" />
             <strong>${t("electron_integration.native-title-bar")}</strong>
             <p>${t("electron_integration.native-title-bar-description")}</p>
@@ -25,7 +25,7 @@ const TPL = `
     </div>
 
     <div class="side-checkbox">
-        <label class="form-check">
+        <label class="form-check tn-checkbox">
             <input type="checkbox" class="background-effects form-check-input" />
             <strong>${t("electron_integration.background-effects")}</strong>
             <p>${t("electron_integration.background-effects-description")}</p>

@@ -91,7 +91,8 @@
     "zoom-in": "Mărește zoom-ul",
     "zoom-out": "Micșorează zoom-ul",
     "toggle-classic-editor-toolbar": "Comută tab-ul „Formatare” pentru editorul cu bară fixă",
-    "export-as-pdf": "Exportă notița curentă ca PDF"
+    "export-as-pdf": "Exportă notița curentă ca PDF",
+    "show-cheatsheet": "Afișează o fereastră cu scurtături de la tastatură comune"
   },
   "login": {
     "button": "Autentifică",
@@ -241,7 +242,8 @@
     "sql-console-history-title": "Istoricul consolei SQL",
     "go-to-next-note-title": "Mergi la notița următoare",
     "launch-bar-templates-title": "Șabloane bară de lansare",
-    "visible-launchers-title": "Lansatoare vizibile"
+    "visible-launchers-title": "Lansatoare vizibile",
+    "user-guide": "Ghidul de utilizare"
   },
   "notes": {
     "new-note": "Notiță nouă"
@@ -270,5 +272,13 @@
     "today": "Mergi la notița de astăzi",
     "tooltip": "TriliumNext Notes",
     "show-windows": "Afișează ferestrele"
+  },
+  "migration": {
+    "error_message": "Eroare la migrarea către versiunea {{version}}: {{stack}}",
+    "old_version": "Nu se poate migra la ultima versiune direct de la versiunea dvs. Actualizați mai întâi la versiunea v0.60.4 și ulterior la această versiune.",
+    "wrong_db_version": "Versiunea actuală a bazei de date ({{version}}) este mai nouă decât versiunea de bază de date suportată de aplicație ({{targetVersion}}), ceea ce înseamnă că a fost creată de către o versiune mai nouă de Trilium. Actualizați aplicația la ultima versiune pentru a putea continua."
+  },
+  "modals": {
+    "error_title": "Eroare"
   }
 }

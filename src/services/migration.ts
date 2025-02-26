@@ -6,6 +6,7 @@ import { crash } from "./utils.js";
 import resourceDir from "./resource_dir.js";
 import appInfo from "./app_info.js";
 import cls from "./cls.js";
+import { t } from "i18next";
 
 interface MigrationInfo {
     dbVersion: number;
@@ -18,9 +19,7 @@ async function migrate() {
     const currentDbVersion = getDbVersion();
 
     if (currentDbVersion < 214) {
-        log.error("Direct migration from your current version is not supported. Please upgrade to the latest v0.60.4 first and only then to this version.");
-
-        await crash();
+        await crash(t("migration.old_version"));
         return;
     }
 
@@ -83,10 +82,7 @@ async function migrate() {
 
                 log.info(`Migration to version ${mig.dbVersion} has been successful.`);
             } catch (e: any) {
-                log.error(`error during migration to version ${mig.dbVersion}: ${e.stack}`);
-                log.error("migration failed, crashing hard"); // this is not very user-friendly :-/
-
-                crash();
+                crash(t("migration.error_message", { version: mig.dbVersion, stack: e.stack }));
                 break; // crash() is sometimes async
             }
         }
@@ -136,11 +132,7 @@ async function migrateIfNecessary() {
     const currentDbVersion = getDbVersion();
 
     if (currentDbVersion > appInfo.dbVersion && process.env.TRILIUM_IGNORE_DB_VERSION !== "true") {
-        log.error(
-            `Current DB version ${currentDbVersion} is newer than the current DB version ${appInfo.dbVersion}, which means that it was created by a newer and incompatible version of Trilium. Upgrade to the latest version of Trilium to resolve this issue.`
-        );
-
-        await crash();
+        await crash(t("migration.wrong_db_version", { version: currentDbVersion, targetVersion: appInfo.dbVersion }));
     }
 
     if (!isDbUpToDate()) {

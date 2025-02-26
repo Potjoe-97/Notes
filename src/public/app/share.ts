@@ -1,3 +1,5 @@
+import "../stylesheets/bootstrap.scss";
+
 /**
  * Fetch note with given ID from backend
  *

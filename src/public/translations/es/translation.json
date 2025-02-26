@@ -109,7 +109,8 @@
     "choose_export_type": "Por favor, elija primero el tipo de exportación",
     "export_status": "Estado de exportación",
     "export_in_progress": "Exportación en curso: {{progressCount}}",
-    "export_finished_successfully": "La exportación finalizó exitosamente."
+    "export_finished_successfully": "La exportación finalizó exitosamente.",
+    "format_pdf": "PDF - para propósitos de impresión o compartición."
   },
   "help": {
     "fullDocumentation": "Ayuda (la documentación completa está disponible <a class=\"external\" href=\"https://triliumnext.github.io/Docs/\">online</a>)",
@@ -437,7 +438,9 @@
     "share_favicon": "La nota de favicon se configurará en la página compartida. Por lo general, se desea configurarlo para que comparta la raíz y lo haga heredable. La nota de Favicon también debe estar en el subárbol compartido. Considere usar 'share_hidden_from_tree'.",
     "is_owned_by_note": "es propiedad de una nota",
     "other_notes_with_name": "Otras notas con nombre de {{attributeType}} \"{{attributeName}}\"",
-    "and_more": "... y {{count}} más."
+    "and_more": "... y {{count}} más.",
+    "print_landscape": "Al exportar a PDF, cambia la orientación de la página a paisaje en lugar de retrato.",
+    "print_page_size": "Al exportar a PDF, cambia el tamaño de la página. Valores soportados: <code>A0</code>, <code>A1</code>, <code>A2</code>, <code>A3</code>, <code>A4</code>, <code>A5</code>, <code>A6</code>, <code>Legal</code>, <code>Letter</code>, <code>Tabloid</code>, <code>Ledger</code>."
   },
   "attribute_editor": {
     "help_text_body1": "Para agregar una etiqueta, simplemente escriba, por ejemplo. <code>#rock</code> o si desea agregar también valor, p.e. <code>#año = 2020</code>",
@@ -638,7 +641,8 @@
     "show_hidden_subtree": "Mostrar subárbol oculto",
     "show_help": "Mostrar ayuda",
     "about": "Acerca de TriliumNext Notes",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "show-cheatsheet": "Mostrar hoja de trucos"
   },
   "sync_status": {
     "unknown": "<p>El estado de sincronización será conocido una vez que el siguiente intento de sincronización comience.</p><p>Dé clic para activar la sincronización ahora</p>",
@@ -672,7 +676,8 @@
     "save_revision": "Guardar revisión",
     "convert_into_attachment_failed": "La conversión de nota '{{title}}' falló.",
     "convert_into_attachment_successful": "La nota '{{title}}' ha sido convertida a un archivo adjunto.",
-    "convert_into_attachment_prompt": "¿Está seguro que desea convertir la nota '{{title}}' en un archivo adjunto de la nota padre?"
+    "convert_into_attachment_prompt": "¿Está seguro que desea convertir la nota '{{title}}' en un archivo adjunto de la nota padre?",
+    "print_pdf": "Exportar como PDF..."
   },
   "onclick_button": {
     "no_click_handler": "El widget de botón '{{componentId}}' no tiene un controlador de clics definido"
@@ -998,9 +1003,7 @@
   "web_view": {
     "web_view": "Vista web",
     "embed_websites": "La nota de tipo Web View le permite insertar sitios web en Trilium.",
-    "create_label": "To start, please create a label with a URL address you want to embed, e.g. #webViewSrc=\"https://www.google.com\"",
-    "disclaimer": "Descargo de responsabilidad sobre el estado experimental",
-    "experimental_note": "Web View es un tipo de nota experimental y es posible que se elimine o cambie sustancialmente en el futuro. Web View también funciona solo en la versión de escritorio."
+    "create_label": "To start, please create a label with a URL address you want to embed, e.g. #webViewSrc=\"https://www.google.com\""
   },
   "backend_log": {
     "refresh": "Refrescar"
@@ -1141,7 +1144,7 @@
   "attachment_erasure_timeout": {
     "attachment_erasure_timeout": "Tiempo de espera para borrar archivos adjuntos",
     "attachment_auto_deletion_description": "Los archivos adjuntos se eliminan (y borran) automáticamente si ya no se hace referencia a ellos en su nota después de un tiempo de espera definido.",
-    "erase_attachments_after_x_seconds": "Borrar archivos adjuntos después de X segundos de no usarse en su nota",
+    "erase_attachments_after": "Erase unused attachments after:",
     "manual_erasing_description": "También puede activar el borrado manualmente (sin considerar el tiempo de espera definido anteriormente):",
     "erase_unused_attachments_now": "Borrar ahora los archivos adjuntos no utilizados en la nota",
     "unused_attachments_erased": "Los archivos adjuntos no utilizados se han eliminado."
@@ -1153,15 +1156,15 @@
   "note_erasure_timeout": {
     "note_erasure_timeout_title": "Tiempo de espera de borrado de notas",
     "note_erasure_description": "Las notas eliminadas (y los atributos, las revisiones ...) en principio solo están marcadas como eliminadas y es posible recuperarlas del diálogo de Notas recientes. Después de un período de tiempo, las notas eliminadas son \" borradas\", lo que significa que su contenido ya no es recuperable. Esta configuración le permite configurar la longitud del período entre eliminar y borrar la nota.",
-    "erase_notes_after_x_seconds": "Borrar notas después de X segundos",
+    "erase_notes_after": "Borrar notas después de:",
     "manual_erasing_description": "También puede activar el borrado manualmente (sin considerar el tiempo de espera definido anteriormente):",
     "erase_deleted_notes_now": "Borrar notas eliminadas ahora",
     "deleted_notes_erased": "Las notas eliminadas han sido borradas."
   },
   "revisions_snapshot_interval": {
     "note_revisions_snapshot_interval_title": "Intervalo de instantáneas de revisiones de notas",
-    "note_revisions_snapshot_description": "El intervalo de tiempo de la instantánea de revisión de nota es el tiempo en segundos después de lo cual se creará una nueva revisión para la nota. Ver <a href=\"https://triliumnext.github.io/docs/wiki/note-revisions.html\" class=\"external\"> wiki </a> para obtener más información.",
-    "snapshot_time_interval_label": "Intervalo de tiempo de la instantánea de revisión de notas (en segundos)"
+    "note_revisions_snapshot_description": "El intervalo de tiempo de la instantánea de revisión de nota es el tiempo después de lo cual se creará una nueva revisión para la nota. Ver <a href=\"https://triliumnext.github.io/docs/wiki/note-revisions.html\" class=\"external\"> wiki </a> para obtener más información.",
+    "snapshot_time_interval_label": "Intervalo de tiempo de la instantánea de revisión de notas:"
   },
   "revisions_snapshot_limit": {
     "note_revisions_snapshot_limit_title": "Límite de respaldos de revisiones de nota",
@@ -1280,7 +1283,7 @@
     "protected_session_timeout_description": "El tiempo de espera de la sesión protegida es el período de tiempo después del cual la sesión protegida se borra de la memoria del navegador. Esto se mide desde la última interacción con notas protegidas. Ver",
     "wiki": "wiki",
     "for_more_info": "para más información.",
-    "protected_session_timeout_label": "Tiempo de espera de sesión protegida (en segundos)",
+    "protected_session_timeout_label": "Tiempo de espera de sesión protegida:",
     "reset_confirmation": "Al restablecer la contraseña, perderá para siempre el acceso a todas sus notas protegidas existentes. ¿Realmente quieres restablecer la contraseña?",
     "reset_success_message": "La contraseña ha sido restablecida. Por favor establezca una nueva contraseña",
     "change_password_heading": "Cambiar contraseña",
@@ -1409,7 +1412,9 @@
     "launcher": "Lanzador",
     "doc": "Doc",
     "widget": "Widget",
-    "confirm-change": "No es recomendado cambiar el tipo de nota cuando el contenido de la nota no está vacío. ¿Desea continuar de cualquier manera?"
+    "confirm-change": "No es recomendado cambiar el tipo de nota cuando el contenido de la nota no está vacío. ¿Desea continuar de cualquier manera?",
+    "geo-map": "Mapa Geo",
+    "beta-feature": "Beta"
   },
   "protect_note": {
     "toggle-on": "Proteger la nota",
@@ -1629,5 +1634,17 @@
   },
   "note_tooltip": {
     "note-has-been-deleted": "La nota ha sido eliminada."
+  },
+  "geo-map": {
+    "create-child-note-title": "Crear una nueva subnota y agregarla al mapa",
+    "create-child-note-instruction": "Dé clic en el mapa para crear una nueva nota en esa ubicación o presione Escape para cancelar.",
+    "unable-to-load-map": "No se puede cargar el mapa."
+  },
+  "geo-map-context": {
+    "open-location": "Abrir ubicación",
+    "remove-from-map": "Eliminar del mapa"
+  },
+  "help-button": {
+    "title": "Abrir la página de ayuda relevante"
   }
 }

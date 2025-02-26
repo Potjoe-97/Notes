@@ -88,10 +88,12 @@
     "reset-zoom-level": "Reset zoom level",
     "copy-without-formatting": "Copy selected text without formatting",
     "force-save-revision": "Force creating / saving new note revision of the active note",
-    "show-help": "Shows built-in Help / cheatsheet",
+    "show-help": "Shows the built-in User Guide",
     "toggle-book-properties": "Toggle Book Properties",
     "toggle-classic-editor-toolbar": "Toggle the Formatting tab for the editor with fixed toolbar",
-    "export-as-pdf": "Exports the current note as a PDF"
+    "export-as-pdf": "Exports the current note as a PDF",
+    "show-cheatsheet": "Shows a modal with common keyboard operations",
+    "toggle-zen-mode": "Enables/disables the zen mode (minimal UI for more focused editing)"
   },
   "login": {
     "title": "Login",
@@ -241,7 +243,8 @@
     "sync-title": "Sync",
     "other": "Other",
     "advanced-title": "Advanced",
-    "visible-launchers-title": "Visible Launchers"
+    "visible-launchers-title": "Visible Launchers",
+    "user-guide": "User Guide"
   },
   "notes": {
     "new-note": "New note",
@@ -269,5 +272,13 @@
     "today": "Open today's journal note",
     "new-note": "New note",
     "show-windows": "Show windows"
+  },
+  "migration": {
+    "old_version": "Direct migration from your current version is not supported. Please upgrade to the latest v0.60.4 first and only then to this version.",
+    "error_message": "Error during migration to version {{version}}: {{stack}}",
+    "wrong_db_version": "The version of the database ({{version}}) is newer than what the application expects ({{targetVersion}}), which means that it was created by a newer and incompatible version of Trilium. Upgrade to the latest version of Trilium to resolve this issue."
+  },
+  "modals": {
+    "error_title": "Error"
   }
 }

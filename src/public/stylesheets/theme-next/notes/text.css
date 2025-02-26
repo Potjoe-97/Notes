@@ -126,3 +126,41 @@ html .note-detail-editable-text :not(figure, .include-note, hr):first-child {
     border: 0 !important;
     border-top: 1px solid var(--main-border-color) !important;
 }
+
+/* Table caption */
+
+.ck-content .table > figcaption {
+    background: var(--accented-background-color);
+    color: var(--main-text-color);
+}
+
+/*
+ * Search in text panel
+ */
+
+.find-replace-widget > div {
+    padding: 8px;
+}
+
+.find-replace-widget > div + div {
+    padding-top: 0;
+}
+
+div.find-replace-widget div.find-widget-found-wrapper {
+    min-width: 50px;
+    font-style: normal;
+    font-weight: normal;
+}
+
+ /* The up / down buttons of the "Find in text" input */
+.find-replace-widget .input-group button {
+    font-size: 1.3em;
+}
+
+.find-replace-widget .form-check {
+    padding-left: 0;
+}
+
+.find-replace-widget .form-check .form-check-input {
+    margin-left: 0;
+}

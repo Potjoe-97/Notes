@@ -988,9 +988,7 @@
   "web_view": {
     "web_view": "网页视图",
     "embed_websites": "网页视图类型的笔记允许您将网站嵌入到 Trilium 中。",
-    "create_label": "首先，请创建一个带有您要嵌入的 URL 地址的标签，例如 #webViewSrc=\"https://www.bing.com\"",
-    "disclaimer": "实验性功能免责声明",
-    "experimental_note": "网页视图是一种实验性的笔记类型，将来可能会被移除或大幅更改。网页视图只在桌面端有效。"
+    "create_label": "首先，请创建一个带有您要嵌入的 URL 地址的标签，例如 #webViewSrc=\"https://www.bing.com\""
   },
   "backend_log": {
     "refresh": "刷新"
@@ -1122,7 +1120,7 @@
   "attachment_erasure_timeout": {
     "attachment_erasure_timeout": "附件清理超时",
     "attachment_auto_deletion_description": "如果附件在一段时间后不再被笔记引用，它们将自动被删除（并被清理）。",
-    "erase_attachments_after_x_seconds": "在附件在笔记中未被使用 X 秒后清理",
+    "erase_attachments_after": "",
     "manual_erasing_description": "您还可以手动触发清理（而不考虑上述定义的超时时间）：",
     "erase_unused_attachments_now": "立即清理未使用的附件笔记",
     "unused_attachments_erased": "未使用的附件已被删除。"
@@ -1134,15 +1132,15 @@
   "note_erasure_timeout": {
     "note_erasure_timeout_title": "笔记清理超时",
     "note_erasure_description": "被删除的笔记（以及属性、历史版本等）最初仅被标记为“删除”，可以从“最近修改”对话框中恢复它们。经过一段时间后，已删除的笔记会被“清理”，这意味着它们的内容将无法恢复。此设置允许您配置从删除到清除笔记之间的时间长度。",
-    "erase_notes_after_x_seconds": "在笔记删除 X 秒后清理",
+    "erase_notes_after": "",
     "manual_erasing_description": "您还可以手动触发清理（不考虑上述定义的超时）：",
     "erase_deleted_notes_now": "立即清理已删除的笔记",
     "deleted_notes_erased": "已删除的笔记已被清理。"
   },
   "revisions_snapshot_interval": {
-    "note_revisions_snapshot_interval_title": "笔记修改快照间隔",
-    "note_revisions_snapshot_description": "笔记修改快照时间间隔是指经过多少秒后会为笔记创建新的修改历史。更多信息请参见<a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a>。",
-    "snapshot_time_interval_label": "笔记修改快照时间间隔（单位:秒）"
+    "note_revisions_snapshot_interval_title": "",
+    "note_revisions_snapshot_description": "",
+    "snapshot_time_interval_label": ""
   },
   "revisions_snapshot_limit": {
     "note_revisions_snapshot_limit_title": "笔记历史快照限制",
@@ -1261,7 +1259,7 @@
     "protected_session_timeout_description": "保护会话超时是一个时间段，超时后保护会话会从浏览器内存中清除。这是从最后一次与保护笔记的交互开始计时的。更多信息请见",
     "wiki": "维基",
     "for_more_info": "更多信息。",
-    "protected_session_timeout_label": "保护会话超时（秒）",
+    "protected_session_timeout_label": "",
     "reset_confirmation": "重置密码将永久丧失对所有现受保护笔记的访问。您真的要重置密码吗？",
     "reset_success_message": "密码已重置。请设置新密码",
     "change_password_heading": "更改密码",

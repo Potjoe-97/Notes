@@ -37,6 +37,7 @@ const CODE_MIME_TYPES = new Set([
     "text/x-sql",
     "text/x-stex",
     "text/x-swift",
+    "text/x-typescript",
     "text/x-yaml"
 ]);
 
@@ -65,7 +66,8 @@ const EXTENSION_TO_MIME = new Map<string, string>([
     [".py", "text/x-python"],
     [".rb", "text/x-ruby"],
     [".scala", "text/x-scala"],
-    [".swift", "text/x-swift"]
+    [".swift", "text/x-swift"],
+    [".ts", "text/x-typescript"]
 ]);
 
 /** @returns false if MIME is not detected */
@@ -86,7 +88,7 @@ function getType(options: TaskData, mime: string) {
     const mimeLc = mime?.toLowerCase();
 
     switch (true) {
-        case options.textImportedAsText && ["text/html", "text/markdown", "text/x-markdown"].includes(mimeLc):
+        case options.textImportedAsText && ["text/html", "text/markdown", "text/x-markdown", "text/mdx"].includes(mimeLc):
             return "text";
 
         case options.codeImportedAsCode && CODE_MIME_TYPES.has(mimeLc):

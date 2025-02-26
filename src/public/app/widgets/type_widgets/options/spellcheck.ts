@@ -17,7 +17,7 @@ const TPL_ELECTRON = `
 
     <p>${t("spellcheck.restart-required")}</p>
 
-    <label>
+    <label class="tn-checkbox">
         <input type="checkbox" class="spell-check-enabled">
         ${t("spellcheck.enable")}
     </label>

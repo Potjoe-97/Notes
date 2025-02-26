@@ -33,11 +33,15 @@ const TPL = `
         }
 
         .find-widget-found-wrapper {
-            font-weight: bold;
+            justify-content: center;
+            min-width: 60px;
+            padding: 0 4px;
+            font-size: .85em;
+            text-align: center;
         }
 
         .find-widget-search-term-input-group, .replace-widget-replacetext-input {
-            max-width: 300px;
+            max-width: 350px;
         }
 
         .find-widget-spacer {
@@ -49,6 +53,13 @@ const TPL = `
         <div class="input-group find-widget-search-term-input-group">
             <input type="text" class="form-control find-widget-search-term-input" placeholder="${t("find.find_placeholder")}">
             <button class="btn btn-outline-secondary bx bxs-chevron-up find-widget-previous-button" type="button"></button>
+            <div class="find-widget-found-wrapper input-group-text">
+                <span>
+                    <span class="find-widget-current-found">0</span>
+                    /
+                    <span class="find-widget-total-found">0</span>
+                <span>
+            </div>
             <button class="btn btn-outline-secondary bx bxs-chevron-down find-widget-next-button" type="button"></button>
         </div>
 
@@ -66,11 +77,7 @@ const TPL = `
             </label>
         </div>
 
-        <div class="find-widget-found-wrapper">
-            <span class="find-widget-current-found">0</span>
-            /
-            <span class="find-widget-total-found">0</span>
-        </div>
+
 
         <div class="find-widget-spacer"></div>
 

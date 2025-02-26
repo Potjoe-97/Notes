@@ -239,6 +239,12 @@ function getDefaultKeyboardActions() {
             scope: "window"
         },
         {
+            actionName: "toggleZenMode",
+            defaultShortcuts: ["Alt+Z"],
+            description: t("keyboard_actions.toggle-zen-mode"),
+            scope: "window"
+        },
+        {
             actionName: "firstTab",
             defaultShortcuts: ["CommandOrControl+1"],
             description: t("keyboard_actions.first-tab"),
@@ -342,6 +348,12 @@ function getDefaultKeyboardActions() {
             actionName: "showHelp",
             defaultShortcuts: ["F1"],
             description: t("keyboard_actions.show-help"),
+            scope: "window"
+        },
+        {
+            actionName: "showCheatsheet",
+            defaultShortcuts: ["Shift+F1"],
+            description: t("keyboard_actions.show-cheatsheet"),
             scope: "window"
         },
 

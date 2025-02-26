@@ -32,7 +32,7 @@ const CODE_MIRROR: Library = {
 
         const mimeTypes = mimeTypesService.getMimeTypes();
         for (const mimeType of mimeTypes) {
-            if (mimeType.codeMirrorSource) {
+            if (mimeType.enabled && mimeType.codeMirrorSource) {
                 scriptsToLoad.push(mimeType.codeMirrorSource);
             }
         }

@@ -80,8 +80,7 @@ export class TypedComponent<ChildT extends TypedComponent<ChildT>> {
         return promises.length > 0 ? Promise.all(promises) : null;
     }
 
-    triggerCommand<K extends CommandNames>(name: string, _data?: CommandMappings[K]): Promise<unknown> | undefined | null {
-        const data = _data || {};
+    triggerCommand<K extends CommandNames>(name: K, data?: CommandMappings[K]): Promise<unknown> | undefined | null {
         const fun = (this as any)[`${name}Command`];
 
         if (fun) {

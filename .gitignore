@@ -1,3 +1,4 @@
+.cache
 .DS_Store
 node_modules/
 dist/
@@ -7,6 +8,7 @@ src/public/app-dist/
 npm-debug.log
 yarn-error.log
 po-*/
+.flatpak-builder/
 
 *.db
 !integration-tests/db/document.db

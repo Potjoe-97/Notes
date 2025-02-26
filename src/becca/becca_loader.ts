@@ -11,9 +11,10 @@ import BOption from "./entities/boption.js";
 import BEtapiToken from "./entities/betapi_token.js";
 import cls from "../services/cls.js";
 import entityConstructor from "../becca/entity_constructor.js";
-import type { AttributeRow, BranchRow, EtapiTokenRow, NoteRow, OptionRow } from "./entities/rows.js";
+import type { AttributeRow, BranchRow, EtapiTokenRow, NoteRow, OptionRow, TaskRow } from "./entities/rows.js";
 import type AbstractBeccaEntity from "./entities/abstract_becca_entity.js";
 import ws from "../services/ws.js";
+import BTask from "./entities/btask.js";
 
 const beccaLoaded = new Promise<void>(async (res, rej) => {
     const sqlInit = (await import("../services/sql_init.js")).default;
@@ -62,6 +63,10 @@ function load() {
 
         for (const row of sql.getRows<EtapiTokenRow>(`SELECT etapiTokenId, name, tokenHash, utcDateCreated, utcDateModified FROM etapi_tokens WHERE isDeleted = 0`)) {
             new BEtapiToken(row);
+        }
+
+        for (const row of sql.getRows<TaskRow>(`SELECT taskId, parentNoteId, title, dueDate, isDone, isDeleted FROM tasks WHERE isDeleted = 0`)) {
+            new BTask(row);
         }
     });
 

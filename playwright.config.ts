@@ -74,7 +74,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: !process.env.TRILIUM_DOCKER ? {
-    command: 'npm run integration-mem-db-dev',
+    command: 'npm run test:integration-mem-db-dev',
     url: SERVER_URL,
     reuseExistingServer: !process.env.CI,
   } : undefined,

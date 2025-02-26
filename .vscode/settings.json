@@ -18,5 +18,6 @@
   "github-actions.workflows.pinned.workflows": [".github/workflows/nightly.yml"],
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
-  }
+  },
+  "npm.exclude": ["**/build", "**/dist", "**/out/**"]
 }

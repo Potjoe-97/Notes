@@ -78,7 +78,7 @@
   "attachment_erasure_timeout": {
     "attachment_auto_deletion_description": "Atașamentele se șterg automat (permanent) dacă nu sunt referențiate de către notița lor părinte după un timp prestabilit de timp.",
     "attachment_erasure_timeout": "Perioadă de ștergere a atașamentelor",
-    "erase_attachments_after_x_seconds": "Șterge atașamentele după X secunde după ce acestea n-au mai fost folosite într-o notiță",
+    "erase_attachments_after": "Erase unused attachments after:",
     "erase_unused_attachments_now": "Elimină atașamentele șterse acum",
     "manual_erasing_description": "Șterge acum toate atașamentele nefolosite din notițe",
     "unused_attachments_erased": "Atașamentele nefolosite au fost șterse."
@@ -230,7 +230,9 @@
     "workspace_search_home": "notițele de căutare vor fi create sub această notiță",
     "workspace_tab_background_color": "Culoare CSS ce va fi folosită în tab-urile ce aparțin spațiului de lucru",
     "workspace_template": "Această notița va apărea în lista de șabloane când se crează o nouă notiță, dar doar când spațiul de lucru în care se află notița este focalizat",
-    "app_theme_base": "setați valoarea la „next” pentru a folosi drept temă de bază „TriliumNext” în loc de cea clasică."
+    "app_theme_base": "setați valoarea la „next” pentru a folosi drept temă de bază „TriliumNext” în loc de cea clasică.",
+    "print_landscape": "Schimbă orientarea paginii din portret în vedere atunci când se exportă în PDF.",
+    "print_page_size": "Schimbă dimensiunea paginii când se exportă în PDF. Valori suportate: <code>A0</code>, <code>A1</code>, <code>A2</code>, <code>A3</code>, <code>A4</code>, <code>A5</code>, <code>A6</code>, <code>Legal</code>, <code>Letter</code>, <code>Tabloid</code>, <code>Ledger</code>."
   },
   "attribute_editor": {
     "add_a_new_attribute": "Adaugă un nou attribut",
@@ -279,7 +281,8 @@
     "grid": "Grilă",
     "invalid_view_type": "Mod de afișare incorect „{{type}}”",
     "list": "Listă",
-    "view_type": "Mod de afișare"
+    "view_type": "Mod de afișare",
+    "calendar": "Calendar"
   },
   "bookmark_switch": {
     "bookmark": "Semn de carte",
@@ -520,7 +523,8 @@
     "format_opml": "OPML - format de interschimbare pentru editoare cu structură ierarhică (outline). Formatarea, imaginile și fișierele nu vor fi incluse.",
     "opml_version_1": "OPML v1.0 - text simplu",
     "opml_version_2": "OPML v2.0 - permite și HTML",
-    "format_html": "HTML - recomandat deoarece păstrează toata formatarea"
+    "format_html": "HTML - recomandat deoarece păstrează toata formatarea",
+    "format_pdf": "PDF - cu scopul de printare sau partajare."
   },
   "fast_search": {
     "description": "Căutarea rapidă dezactivează căutarea la nivel de conținut al notițelor cu scopul de a îmbunătăți performanța de căutare pentru baze de date mari.",
@@ -588,7 +592,9 @@
     "toggle_fullscreen": "Comută mod ecran complet",
     "zoom": "Zoom",
     "zoom_in": "Mărește",
-    "zoom_out": "Micșorează"
+    "zoom_out": "Micșorează",
+    "show-cheatsheet": "Afișează ghidul rapid",
+    "toggle-zen-mode": "Mod zen"
   },
   "heading_style": {
     "markdown": "Stil Markdown",
@@ -830,7 +836,7 @@
   "note_erasure_timeout": {
     "deleted_notes_erased": "Notițele șterse au fost eliminate permanent.",
     "erase_deleted_notes_now": "Elimină notițele șterse acum",
-    "erase_notes_after_x_seconds": "Elimină notițele șterse după X secunde",
+    "erase_notes_after": "Elimină notițele șterse după:",
     "manual_erasing_description": "Se poate rula o eliminare manuală (fără a lua în considerare timpul definit mai sus):",
     "note_erasure_description": "Notițele șterse (precum și atributele, reviziile) sunt prima oară doar marcate drept șterse și este posibil să fie recuperate din ecranul Notițe recente. După o perioadă de timp, notițele șterse vor fi „eliminate”, caz în care conținutul lor nu se poate recupera. Această setare permite configurarea duratei de timp dintre ștergerea și eliminarea notițelor.",
     "note_erasure_timeout_title": "Timpul de eliminare automată a notițelor șterse"
@@ -917,7 +923,7 @@
     "password_mismatch": "Noile parole nu coincid.",
     "protected_session_timeout": "Timpul de expirare a sesiunii protejate",
     "protected_session_timeout_description": "Timpul de expirare a sesiunii protejate este o perioadă de timp după care sesiunea protejată este ștearsă din memoria navigatorului. Aceasta este măsurată de la timpul ultimei interacțiuni cu notițele protejate. Vezi",
-    "protected_session_timeout_label": "Timpul de expirare a sesiunii protejate (în secunde)",
+    "protected_session_timeout_label": "Timpul de expirare a sesiunii protejate:",
     "reset_confirmation": "Prin resetarea parolei se va pierde pentru totdeauna accesul la notițele protejate existente. Sigur doriți resetarea parolei?",
     "reset_link": "click aici pentru a o reseta.",
     "reset_success_message": "Parola a fost resetată. Setați o nouă parolă",
@@ -938,7 +944,8 @@
     "remove_this_attribute": "Elimină acest atribut",
     "unknown_attribute_type": "Tip de atribut necunoscut „{{type}}”",
     "unknown_label_type": "Tip de etichetă necunoscut „{{type}}”",
-    "url_placeholder": "http://siteweb..."
+    "url_placeholder": "http://siteweb...",
+    "unset-field-placeholder": "nesetat"
   },
   "prompt": {
     "defaultTitle": "Aviz",
@@ -1062,9 +1069,9 @@
     "note_revisions": "Revizii ale notiței"
   },
   "revisions_snapshot_interval": {
-    "note_revisions_snapshot_description": "Intervalul de salvare a reviziilor este timpul în secunde după care se crează o nouă revizie a unei notițe. Vedeți <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki-ul</a> pentru mai multe informații.",
+    "note_revisions_snapshot_description": "Intervalul de salvare a reviziilor este timpul după care se crează o nouă revizie a unei notițe. Vedeți <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki-ul</a> pentru mai multe informații.",
     "note_revisions_snapshot_interval_title": "Intervalul de salvare a reviziilor",
-    "snapshot_time_interval_label": "Intervalul de salvare a reviziilor (în secunde)"
+    "snapshot_time_interval_label": "Intervalul de salvare a reviziilor:"
   },
   "ribbon": {
     "edited_notes_message": "Tab-ul panglicii „Notițe editate” se va deschide automat pentru notițele zilnice",
@@ -1301,9 +1308,7 @@
   },
   "web_view": {
     "create_label": "Pentru a începe, creați o etichetă cu adresa URL de încorporat, e.g.  #webViewSrc=\"https://www.google.com\"",
-    "disclaimer": "Avertisment despre statutul experimental",
     "embed_websites": "Notițele de tip „Vizualizare web” permit încorporarea site-urilor web în Trilium.",
-    "experimental_note": "„Vizualizare web” este un tip experimental de notiță, și poate fi înlăturat sau schimbat substanțial în viitor. De asemenea, Web View funcționeză doar în aplicația desktop.",
     "web_view": "Vizualizare web"
   },
   "wrap_lines": {
@@ -1381,7 +1386,8 @@
     "launcher": "Scurtătură",
     "widget": "Widget",
     "confirm-change": "Nu se recomandă schimbarea tipului notiței atunci când ea are un conținut. Procedați oricum?",
-    "geo-map": "Hartă geografică (beta)"
+    "geo-map": "Hartă geografică",
+    "beta-feature": "Beta"
   },
   "protect_note": {
     "toggle-off": "Deprotejează notița",
@@ -1643,5 +1649,14 @@
   "geo-map": {
     "create-child-note-title": "Crează o notiță nouă și adaug-o pe hartă",
     "unable-to-load-map": "Nu s-a putut încărca harta."
+  },
+  "duration": {
+    "days": "zile",
+    "hours": "ore",
+    "minutes": "minute",
+    "seconds": "secunde"
+  },
+  "help-button": {
+    "title": "Deschide ghidul relevant"
   }
 }

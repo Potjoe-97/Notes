@@ -3,6 +3,7 @@ import NoteContextAwareWidget from "./note_context_aware_widget.js";
 import { t } from "../services/i18n.js";
 import type FNote from "../entities/fnote.js";
 import type { EventData } from "../components/app_context.js";
+import { Dropdown } from "bootstrap";
 
 type Editability = "auto" | "readOnly" | "autoReadOnlyDisabled";
 
@@ -14,10 +15,14 @@ const TPL = `
     }
 
     .editability-dropdown .dropdown-item {
-        display: block !important;
+        display: flex !importamt;
     }
 
-    .editability-dropdown .dropdown-item div {
+    .editability-dropdown .dropdown-item > div {
+        margin-left: 10px;
+    }
+
+    .editability-dropdown .description {
         font-size: small;
         color: var(--muted-text-color);
         white-space: normal;
@@ -27,21 +32,27 @@ const TPL = `
         <span class="editability-active-desc">${t("editability_select.auto")}</span>
         <span class="caret"></span>
     </button>
-    <div class="editability-dropdown dropdown-menu dropdown-menu-right">
+    <div class="editability-dropdown dropdown-menu dropdown-menu-right tn-dropdown-list">
         <a class="dropdown-item" href="#" data-editability="auto">
             <span class="check">&check;</span>
-            ${t("editability_select.auto")}
-            <div>${t("editability_select.note_is_editable")}</div>
+            <div>
+                ${t("editability_select.auto")}
+                <div class="description">${t("editability_select.note_is_editable")}</div>
+            </div>
         </a>
         <a class="dropdown-item" href="#" data-editability="readOnly">
             <span class="check">&check;</span>
-            ${t("editability_select.read_only")}
-            <div>${t("editability_select.note_is_read_only")}</div>
+            <div>
+                ${t("editability_select.read_only")}
+                <div class="description">${t("editability_select.note_is_read_only")}</div>
+            </div>
         </a>
         <a class="dropdown-item" href="#" data-editability="autoReadOnlyDisabled">
             <span class="check">&check;</span>
-            ${t("editability_select.always_editable")}
-            <div>${t("editability_select.note_is_always_editable")}</div>
+            <div>
+                ${t("editability_select.always_editable")}
+                <div class="description">${t("editability_select.note_is_always_editable")}</div>
+            </div>
         </a>
     </div>
 </div>
@@ -49,15 +60,13 @@ const TPL = `
 
 export default class EditabilitySelectWidget extends NoteContextAwareWidget {
 
-    private dropdown!: bootstrap.Dropdown;
+    private dropdown!: Dropdown;
     private $editabilityActiveDesc!: JQuery<HTMLElement>;
 
     doRender() {
         this.$widget = $(TPL);
 
-        // TODO: Remove once bootstrap is added to webpack.
-        //@ts-ignore
-        this.dropdown = bootstrap.Dropdown.getOrCreateInstance(this.$widget.find("[data-bs-toggle='dropdown']"));
+        this.dropdown = Dropdown.getOrCreateInstance(this.$widget.find("[data-bs-toggle='dropdown']")[0]);
 
         this.$editabilityActiveDesc = this.$widget.find(".editability-active-desc");
 

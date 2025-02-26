@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22.13.1-alpine AS builder
+FROM node:22.14.0-alpine AS builder
 
 # Configure build dependencies
 RUN apk add --no-cache --virtual .build-dependencies \
@@ -24,7 +24,7 @@ RUN cp -R build/src/* src/. && \
     cp build/docker_healthcheck.js . && \
     rm docker_healthcheck.ts && \
     npm install && \
-    npm run webpack && \
+    npm run build:webpack && \
     npm prune --omit=dev && \
     npm cache clean --force && \
     cp -r src/public/app/doc_notes src/public/app-dist/. && \
@@ -35,7 +35,7 @@ RUN cp -R build/src/* src/. && \
     rm -r build
 
 # Runtime stage
-FROM node:22.13.1-alpine
+FROM node:22.14.0-alpine
 
 # Install runtime dependencies
 RUN apk add --no-cache su-exec shadow

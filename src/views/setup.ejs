@@ -6,6 +6,9 @@
     <meta id="syncInProgress" content="<%= syncInProgress ? 1 : 0 %>" />
     <title><%= t("setup.title") %></title>
 
+    <% // TriliumNextTODO: move the css file to ${assetPath}/stylesheets/  %>
+    <link rel="stylesheet" href="<%= appPath %>/setup.css">
+
     <style>
         .lds-ring {
             display: inline-block;
@@ -56,18 +59,26 @@
         <div id="setup-type" data-bind="visible: step() == 'setup-type'" style="margin-top: 20px;">
             <form data-bind="submit: selectSetupType">
 
-              <div class="radio" style="margin-bottom: 15px;">
-                  <label><input type="radio" name="setup-type" value="new-document" data-bind="checked: setupType"">
-                      <%= t("setup.new-document") %></label>
-              </div>
-              <div class="radio" style="margin-bottom: 15px;">
-                  <label><input type="radio" name="setup-type" value="sync-from-desktop" data-bind="checked: setupType">
-                      <%= t("setup.sync-from-desktop") %></label>
-              </div>
-              <div class="radio" style="margin-bottom: 15px;">
-                  <label><input type="radio" name="setup-type" value="sync-from-server" data-bind="checked: setupType"">
-                      <%= t("setup.sync-from-server") %></label>
-              </div>
+            <div class="radio" style="margin-bottom: 15px;">
+                <label class="tn-radio">
+                    <input type="radio" name="setup-type" value="new-document" data-bind="checked: setupType">
+                    <%= t("setup.new-document") %>
+                </label>
+            </div>
+
+            <div class="radio" style="margin-bottom: 15px;">
+                <label class="tn-radio">
+                    <input type="radio" name="setup-type" value="sync-from-desktop" data-bind="checked: setupType">
+                    <%= t("setup.sync-from-desktop") %>
+                </label>
+            </div>
+
+            <div class="radio" style="margin-bottom: 15px;">
+                <label class="tn-radio">
+                    <input type="radio" name="setup-type" value="sync-from-server" data-bind="checked: setupType">
+                    <%= t("setup.sync-from-server") %>
+                </label>
+            </div>
 
               <button type="submit" data-bind="disable: !setupTypeSelected()" class="btn btn-primary"><%= t("setup.next") %></button>
             </form>
@@ -159,9 +170,6 @@
 
 <script src="<%= assetPath %>/node_modules/jquery/dist/jquery.min.js"></script>
 <script src="<%= assetPath %>/node_modules/jquery-hotkeys/jquery-hotkeys.js"></script>
-
-<link href="<%= assetPath %>/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="<%= assetPath %>/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 <script src="<%= appPath %>/setup.js" crossorigin type="module"></script>
 <link href="<%= assetPath %>/stylesheets/theme-light.css" rel="stylesheet" />

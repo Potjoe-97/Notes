@@ -44,7 +44,7 @@ export function listSyntaxHighlightingThemes() {
     };
 }
 
-function getStylesDirectory() {
+export function getStylesDirectory() {
     if (isElectron && !isDev) {
         return "styles";
     }
@@ -60,7 +60,7 @@ function getStylesDirectory() {
  * @param path the path to read from. Usually this is the highlight.js `styles` directory.
  * @returns the list of themes.
  */
-function readThemesFromFileSystem(path: string): ColorTheme[] {
+export function readThemesFromFileSystem(path: string): ColorTheme[] {
     return fs
         .readdirSync(path)
         .filter((el) => el.endsWith(".min.css"))

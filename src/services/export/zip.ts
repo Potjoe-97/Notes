@@ -21,6 +21,7 @@ import type AttributeMeta from "../meta/attribute_meta.js";
 import type BBranch from "../../becca/entities/bbranch.js";
 import type { Response } from "express";
 import { RESOURCE_DIR } from "../resource_dir.js";
+import type { NoteMetaFile } from "../meta/note_meta.js";
 
 async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "html" | "markdown", res: Response | fs.WriteStream, setHeaders = true) {
     if (!["html", "markdown"].includes(format)) {
@@ -406,6 +407,10 @@ ${markdownContent}`;
     }
 
     function saveNavigation(rootMeta: NoteMeta, navigationMeta: NoteMeta) {
+        if (!navigationMeta.dataFileName) {
+            return;
+        }
+
         function saveNavigationInner(meta: NoteMeta) {
             let html = "<li>";
 
@@ -450,6 +455,10 @@ ${markdownContent}`;
         let firstNonEmptyNote;
         let curMeta = rootMeta;
 
+        if (!indexMeta.dataFileName) {
+            return;
+        }
+
         while (!firstNonEmptyNote) {
             if (curMeta.dataFileName && curMeta.noteId) {
                 firstNonEmptyNote = getNoteTargetUrl(curMeta.noteId, rootMeta);
@@ -478,6 +487,10 @@ ${markdownContent}`;
     }
 
     function saveCss(rootMeta: NoteMeta, cssMeta: NoteMeta) {
+        if (!cssMeta.dataFileName) {
+            return;
+        }
+
         const cssContent = fs.readFileSync(`${RESOURCE_DIR}/libraries/ckeditor/ckeditor-content.css`);
 
         archive.append(cssContent, { name: cssMeta.dataFileName });
@@ -485,8 +498,11 @@ ${markdownContent}`;
 
     const existingFileNames: Record<string, number> = format === "html" ? { navigation: 0, index: 1 } : {};
     const rootMeta = createNoteMeta(branch, { notePath: [] }, existingFileNames);
+    if (!rootMeta) {
+        throw new Error("Unable to create root meta.");
+    }
 
-    const metaFile = {
+    const metaFile: NoteMetaFile = {
         formatVersion: 2,
         appVersion: packageInfo.version,
         files: [rootMeta]

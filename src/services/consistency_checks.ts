@@ -888,7 +888,7 @@ class ConsistencyChecks {
             return `${tableName}: ${count}`;
         }
 
-        const tables = ["notes", "revisions", "attachments", "branches", "attributes", "etapi_tokens", "blobs"];
+        const tables = ["notes", "revisions", "attachments", "branches", "attributes", "etapi_tokens", "blobs", "tasks"];
 
         log.info(`Table counts: ${tables.map((tableName) => getTableRowCount(tableName)).join(", ")}`);
     }

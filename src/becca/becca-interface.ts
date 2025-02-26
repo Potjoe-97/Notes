@@ -12,6 +12,7 @@ import type { AttachmentRow, BlobRow, RevisionRow } from "./entities/rows.js";
 import BBlob from "./entities/bblob.js";
 import BRecentNote from "./entities/brecent_note.js";
 import type AbstractBeccaEntity from "./entities/abstract_becca_entity.js";
+import type BTask from "./entities/btask.js";
 
 interface AttachmentOpts {
     includeContentLength?: boolean;
@@ -32,6 +33,7 @@ export default class Becca {
     attributeIndex!: Record<string, BAttribute[]>;
     options!: Record<string, BOption>;
     etapiTokens!: Record<string, BEtapiToken>;
+    tasks!: Record<string, BTask>;
 
     allNoteSetCache: NoteSet | null;
 
@@ -48,6 +50,7 @@ export default class Becca {
         this.attributeIndex = {};
         this.options = {};
         this.etapiTokens = {};
+        this.tasks = {};
 
         this.dirtyNoteSetCache();
 
@@ -211,6 +214,14 @@ export default class Becca {
 
     getEtapiToken(etapiTokenId: string): BEtapiToken | null {
         return this.etapiTokens[etapiTokenId];
+    }
+
+    getTasks(): BTask[] {
+        return Object.values(this.tasks);
+    }
+
+    getTask(taskId: string): BTask | null {
+        return this.tasks[taskId];
     }
 
     getEntity<T extends AbstractBeccaEntity<T>>(entityName: string, entityId: string): AbstractBeccaEntity<T> | null {

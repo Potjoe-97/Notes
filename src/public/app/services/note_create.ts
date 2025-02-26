@@ -22,11 +22,7 @@ interface CreateNoteOpts {
     focus?: "title" | "content";
     target?: string;
     targetBranchId?: string;
-    textEditor?: {
-        // TODO: Replace with interface once note_context.js is converted.
-        getSelectedHtml(): string;
-        removeSelection(): void;
-    };
+    textEditor?: TextEditor;
 }
 
 interface Response {

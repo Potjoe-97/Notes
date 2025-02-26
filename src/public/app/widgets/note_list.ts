@@ -2,6 +2,7 @@ import NoteContextAwareWidget from "./note_context_aware_widget.js";
 import NoteListRenderer from "../services/note_list_renderer.js";
 import type FNote from "../entities/fnote.js";
 import type { EventData } from "../components/app_context.js";
+import type ViewMode from "./view_widgets/view_mode.js";
 
 const TPL = `
 <div class="note-list-widget">
@@ -13,6 +14,11 @@ const TPL = `
 
     .note-list-widget .note-list {
         padding: 10px;
+    }
+
+    .note-list-widget.full-height,
+    .note-list-widget.full-height .note-list-widget-content {
+        height: 100%;
     }
     </style>
 
@@ -26,6 +32,7 @@ export default class NoteListWidget extends NoteContextAwareWidget {
     private isIntersecting?: boolean;
     private noteIdRefreshed?: string;
     private shownNoteId?: string | null;
+    private viewMode?: ViewMode | null;
 
     isEnabled() {
         return super.isEnabled() && this.noteContext?.hasNoteList();
@@ -66,7 +73,9 @@ export default class NoteListWidget extends NoteContextAwareWidget {
 
     async renderNoteList(note: FNote) {
         const noteListRenderer = new NoteListRenderer(this.$content, note, note.getChildNoteIds());
+        this.$widget.toggleClass("full-height", noteListRenderer.isFullHeight);
         await noteListRenderer.renderList();
+        this.viewMode = noteListRenderer.viewMode;
     }
 
     async refresh() {
@@ -102,10 +111,15 @@ export default class NoteListWidget extends NoteContextAwareWidget {
         }
     }
 
-    entitiesReloadedEvent({ loadResults }: EventData<"entitiesReloaded">) {
-        if (loadResults.getAttributeRows().find((attr) => attr.noteId === this.noteId && attr.name && ["viewType", "expanded", "pageSize"].includes(attr.name))) {
-            this.shownNoteId = null; // force render
+    entitiesReloadedEvent(e: EventData<"entitiesReloaded">) {
+        if (e.loadResults.getAttributeRows().find((attr) => attr.noteId === this.noteId && attr.name && ["viewType", "expanded", "pageSize"].includes(attr.name))) {
+            this.refresh();
+            this.checkRenderStatus();
+        }
 
+        // Inform the view mode of changes and refresh if needed.
+        if (this.viewMode && this.viewMode.onEntitiesReloaded(e)) {
+            this.refresh();
             this.checkRenderStatus();
         }
     }

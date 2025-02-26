@@ -61,7 +61,7 @@ export default class SplitNoteContainer extends FlexContainer {
         await appContext.tabManager.activateNoteContext(noteContext.ntxId);
 
         if (notePath) {
-            await noteContext.setNote(notePath, viewScope);
+            await noteContext.setNote(notePath, { viewScope });
         } else {
             await noteContext.setEmpty();
         }

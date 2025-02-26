@@ -1,7 +1,7 @@
 "use strict";
 
 import BAttribute from "../../becca/entities/battribute.js";
-import { removeTextFileExtension, newEntityId, getNoteTitle } from "../../services/utils.js";
+import { removeTextFileExtension, newEntityId, getNoteTitle, processStringOrBuffer } from "../../services/utils.js";
 import log from "../../services/log.js";
 import noteService from "../../services/notes.js";
 import attributeService from "../../services/attributes.js";
@@ -386,7 +386,7 @@ async function importZip(taskContext: TaskContext, fileBuffer: Buffer, importRoo
     }
 
     function processNoteContent(noteMeta: NoteMeta | undefined, type: string, mime: string, content: string | Buffer, noteTitle: string, filePath: string) {
-        if ((noteMeta?.format === "markdown" || (!noteMeta && taskContext.data?.textImportedAsText && ["text/markdown", "text/x-markdown"].includes(mime))) && typeof content === "string") {
+        if ((noteMeta?.format === "markdown" || (!noteMeta && taskContext.data?.textImportedAsText && ["text/markdown", "text/x-markdown", "text/mdx"].includes(mime))) && typeof content === "string") {
             content = markdownService.renderToHtml(content, noteTitle);
         }
 
@@ -457,7 +457,7 @@ async function importZip(taskContext: TaskContext, fileBuffer: Buffer, importRoo
         }
 
         if (type !== "file" && type !== "image") {
-            content = content.toString("utf-8");
+            content = processStringOrBuffer(content);
         }
 
         const noteTitle = getNoteTitle(filePath, taskContext.data?.replaceUnderscoresWithSpaces || false, noteMeta);

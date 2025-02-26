@@ -12,6 +12,7 @@ import asset_path from "../../../../services/asset_path.js";
 import openContextMenu from "./geo_map_context_menu.js";
 import link from "../../services/link.js";
 import note_tooltip from "../../services/note_tooltip.js";
+import appContext from "../../components/app_context.js";
 
 const TPL = `\
 <div class="note-detail-geo-map note-detail-printable">
@@ -134,10 +135,22 @@ export default class GeoMapTypeWidget extends TypeWidget {
             throw new Error(t("geo-map.unable-to-load-map"));
         }
 
-        if (!this.note) {
+        this.#restoreViewportAndZoom();
+
+        // Restore markers.
+        await this.#reloadMarkers();
+
+        const updateFn = () => this.spacedUpdate.scheduleUpdate();
+        map.on("moveend", updateFn);
+        map.on("zoomend", updateFn);
+        map.on("click", (e) => this.#onMapClicked(e));
+    }
+
+    async #restoreViewportAndZoom() {
+        const map = this.geoMapWidget.map;
+        if (!map || !this.note) {
             return;
         }
-
         const blob = await this.note.getBlob();
 
         let parsedContent: MapData = {};
@@ -149,14 +162,6 @@ export default class GeoMapTypeWidget extends TypeWidget {
         const center = parsedContent.view?.center ?? DEFAULT_COORDINATES;
         const zoom = parsedContent.view?.zoom ?? DEFAULT_ZOOM;
         map.setView(center, zoom);
-
-        // Restore markers.
-        await this.#reloadMarkers();
-
-        const updateFn = () => this.spacedUpdate.scheduleUpdate();
-        map.on("moveend", updateFn);
-        map.on("zoomend", updateFn);
-        map.on("click", (e) => this.#onMapClicked(e));
     }
 
     async #reloadMarkers() {
@@ -217,7 +222,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
 
         const [ lat, lng ] = latLng.split(",", 2).map((el) => parseFloat(el));
         const L = this.L;
-        const icon = this.#buildIcon(note.getIcon(), note.title);
+        const icon = this.#buildIcon(note.getIcon(), note.getColorClass(), note.title);
 
         const marker = L.marker(L.latLng(lat, lng), {
             icon,
@@ -229,7 +234,15 @@ export default class GeoMapTypeWidget extends TypeWidget {
             .on("moveend", e => {
                 this.moveMarker(note.noteId, (e.target as Marker).getLatLng());
             });
-
+        marker.on("mousedown", ({ originalEvent }) => {
+            // Middle click to open in new tab
+            if (originalEvent.button === 1) {
+                const hoistedNoteId = this.hoistedNoteId;
+                //@ts-ignore, fix once tab manager is ported.
+                appContext.tabManager.openInNewTab(note.noteId, hoistedNoteId);
+                return true;
+            }
+        });
         marker.on("contextmenu", (e) => {
             openContextMenu(note.noteId, e.originalEvent);
         });
@@ -244,12 +257,12 @@ export default class GeoMapTypeWidget extends TypeWidget {
         this.currentMarkerData[note.noteId] = marker;
     }
 
-    #buildIcon(bxIconClass: string, title: string) {
+    #buildIcon(bxIconClass: string, colorClass: string, title: string) {
         return this.L.divIcon({
             html: `\
                 <img class="icon" src="${asset_path}/node_modules/leaflet/dist/images/marker-icon.png" />
                 <img class="icon-shadow" src="${asset_path}/node_modules/leaflet/dist/images/marker-shadow.png" />
-                <span class="bx ${bxIconClass}"></span>
+                <span class="bx ${bxIconClass} ${colorClass}"></span>
                 <span class="title-label">${title}</span>`,
             iconSize: [ 25, 41 ],
             iconAnchor: [ 12, 41 ]
@@ -334,6 +347,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
 
     async doRefresh(note: FNote) {
         await this.geoMapWidget.refresh();
+        this.#restoreViewportAndZoom();
         await this.#reloadMarkers();
     }
 
@@ -347,7 +361,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
         // If any of note has its location attribute changed.
         // TODO: Should probably filter by parent here as well.
         const attributeRows = loadResults.getAttributeRows();
-        if (attributeRows.find((at) => at.name === LOCATION_ATTRIBUTE)) {
+        if (attributeRows.find((at) => [ LOCATION_ATTRIBUTE, "color" ].includes(at.name ?? ""))) {
             this.#reloadMarkers();
         }
     }

@@ -10,6 +10,7 @@ import server from "../../services/server.js";
 import toastService from "../../services/toast.js";
 import utils from "../../services/utils.js";
 import ws from "../../services/ws.js";
+import { Modal } from "bootstrap";
 
 const TPL = `
 <div class="recent-changes-dialog modal fade mx-auto" tabindex="-1" role="dialog">
@@ -30,7 +31,7 @@ const TPL = `
 export default class RecentChangesDialog extends BasicWidget {
     doRender() {
         this.$widget = $(TPL);
-        this.modal = bootstrap.Modal.getOrCreateInstance(this.$widget);
+        this.modal = Modal.getOrCreateInstance(this.$widget);
 
         this.$content = this.$widget.find(".recent-changes-content");
         this.$eraseDeletedNotesNow = this.$widget.find(".erase-deleted-notes-now-button");
