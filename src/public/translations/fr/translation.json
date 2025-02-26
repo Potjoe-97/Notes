@@ -60,7 +60,7 @@
     "other": "Autre"
   },
   "clone_to": {
-    "clone_notes_to": "Cloner des notes dans...",
+    "clone_notes_to": "Cloner les notes dans...",
     "close": "Fermer",
     "help_on_links": "Aide sur les liens",
     "notes_to_clone": "Notes à cloner",
@@ -84,9 +84,9 @@
   "delete_notes": {
     "delete_notes_preview": "Supprimer l'aperçu des notes",
     "close": "Fermer",
-    "delete_all_clones_description": "Supprimer aussi tous les clones (peut être annulé lors des modifications récentes)",
+    "delete_all_clones_description": "Supprimer aussi les clones (peut être annulé dans des modifications récentes)",
     "erase_notes_description": "La suppression normale (douce) marque uniquement les notes comme supprimées et elles peuvent être restaurées (dans la boîte de dialogue des Modifications récentes) dans un délai donné. Cocher cette option effacera les notes immédiatement et il ne sera pas possible de les restaurer.",
-    "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris tous les clones. Cela forcera le rechargement de l’application.",
+    "erase_notes_warning": "Efface les notes de manière permanente (ne peut pas être annulée), y compris les clones. L'application va être rechargée.",
     "notes_to_be_deleted": "Les notes suivantes seront supprimées ({{- noteCount}})",
     "no_note_to_delete": "Aucune note ne sera supprimée (uniquement les clones).",
     "broken_relations_to_be_deleted": "Les relations suivantes seront rompues et supprimées ({{- relationCount}})",
@@ -641,7 +641,12 @@
     "show_hidden_subtree": "Afficher le Sous-arbre caché",
     "show_help": "Afficher l'aide",
     "about": "À propos de TriliumNext Notes",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "show-cheatsheet": "Afficher la feuille de triche",
+    "toggle-zen-mode": "Zen Mode"
+  },
+  "zen_mode": {
+    "button_exit": "Exit Zen Mode"
   },
   "sync_status": {
     "unknown": "<p>Le statut de la synchronisation sera connu à la prochaine tentative de synchronisation.</p><p>Cliquez pour déclencher la synchronisation maintenant.</p>",
@@ -750,7 +755,8 @@
     "collapse": "Réduire",
     "expand": "Développer",
     "book_properties": "Propriétés du livre",
-    "invalid_view_type": "Type de vue non valide '{{type}}'"
+    "invalid_view_type": "Type de vue non valide '{{type}}'",
+    "calendar": "Calendrier"
   },
   "edited_notes": {
     "no_edited_notes_found": "Aucune note modifiée ce jour-là...",
@@ -821,6 +827,7 @@
   },
   "promoted_attributes": {
     "promoted_attributes": "Attributs promus",
+    "unset-field-placeholder": "non défini",
     "url_placeholder": "http://siteweb...",
     "open_external_link": "Ouvrir le lien externe",
     "unknown_label_type": "Type de label inconnu '{{type}}'",
@@ -963,7 +970,8 @@
     "enter_workspace": "Entrez dans l'espace de travail {{title}}"
   },
   "file": {
-    "file_preview_not_available": "L'aperçu du fichier n'est pas disponible pour ce format de fichier."
+    "file_preview_not_available": "L'aperçu du fichier n'est pas disponible pour ce format de fichier.",
+    "too_big": "L'aperçu ne montre que les premiers caractères {{maxNumChars}} du fichier pour des raisons de performance. Téléchargez le fichier et ouvrez-le en externe pour pouvoir voir tout le contenu."
   },
   "protected_session": {
     "enter_password_instruction": "L'affichage de la note protégée nécessite la saisie de votre mot de passe :",
@@ -1002,9 +1010,7 @@
   "web_view": {
     "web_view": "Affichage Web",
     "embed_websites": "Les notes de type Affichage Web vous permet d'intégrer des sites Web dans Trilium.",
-    "create_label": "Pour commencer, veuillez créer un label avec l'adresse URL que vous souhaitez intégrer, par ex. #webViewSrc=\"https://www.google.com\"",
-    "disclaimer": "Avertissement sur le statut expérimental",
-    "experimental_note": "Affichage Web est un type de note expérimental et il pourrait être supprimé ou considérablement modifié à l'avenir. Affichage Web ne fonctionne que dans la version de bureau."
+    "create_label": "Pour commencer, veuillez créer un label avec l'adresse URL que vous souhaitez intégrer, par ex. #webViewSrc=\"https://www.google.com\""
   },
   "backend_log": {
     "refresh": "Rafraîchir"
@@ -1145,7 +1151,7 @@
   "attachment_erasure_timeout": {
     "attachment_erasure_timeout": "Délai d'effacement des pièces jointes",
     "attachment_auto_deletion_description": "Les pièces jointes sont automatiquement supprimées (et effacées) si elles ne sont plus référencées par leur note après un certain délai.",
-    "erase_attachments_after_x_seconds": "Effacer les pièces jointes après X secondes sans utilisation dans sa note",
+    "erase_attachments_after": "Effacer les pièces jointes inutilisées après :",
     "manual_erasing_description": "Vous pouvez également déclencher l'effacement manuellement (sans tenir compte du délai défini ci-dessus) :",
     "erase_unused_attachments_now": "Effacez maintenant les pièces jointes inutilisées",
     "unused_attachments_erased": "Les pièces jointes inutilisées ont été effacées."
@@ -1157,15 +1163,15 @@
   "note_erasure_timeout": {
     "note_erasure_timeout_title": "Délai d'effacement des notes",
     "note_erasure_description": "Les notes supprimées (et les attributs, versions...) sont seulement marquées comme supprimées et il est possible de les récupérer à partir de la boîte de dialogue Notes récentes. Après un certain temps, les notes supprimées sont « effacées », ce qui signifie que leur contenu n'est plus récupérable. Ce paramètre vous permet de configurer la durée entre la suppression et l'effacement de la note.",
-    "erase_notes_after_x_seconds": "Effacer les notes après X secondes",
+    "erase_notes_after": "Effacer les notes après",
     "manual_erasing_description": "Vous pouvez également déclencher l'effacement manuellement (sans tenir compte de la durée définie ci-dessus) :",
     "erase_deleted_notes_now": "Effacer les notes supprimées maintenant",
     "deleted_notes_erased": "Les notes supprimées ont été effacées."
   },
   "revisions_snapshot_interval": {
     "note_revisions_snapshot_interval_title": "Intervalle d'enregistrement automatique des versions des notes",
-    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps en secondes après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
-    "snapshot_time_interval_label": "Intervalle de temps entre deux instantanés de version de note (en secondes) :"
+    "note_revisions_snapshot_description": "L'intervalle d'enregistrement automatique des versions de note est le temps après lequel une nouvelle version de note est créée pour une note. Consultez le <a href=\"https://triliumnext.github.io/Docs/Wiki/note-revisions.html\" class=\"external\">wiki</a> pour plus d'informations.",
+    "snapshot_time_interval_label": "Intervalle de temps entre deux enregistrements de version de note :"
   },
   "revisions_snapshot_limit": {
     "note_revisions_snapshot_limit_title": "Limite des enregistrements de version de note",
@@ -1284,7 +1290,7 @@
     "protected_session_timeout_description": "Le délai d'expiration de la session protégée est une période de temps après laquelle la session protégée est effacée de la mémoire du navigateur. Il est mesuré à partir de la dernière interaction avec des notes protégées. Voir",
     "wiki": "wiki",
     "for_more_info": "pour plus d'informations.",
-    "protected_session_timeout_label": "Délai d'expiration de la session protégée (en secondes)",
+    "protected_session_timeout_label": "Délai d'expiration de la session protégée :",
     "reset_confirmation": "En réinitialisant le mot de passe, vous perdrez à jamais l'accès à toutes vos notes protégées existantes. Voulez-vous vraiment réinitialiser le mot de passe ?",
     "reset_success_message": "Le mot de passe a été réinitialisé. Veuillez définir un nouveau mot de passe",
     "change_password_heading": "Changer le mot de passe",
@@ -1414,7 +1420,9 @@
     "doc": "Doc",
     "widget": "Widget",
     "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?",
-    "geo-map": "Carte géo (beta)"
+    "geo-map": "Carte géographique",
+    "beta-feature": "Bêta",
+    "task-list": "Liste de tâches à faire"
   },
   "protect_note": {
     "toggle-on": "Protéger la note",
@@ -1618,30 +1626,54 @@
   "electron_integration": {
     "desktop-application": "Application de bureau",
     "native-title-bar": "Barre de titre native",
-    "native-title-bar-description": "For Windows and macOS, keeping the native title bar off makes the application look more compact. On Linux, keeping the native title bar on integrates better with the rest of the system.",
-    "background-effects": "Enable background effects (Windows 11 only)",
+    "native-title-bar-description": "Pour Windows et macOS, garder la barre de titre native hors de la barre de titre rend l'application plus compacte. Sous Linux, le maintien de la barre de titre native s'intègre mieux avec le reste du système.",
+    "background-effects": "Activer les effets d'arrière-plan (Windows 11 uniquement)",
     "background-effects-description": "The Mica effect adds a blurred, stylish background to app windows, creating depth and a modern look.",
-    "restart-app-button": "Restart the application to view the changes",
-    "zoom-factor": "Zoom factor"
+    "restart-app-button": "Redémarrez l'application pour afficher les modifications",
+    "zoom-factor": "Facteur de zoom"
   },
   "note_autocomplete": {
-    "search-for": "Search for \"{{term}}\"",
-    "create-note": "Create and link child note \"{{term}}\"",
-    "insert-external-link": "Insert external link to \"{{term}}\"",
-    "clear-text-field": "Clear text field",
-    "show-recent-notes": "Show recent notes",
-    "full-text-search": "Full text search"
+    "search-for": "Rechercher \"{{term}}\"",
+    "create-note": "Créer et lier une note enfant \"{{term}}\"",
+    "insert-external-link": "Insérer un lien externe vers \"{{term}}\"",
+    "clear-text-field": "Effacer le champ de texte",
+    "show-recent-notes": "Afficher les notes récentes",
+    "full-text-search": "Recherche en texte complet"
   },
   "note_tooltip": {
-    "note-has-been-deleted": "Note has been deleted."
+    "note-has-been-deleted": "La note a été supprimée."
   },
   "geo-map": {
-    "create-child-note-title": "Create a new child note and add it to the map",
+    "create-child-note-title": "Créer une nouvelle note enfant et l'ajouter à la carte",
     "create-child-note-instruction": "Click on the map to create a new note at that location or press Escape to dismiss.",
-    "unable-to-load-map": "Unable to load map."
+    "unable-to-load-map": "Impossible de charger la carte."
   },
   "geo-map-context": {
-    "open-location": "Open location",
-    "remove-from-map": "Remove from map"
+    "open-location": "Ouvrir la position",
+    "remove-from-map": "Retirer de la carte"
+  },
+  "help-button": {
+    "title": "Ouvrir la page d'aide correspondante"
+  },
+  "duration": {
+    "seconds": "Secondes",
+    "minutes": "Minutes",
+    "hours": "Heures",
+    "days": "Jours"
+  },
+  "share": {
+    "title": "Paramètres de partage",
+    "redirect_bare_domain": "Rediriger le domaine nu vers la page de partage",
+    "redirect_bare_domain_description": "Rediriger les utilisateurs anonymes vers la page de partage au lieu d'afficher la connexion",
+    "show_login_link": "Afficher le lien de connexion dans le thème de partage",
+    "show_login_link_description": "Ajouter un lien de connexion au pied de page de la page de partage",
+    "check_share_root": "Vérifier l'état du partage de la racine",
+    "share_root_found": "Partager la note racine '{{noteTitle}}' est prêt",
+    "share_root_not_found": "Aucune note avec le label #shareRoot trouvée",
+    "share_root_not_shared": "Note '{{noteTitle}}' a le label #shareRoot mais n'est pas partagée"
+  },
+  "time_selector": {
+    "invalid_input": "La valeur de l'heure saisie n'est pas un nombre valide.",
+    "minimum_input": "La valeur de temps saisie doit être d'au moins {{minimumSeconds}} secondes."
   }
 }
