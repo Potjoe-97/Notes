@@ -93,7 +93,7 @@
     "toggle-classic-editor-toolbar": "Activer/désactiver l'onglet Mise en forme de l'éditeur avec la barre d'outils fixe",
     "export-as-pdf": "Exporte la note actuelle en PDF",
     "show-cheatsheet": "Affiche une fenêtre modale avec des opérations de clavier courantes",
-    "toggle-zen-mode": "Active/désactive le mode zen (interface minimale pour une édition plus ciblée)"
+    "toggle-zen-mode": "Active/désactive le mode zen (interface réduite pour favoriser la concentration)"
   },
   "login": {
     "title": "Connexion",
@@ -200,23 +200,23 @@
   },
   "hidden-subtree": {
     "root-title": "Notes cachées",
-    "search-history-title": "Rechercher dans l'historique",
+    "search-history-title": "Historique de recherche",
     "note-map-title": "Carte de la Note",
     "sql-console-history-title": "Historique de la console SQL",
     "shared-notes-title": "Notes partagées",
-    "bulk-action-title": "Action en vrac",
+    "bulk-action-title": "Action groupée",
     "backend-log-title": "Journal Backend",
     "user-hidden-title": "Utilisateur masqué",
-    "launch-bar-templates-title": "Modèles de barre de lancement",
-    "base-abstract-launcher-title": "Base Abstract Launcher",
-    "command-launcher-title": "Command Launcher",
-    "note-launcher-title": "Note Launcher",
-    "script-launcher-title": "Script Launcher",
+    "launch-bar-templates-title": "Modèles de barre de raccourcis",
+    "base-abstract-launcher-title": "Raccourci Base abstraite",
+    "command-launcher-title": "Raccourci Commande",
+    "note-launcher-title": "Raccourci Note",
+    "script-launcher-title": "Raccourci Script",
     "built-in-widget-title": "Widget intégré",
-    "spacer-title": "Espaceur",
+    "spacer-title": "Séparateur",
     "custom-widget-title": "Widget personnalisé",
     "launch-bar-title": "Barre de lancement",
-    "available-launchers-title": "Available Launchers",
+    "available-launchers-title": "Raccourcis disponibles",
     "go-to-previous-note-title": "Aller à la note précédente",
     "go-to-next-note-title": "Aller à la note suivante",
     "new-note-title": "Nouvelle note",
@@ -224,7 +224,7 @@
     "jump-to-note-title": "Aller à la note",
     "calendar-title": "Calendrier",
     "recent-changes-title": "Modifications récentes",
-    "bookmarks-title": "Signets",
+    "bookmarks-title": "Favoris",
     "open-today-journal-note-title": "Ouvrir la note du journal du jour",
     "quick-search-title": "Recherche rapide",
     "protected-session-title": "Session protégée",
@@ -236,14 +236,14 @@
     "text-notes": "Notes de texte",
     "code-notes-title": "Notes de code",
     "images-title": "Images",
-    "spellcheck-title": "Spellcheck",
+    "spellcheck-title": "Correcteur orthographique",
     "password-title": "Mot de passe",
     "etapi-title": "ETAPI",
     "backup-title": "Sauvegarde",
-    "sync-title": "Synchroniser",
+    "sync-title": "Synchronisation",
     "other": "Autre",
     "advanced-title": "Avancé",
-    "visible-launchers-title": "Visible Launchers",
+    "visible-launchers-title": "Raccourcis visibles",
     "user-guide": "Guide de l'utilisateur"
   },
   "notes": {
@@ -265,18 +265,18 @@
     "unable-to-save-message": "Le fichier sélectionné n'a pas pu être écrit. Réessayez ou sélectionnez une autre destination."
   },
   "tray": {
-    "tooltip": "Notes suivantes du trio",
-    "close": "Quit Trilium",
+    "tooltip": "TriliumNext Notes",
+    "close": "Quitter Trilium",
     "recents": "Notes récentes",
-    "bookmarks": "Signets",
+    "bookmarks": "Favoris",
     "today": "Ouvrir la note du journal du jour",
     "new-note": "Nouvelle note",
     "show-windows": "Afficher les fenêtres"
   },
   "migration": {
-    "old_version": "La migration directe de votre version actuelle n'est pas prise en charge. Veuillez d'abord passer à la dernière v0.60.4 et ensuite à cette version.",
+    "old_version": "La migration directe à partir de votre version actuelle n'est pas prise en charge. Veuillez d'abord mettre à jour vers la version v0.60.4, puis vers cette nouvelle version.",
     "error_message": "Erreur lors de la migration vers la version {{version}}: {{stack}}",
-    "wrong_db_version": "La version de la base de données ({{version}}) est plus récente que ce que l'application attend ({{targetVersion}}), ce qui signifie qu'il a été créé par une version plus récente et incompatible de Trilium. Mettez à niveau vers la dernière version de Trilium pour résoudre ce problème."
+    "wrong_db_version": "La version de la base de données ({{version}}) est plus récente que ce que l'application supporte actuellement ({{targetVersion}}), ce qui signifie qu'elle a été créée par une version plus récente et incompatible de Trilium. Mettez à jour vers la dernière version de Trilium pour résoudre ce problème."
   },
   "modals": {
     "error_title": "Erreur"
