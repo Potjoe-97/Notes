@@ -702,7 +702,7 @@
   "code_buttons": {
     "execute_button_title": "Exécuter le script",
     "trilium_api_docs_button_title": "Ouvrir la documentation de l'API Trilium",
-    "save_to_note_button_title": "Enregistrer dans la note",
+    "save_to_note_button_title": "Enregistrer dans une note",
     "opening_api_docs_message": "Ouverture de la documentation de l'API...",
     "sql_console_saved_message": "La note de la console SQL a été enregistrée dans {{note_path}}"
   },
@@ -856,9 +856,9 @@
     "debug": "debug",
     "debug_description": "Debug imprimera des informations supplémentaires dans la console pour faciliter le débogage des requêtes complexes",
     "action": "action",
-    "search_button": "Recherche <kbd>Entrée</kbd>",
+    "search_button": "Rechercher <kbd>Entrée</kbd>",
     "search_execute": "Rechercher et exécuter des actions",
-    "save_to_note": "Enregistrer dans la note",
+    "save_to_note": "Enregistrer dans une note",
     "search_parameters": "Paramètres de recherche",
     "unknown_search_option": "Option de recherche inconnue {{searchOptionName}}",
     "search_note_saved": "La note de recherche a été enregistrée dans {{- notePathTitle}}",
