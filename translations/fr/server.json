@@ -68,7 +68,7 @@
     "toggle-promoted-attributes": "Afficher/masquer les Attributs promus",
     "toggle-link-map": "Afficher/masquer la Carte de la note",
     "toggle-note-info": "Afficher/masquer les Informations de la note",
-    "toggle-note-paths": "Afficher/masquer les Emplacements de la note",
+    "toggle-note-paths": "Afficher/masquer les Chemins de la note",
     "toggle-similar-notes": "Afficher/masquer les Notes similaires",
     "other": "Autre",
     "toggle-right-pane": "Afficher/masquer le volet droit, qui inclut la Table des matières et les Accentuations",
@@ -77,10 +77,10 @@
     "render-active-note": "Rendre (ou re-rendre) la note active",
     "run-active-note": "Exécuter le code JavaScript (frontend/backend) de la note active",
     "toggle-note-hoisting": "Activer le focus sur la note active",
-    "unhoist": "Désactiver tout focus",
+    "unhoist": "Désactiver le focus",
     "reload-frontend-app": "Recharger l'application",
     "open-dev-tools": "Ouvrir les outils de développement",
-    "toggle-left-note-tree-panel": "Basculer le panneau gauche (arborescence des notes)",
+    "toggle-left-note-tree-panel": "Afficher/masquer le panneau gauche (arborescence des notes)",
     "toggle-full-screen": "Basculer en plein écran",
     "zoom-out": "Dézoomer",
     "zoom-in": "Zoomer",
@@ -92,16 +92,18 @@
     "toggle-book-properties": "Afficher/masquer les Propriétés du Livre",
     "toggle-classic-editor-toolbar": "Activer/désactiver l'onglet Mise en forme de l'éditeur avec la barre d'outils fixe",
     "export-as-pdf": "Exporte la note actuelle en PDF",
-    "show-cheatsheet": "Affiche une fenêtre modale avec des opérations de clavier courantes",
+    "show-cheatsheet": "Affiche les commandes clavier principales",
     "toggle-zen-mode": "Active/désactive le mode zen (interface réduite pour favoriser la concentration)"
   },
   "login": {
     "title": "Connexion",
     "heading": "Connexion à Trilium",
+    "incorrect-totp": "TOTP est incorrect. Veuillez réessayer.",
     "incorrect-password": "Le mot de passe est incorrect. Veuillez réessayer.",
     "password": "Mot de passe",
     "remember-me": "Se souvenir de moi",
-    "button": "Connexion"
+    "button": "Connexion",
+    "sign_in_with_google": "Se connecter avec Google"
   },
   "set_password": {
     "title": "Définir un mot de passe",
@@ -172,6 +174,7 @@
     "saturday": "Samedi",
     "sunday": "Dimanche"
   },
+  "weekdayNumber": "Semaine {weekNumber}",
   "months": {
     "january": "Janvier",
     "february": "Février",
@@ -186,6 +189,7 @@
     "november": "Novembre",
     "december": "Décembre"
   },
+  "quarterNumber": "Quart {quarterNumber}",
   "special_notes": {
     "search_prefix": "Recherche :"
   },
@@ -230,6 +234,7 @@
     "protected-session-title": "Session protégée",
     "sync-status-title": "État de la synchronisation",
     "settings-title": "Réglages",
+    "llm-chat-title": "Discuter avec des notes",
     "options-title": "Options",
     "appearance-title": "Apparence",
     "shortcuts-title": "Raccourcis",
@@ -238,18 +243,22 @@
     "images-title": "Images",
     "spellcheck-title": "Correcteur orthographique",
     "password-title": "Mot de passe",
+    "multi-factor-authentication-title": "MFA",
     "etapi-title": "ETAPI",
     "backup-title": "Sauvegarde",
     "sync-title": "Synchronisation",
+    "ai-llm-title": "AI/LLM",
     "other": "Autre",
     "advanced-title": "Avancé",
     "visible-launchers-title": "Raccourcis visibles",
-    "user-guide": "Guide de l'utilisateur"
+    "user-guide": "Guide de l'utilisateur",
+    "localization": "Language & Region",
+    "inbox-title": "Boîte de réception"
   },
   "notes": {
     "new-note": "Nouvelle note",
     "duplicate-note-suffix": "(dup)",
-    "duplicate-note-title": "{{ noteTitle }} {{ duplicateNoteSuffix }}"
+    "duplicate-note-title": "{{- noteTitle }} {{ duplicateNoteSuffix }}"
   },
   "backend_log": {
     "log-does-not-exist": "Le fichier journal '{{ fileName }}' n'existe pas (encore).",
@@ -271,7 +280,8 @@
     "bookmarks": "Favoris",
     "today": "Ouvrir la note du journal du jour",
     "new-note": "Nouvelle note",
-    "show-windows": "Afficher les fenêtres"
+    "show-windows": "Afficher les fenêtres",
+    "open_new_window": "Ouvrir une nouvelle fenêtre"
   },
   "migration": {
     "old_version": "La migration directe à partir de votre version actuelle n'est pas prise en charge. Veuillez d'abord mettre à jour vers la version v0.60.4, puis vers cette nouvelle version.",
