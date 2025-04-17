@@ -4,7 +4,7 @@ import html from "html";
 import dateUtils from "../date_utils.js";
 import path from "path";
 import mimeTypes from "mime-types";
-import mdService from "./md.js";
+import mdService from "./markdown.js";
 import packageInfo from "../../../package.json" with { type: "json" };
 import { getContentDisposition, escapeHtml } from "../utils.js";
 import protectedSessionService from "../protected_session.js";
@@ -23,7 +23,25 @@ import type { Response } from "express";
 import { RESOURCE_DIR } from "../resource_dir.js";
 import type { NoteMetaFile } from "../meta/note_meta.js";
 
-async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "html" | "markdown", res: Response | fs.WriteStream, setHeaders = true) {
+type RewriteLinksFn = (content: string, noteMeta: NoteMeta) => string;
+
+export interface AdvancedExportOptions {
+    /**
+     * If `true`, then only the note's content will be kept. If `false` (default), then each page will have its own <html> template.
+     */
+    skipHtmlTemplate?: boolean;
+
+    /**
+     * Provides a custom function to rewrite the links found in HTML or Markdown notes. This method is called for every note imported, if it's of the right type.
+     *
+     * @param originalRewriteLinks the original rewrite links function. Can be used to access the default behaviour without having to reimplement it.
+     * @param getNoteTargetUrl the method to obtain a note's target URL, used internally by `originalRewriteLinks` but can be used here as well.
+     * @returns a function to rewrite the links in HTML or Markdown notes.
+     */
+    customRewriteLinks?: (originalRewriteLinks: RewriteLinksFn, getNoteTargetUrl: (targetNoteId: string, sourceMeta: NoteMeta) => string | null) => RewriteLinksFn;
+}
+
+async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "html" | "markdown", res: Response | fs.WriteStream, setHeaders = true, zipExportOptions?: AdvancedExportOptions) {
     if (!["html", "markdown"].includes(format)) {
         throw new ValidationError(`Only 'html' and 'markdown' allowed as export format, '${format}' given`);
     }
@@ -182,7 +200,9 @@ async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "h
         }
 
         const attachments = note.getAttachments();
-        meta.attachments = attachments.map((attachment) => {
+        meta.attachments = attachments
+            .toSorted((a, b) => ((a.attachmentId ?? "").localeCompare(b.attachmentId ?? "", "en") ?? 1))
+            .map((attachment) => {
             const attMeta: AttachmentMeta = {
                 attachmentId: attachment.attachmentId,
                 title: attachment.title,
@@ -251,6 +271,8 @@ async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "h
         return url;
     }
 
+    const rewriteFn = (zipExportOptions?.customRewriteLinks ? zipExportOptions?.customRewriteLinks(rewriteLinks, getNoteTargetUrl) : rewriteLinks);
+
     function rewriteLinks(content: string, noteMeta: NoteMeta): string {
         content = content.replace(/src="[^"]*api\/images\/([a-zA-Z0-9_]+)\/[^"]*"/g, (match, targetNoteId) => {
             const url = getNoteTargetUrl(targetNoteId, noteMeta);
@@ -295,12 +317,11 @@ async function exportToZip(taskContext: TaskContext, branch: BBranch, format: "h
     function prepareContent(title: string, content: string | Buffer, noteMeta: NoteMeta): string | Buffer {
         if (["html", "markdown"].includes(noteMeta?.format || "")) {
             content = content.toString();
-
-            content = rewriteLinks(content, noteMeta);
+            content = rewriteFn(content, noteMeta);
         }
 
         if (noteMeta.format === "html" && typeof content === "string") {
-            if (!content.substr(0, 100).toLowerCase().includes("<html")) {
+            if (!content.substr(0, 100).toLowerCase().includes("<html") && !zipExportOptions?.skipHtmlTemplate) {
                 if (!noteMeta?.notePath?.length) {
                     throw new Error("Missing note path.");
                 }
@@ -589,7 +610,7 @@ ${markdownContent}`;
     taskContext.taskSucceeded();
 }
 
-async function exportToZipFile(noteId: string, format: "markdown" | "html", zipFilePath: string) {
+async function exportToZipFile(noteId: string, format: "markdown" | "html", zipFilePath: string, zipExportOptions?: AdvancedExportOptions) {
     const fileOutputStream = fs.createWriteStream(zipFilePath);
     const taskContext = new TaskContext("no-progress-reporting");
 
@@ -599,7 +620,7 @@ async function exportToZipFile(noteId: string, format: "markdown" | "html", zipF
         throw new ValidationError(`Note ${noteId} not found.`);
     }
 
-    await exportToZip(taskContext, note.getParentBranches()[0], format, fileOutputStream, false);
+    await exportToZip(taskContext, note.getParentBranches()[0], format, fileOutputStream, false, zipExportOptions);
 
     log.info(`Exported '${noteId}' with format '${format}' to '${zipFilePath}'`);
 }

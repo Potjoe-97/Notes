@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import { Modal } from "bootstrap";
+import type { ViewScope } from "./link.js";
+
+const SVG_MIME = "image/svg+xml";
 
 function reloadFrontendApp(reason?: string) {
     if (reason) {
@@ -7,6 +10,17 @@ function reloadFrontendApp(reason?: string) {
     }
 
     window.location.reload();
+}
+
+function restartDesktopApp() {
+    if (!isElectron()) {
+        reloadFrontendApp();
+        return;
+    }
+
+    const app = dynamicRequire("@electron/remote").app;
+    app.relaunch();
+    app.exit();
 }
 
 /**
@@ -33,20 +47,20 @@ function parseDate(str: string) {
 
 // Source: https://stackoverflow.com/a/30465299/4898894
 function getMonthsInDateRange(startDate: string, endDate: string) {
-    const start = startDate.split('-');
-    const end = endDate.split('-');
+    const start = startDate.split("-");
+    const end = endDate.split("-");
     const startYear = parseInt(start[0]);
     const endYear = parseInt(end[0]);
     const dates = [];
 
     for (let i = startYear; i <= endYear; i++) {
         const endMonth = i != endYear ? 11 : parseInt(end[1]) - 1;
-        const startMon = i === startYear ? parseInt(start[1])-1 : 0;
+        const startMon = i === startYear ? parseInt(start[1]) - 1 : 0;
 
-        for(let j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j+1) {
-            const month = j+1;
-            const displayMonth = month < 10 ? '0'+month : month;
-            dates.push([i, displayMonth].join('-'));
+        for (let j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j + 1) {
+            const month = j + 1;
+            const displayMonth = month < 10 ? "0" + month : month;
+            dates.push([i, displayMonth].join("-"));
         }
     }
     return dates;
@@ -133,6 +147,8 @@ function isMac() {
     return navigator.platform.indexOf("Mac") > -1;
 }
 
+export const hasTouchBar = (isMac() && isElectron());
+
 function isCtrlKey(evt: KeyboardEvent | MouseEvent | JQuery.ClickEvent | JQuery.ContextMenuEvent | JQuery.TriggeredEvent | React.PointerEvent<HTMLCanvasElement>) {
     return (!isMac() && evt.ctrlKey) || (isMac() && evt.metaKey);
 }
@@ -161,7 +177,7 @@ function escapeHtml(str: string) {
 }
 
 export function escapeQuotes(value: string) {
-    return value.replaceAll("\"", "&quot;");
+    return value.replaceAll('"', "&quot;");
 }
 
 function formatSize(size: number) {
@@ -203,6 +219,16 @@ function isMobile() {
         // window.glob.device is not available in setup
         (!window.glob?.device && /Mobi/.test(navigator.userAgent))
     );
+}
+
+/**
+ * Returns true if the client device is an Apple iOS one (iPad, iPhone, iPod).
+ * Does not check if the user requested the mobile or desktop layout, use {@link isMobile} for that.
+ *
+ * @returns `true` if running under iOS.
+ */
+export function isIOS() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent);
 }
 
 function isDesktop() {
@@ -388,6 +414,10 @@ function initHelpDropdown($el: JQuery<HTMLElement>) {
 const wikiBaseUrl = "https://triliumnext.github.io/Docs/Wiki/";
 
 function openHelp($button: JQuery<HTMLElement>) {
+    if ($button.length === 0) {
+        return;
+    }
+
     const helpPage = $button.attr("data-help-page");
 
     if (helpPage) {
@@ -397,12 +427,48 @@ function openHelp($button: JQuery<HTMLElement>) {
     }
 }
 
+async function openInAppHelp($button: JQuery<HTMLElement>) {
+    if ($button.length === 0) {
+        return;
+    }
+
+    const inAppHelpPage = $button.attr("data-in-app-help");
+    if (inAppHelpPage) {
+        // Dynamic import to avoid import issues in tests.
+        const appContext = (await import("../components/app_context.js")).default;
+        const activeContext = appContext.tabManager.getActiveContext();
+        if (!activeContext) {
+            return;
+        }
+        const subContexts = activeContext.getSubContexts();
+        const targetNote = `_help_${inAppHelpPage}`;
+        const helpSubcontext = subContexts.find((s) => s.viewScope?.viewMode === "contextual-help");
+        const viewScope: ViewScope = {
+            viewMode: "contextual-help",
+        };
+        if (!helpSubcontext) {
+            // The help is not already open, open a new split with it.
+            const { ntxId } = subContexts[subContexts.length - 1];
+            appContext.triggerCommand("openNewNoteSplit", {
+                ntxId,
+                notePath: targetNote,
+                hoistedNoteId: "_help",
+                viewScope
+            })
+        } else {
+            // There is already a help window open, make sure it opens on the right note.
+            helpSubcontext.setNote(targetNote, { viewScope });
+        }
+        return;
+    }
+}
+
 function initHelpButtons($el: JQuery<HTMLElement> | JQuery<Window>) {
     // for some reason, the .on(event, listener, handler) does not work here (e.g. Options -> Sync -> Help button)
     // so we do it manually
     $el.on("click", (e) => {
-        const $helpButton = $(e.target).closest("[data-help-page]");
-        openHelp($helpButton);
+        openHelp($(e.target).closest("[data-help-page]"));
+        openInAppHelp($(e.target).closest("[data-in-app-help]"));
     });
 }
 
@@ -568,9 +634,20 @@ function createImageSrcUrl(note: { noteId: string; title: string }) {
  */
 function downloadSvg(nameWithoutExtension: string, svgContent: string) {
     const filename = `${nameWithoutExtension}.svg`;
+    const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
+    triggerDownload(filename, dataUrl);
+}
+
+/**
+ * Downloads the given data URL on the client device, with a custom file name.
+ *
+ * @param fileName the name to give the downloaded file.
+ * @param dataUrl the data URI to download.
+ */
+function triggerDownload(fileName: string, dataUrl: string) {
     const element = document.createElement("a");
-    element.setAttribute("href", `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`);
-    element.setAttribute("download", filename);
+    element.setAttribute("href", dataUrl);
+    element.setAttribute("download", fileName);
 
     element.style.display = "none";
     document.body.appendChild(element);
@@ -578,6 +655,89 @@ function downloadSvg(nameWithoutExtension: string, svgContent: string) {
     element.click();
 
     document.body.removeChild(element);
+}
+
+/**
+ * Given a string representation of an SVG, renders the SVG to PNG and triggers a download of the file on the client device.
+ *
+ * Note that the SVG must specify its width and height as attributes in order for it to be rendered.
+ *
+ * @param nameWithoutExtension the name of the file. The .png suffix is automatically added to it.
+ * @param svgContent the content of the SVG file download.
+ * @returns a promise which resolves if the operation was successful, or rejects if it failed (permissions issue or some other issue).
+ */
+function downloadSvgAsPng(nameWithoutExtension: string, svgContent: string) {
+    return new Promise<void>((resolve, reject) => {
+        // First, we need to determine the width and the height from the input SVG.
+        const result = getSizeFromSvg(svgContent);
+        if (!result) {
+            reject();
+            return;
+        }
+
+        // Convert the image to a blob.
+        const { width, height } = result;
+
+        // Create an image element and load the SVG.
+        const imageEl = new Image();
+        imageEl.width = width;
+        imageEl.height = height;
+        imageEl.crossOrigin = "anonymous";
+        imageEl.onload = () => {
+            try {
+                // Draw the image with a canvas.
+                const canvasEl = document.createElement("canvas");
+                canvasEl.width = imageEl.width;
+                canvasEl.height = imageEl.height;
+                document.body.appendChild(canvasEl);
+
+                const ctx = canvasEl.getContext("2d");
+                if (!ctx) {
+                    reject();
+                }
+
+                ctx?.drawImage(imageEl, 0, 0);
+
+                const imgUri = canvasEl.toDataURL("image/png")
+                triggerDownload(`${nameWithoutExtension}.png`, imgUri);
+                document.body.removeChild(canvasEl);
+                resolve();
+            } catch (e) {
+                console.warn(e);
+                reject();
+            }
+        };
+        imageEl.onerror = (e) => reject(e);
+        imageEl.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svgContent)}`;
+    });
+}
+
+export function getSizeFromSvg(svgContent: string) {
+    const svgDocument = (new DOMParser()).parseFromString(svgContent, SVG_MIME);
+
+    // Try to use width & height attributes if available.
+    let width = svgDocument.documentElement?.getAttribute("width");
+    let height = svgDocument.documentElement?.getAttribute("height");
+
+    // If not, use the viewbox.
+    if (!width || !height) {
+        const viewBox = svgDocument.documentElement?.getAttribute("viewBox");
+        if (viewBox) {
+            const viewBoxParts = viewBox.split(" ");
+            width = viewBoxParts[2];
+            height = viewBoxParts[3];
+        }
+    }
+
+    if (width && height) {
+        return {
+            width: parseFloat(width),
+            height: parseFloat(height)
+        }
+    } else {
+        console.warn("SVG export error", svgDocument.documentElement);
+        return null;
+    }
 }
 
 /**
@@ -637,6 +797,7 @@ function isLaunchBarConfig(noteId: string) {
 
 export default {
     reloadFrontendApp,
+    restartDesktopApp,
     reloadTray,
     parseDate,
     getMonthsInDateRange,
@@ -678,6 +839,7 @@ export default {
     copyHtmlToClipboard,
     createImageSrcUrl,
     downloadSvg,
+    downloadSvgAsPng,
     compareVersions,
     isUpdateAvailable,
     isLaunchBarConfig

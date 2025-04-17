@@ -2,7 +2,7 @@ import NoteContextAwareWidget from "../note_context_aware_widget.js";
 import NoteMapWidget from "../note_map.js";
 import { t } from "../../services/i18n.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="note-map-ribbon-widget">
     <style>
         .note-map-ribbon-widget {
@@ -122,7 +122,7 @@ export default class NoteMapRibbonWidget extends NoteContextAwareWidget {
         const { top } = this.$widget[0].getBoundingClientRect();
 
         const height = ($(window).height() ?? 0) - top;
-        const width = (this.$widget.width() ?? 0);
+        const width = this.$widget.width() ?? 0;
 
         this.$widget.find(".note-map-container")
             .height(height)

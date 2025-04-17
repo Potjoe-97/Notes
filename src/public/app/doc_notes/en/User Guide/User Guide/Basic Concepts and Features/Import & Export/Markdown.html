@@ -1,0 +1,60 @@
+<p>Trilium supports Markdown for both import and export, while trying to
+  keep compatibility as high as possible.</p>
+<h2>Import</h2>
+<h3>Clipboard import</h3>
+<p>If you want to import just a chunk of markdown from clipboard, you can
+  do it from editor block menu:</p>
+<p>
+  <img src="Markdown_markdown-inline-i.gif">
+</p>
+<h3>File import</h3>
+<p>You can also import Markdown files from files:</p>
+<ul>
+  <li>single markdown file (with .md extension)</li>
+  <li>whole tree of markdown files (packaged into <a href="https://en.wikipedia.org/wiki/Tar_(computing)">.zip</a> archive)
+    <ul>
+      <li>Markdown files need to be packaged into ZIP archive because browser can't
+        read directories, only single files.</li>
+      <li>You can use e.g. <a href="https://www.7-zip.org">7-zip</a> to package directory
+        of markdown files into the ZIP file</li>
+    </ul>
+  </li>
+</ul>
+<p>[[gifs/markdown-file-import.gif]]</p>
+<p>
+  <img src="Markdown_markdown-file-imp.gif">
+</p>
+<h2>Export</h2>
+<h3>Subtree export</h3>
+<p>You can export whole subtree to ZIP archive which will have directory
+  structured modelled after subtree structure:</p>
+<p>
+  <img src="Markdown_markdown-export-s.gif">
+</p>
+<h3>Single note export</h3>
+<p>If you want to export just single note without its subtree, you can do
+  it from Note actions menu:</p>
+<p>
+  <img src="Markdown_markdown-export-n.gif">
+</p>
+<h3>Exporting protected notes</h3>
+<p>If you want to export protected notes, enter a protected session first!
+  This will export the notes in an unencrypted form, so if you reimport into
+  Trilium, make sure to re-protect these notes.</p>
+<h2>Supported syntax</h2>
+<ul>
+  <li><a href="https://github.github.com/gfm/">GitHub-Flavored Markdown</a> is
+    the main syntax that Trilium is following.</li>
+  <li>Images are supported. When exporting, images are usually kept in the basic
+    Markdown syntax but will use the HTML syntax if the image has a custom
+    width. Figures are always embedded as HTML.</li>
+  <li>Tables are supported with the Markdown syntax. If the table is too complex
+    or contains elements that would render as HTML, the table is also rendered
+    as HTML.</li>
+  <li><a class="reference-link" href="#root/_help_NwBbFdNZ9h7O">Admonitions</a>&nbsp;are
+    supported using GitHub's format.</li>
+  <li>Links are supported. “Reference links” (internal links that mirror a note's
+    title and display its icon) are embedded as HTML in order to preserve the
+    information on import.</li>
+  <li>Math equations are supported using <code>$</code> and <code>$$</code> syntaxes.</li>
+</ul>

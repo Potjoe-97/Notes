@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -20,18 +20,22 @@ async function testImport(fileName: string, mimetype: string) {
         codeImportedAsCode: true
     });
 
-    return new Promise<{ buffer: Buffer, importedNote: BNote }>((resolve, reject) => {
+    return new Promise<{ buffer: Buffer; importedNote: BNote }>((resolve, reject) => {
         cls.init(async () => {
             const rootNote = becca.getNote("root");
             if (!rootNote) {
                 reject("Missing root note.");
             }
 
-            const importedNote = single.importSingleFile(taskContext, {
-                originalname: fileName,
-                mimetype,
-                buffer: buffer
-            }, rootNote as BNote);
+            const importedNote = single.importSingleFile(
+                taskContext,
+                {
+                    originalname: fileName,
+                    mimetype,
+                    buffer: buffer
+                },
+                rootNote as BNote
+            );
             resolve({
                 buffer,
                 importedNote
@@ -42,6 +46,13 @@ async function testImport(fileName: string, mimetype: string) {
 
 describe("processNoteContent", () => {
     beforeAll(async () => {
+        // Prevent download of images.
+        vi.mock("../image.js", () => {
+            return {
+                default: { saveImageToAttachment: () => {} }
+            };
+        });
+
         initializeTranslations();
         sql_init.initializeDb();
         await sql_init.dbReady;
@@ -76,6 +87,31 @@ describe("processNoteContent", () => {
     it("supports markdown note with UTF-16", async () => {
         const { importedNote } = await testImport("UTF-16LE Text Note.md", "text/markdown");
         expect(importedNote.mime).toBe("text/html");
-        expect(importedNote.getContent().toString()).toBe("<h2>Hello world</h2>\n<p>Plain text goes here.</p>\n");
+        expect(importedNote.getContent().toString()).toBe("<h2>Hello world</h2><p>Plain text goes here.</p>");
     });
-})
+
+    it("supports excalidraw note", async () => {
+        const { importedNote } = await testImport("New note.excalidraw", "application/json");
+        expect(importedNote.mime).toBe("application/json");
+        expect(importedNote.type).toBe("canvas");
+        expect(importedNote.title).toBe("New note");
+    });
+
+    it("imports .mermaid as mermaid note", async () => {
+        const { importedNote } = await testImport("New note.mermaid", "application/json");
+        expect(importedNote).toMatchObject({
+            mime: "text/vnd.mermaid",
+            type: "mermaid",
+            title: "New note"
+        });
+    });
+
+    it("imports .mmd as mermaid note", async () => {
+        const { importedNote } = await testImport("New note.mmd", "application/json");
+        expect(importedNote).toMatchObject({
+            mime: "text/vnd.mermaid",
+            type: "mermaid",
+            title: "New note"
+        });
+    });
+});

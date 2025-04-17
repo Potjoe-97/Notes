@@ -101,14 +101,21 @@ export const DEFAULT_ALLOWED_TAGS = [
     "tt"
 ];
 
-const TPL = `
-<div class="options-section">
+const TPL = /*html*/`
+<div class="html-import-tags-settings options-section">
+    <style>
+        .html-import-tags-settings .allowed-html-tags {
+            height: 150px;
+            margin-bottom: 12px;
+            font-family: monospace;
+        }
+    </style>
     <h4>${t("import.html_import_tags.title")}</h4>
 
-    <p>${t("import.html_import_tags.description")}</p>
+    <p class="form-text">${t("import.html_import_tags.description")}</p>
 
-    <textarea class="allowed-html-tags form-control" style="height: 150px; font-family: monospace;"
-                placeholder="${t("import.html_import_tags.placeholder")}"></textarea>
+    <textarea class="allowed-html-tags form-control" spellcheck="false"
+              placeholder="${t("import.html_import_tags.placeholder")}"></textarea>
 
     <div>
         <button class="btn btn-sm btn-secondary reset-to-default">

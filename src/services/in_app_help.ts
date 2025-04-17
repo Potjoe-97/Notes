@@ -13,27 +13,27 @@ export function getHelpHiddenSubtreeData() {
     const appDir = path.join(srcRoot, "public", isDev ? "app" : "app-dist");
     const helpDir = path.join(appDir, "doc_notes", "en", "User Guide");
     const metaFilePath = path.join(helpDir, "!!!meta.json");
-    const metaFileContent = JSON.parse(fs.readFileSync(metaFilePath).toString("utf-8"));
 
     try {
-        return parseNoteMetaFile(metaFileContent as NoteMetaFile);
+        return JSON.parse(fs.readFileSync(metaFilePath).toString("utf-8"));
     } catch (e) {
         console.warn(e);
         return [];
     }
 }
 
-function parseNoteMetaFile(noteMetaFile: NoteMetaFile): HiddenSubtreeItem[] {
+export function parseNoteMetaFile(noteMetaFile: NoteMetaFile): HiddenSubtreeItem[] {
     if (!noteMetaFile.files) {
+        console.log("No meta files");
         return [];
     }
 
     const metaRoot = noteMetaFile.files[0];
     const parsedMetaRoot = parseNoteMeta(metaRoot, "/" + (metaRoot.dirFileName ?? ""));
-    return parsedMetaRoot.children ?? [];
+    return parsedMetaRoot?.children ?? [];
 }
 
-export function parseNoteMeta(noteMeta: NoteMeta, docNameRoot: string): HiddenSubtreeItem {
+export function parseNoteMeta(noteMeta: NoteMeta, docNameRoot: string): HiddenSubtreeItem | null {
     let iconClass: string = "bx bx-file";
     const item: HiddenSubtreeItem = {
         id: `_help_${noteMeta.noteId}`,
@@ -62,12 +62,15 @@ export function parseNoteMeta(noteMeta: NoteMeta, docNameRoot: string): HiddenSu
                 value: attribute.value
             });
         }
+
+        if (attribute.name === "shareHiddenFromTree") {
+            return null;
+        }
     }
 
     // Handle text notes
     if (noteMeta.type === "text" && noteMeta.dataFileName) {
-        const docPath = `${docNameRoot}/${path.basename(noteMeta.dataFileName, ".html")}`
-            .substring(1);
+        const docPath = `${docNameRoot}/${path.basename(noteMeta.dataFileName, ".html")}`.substring(1);
         item.attributes?.push({
             type: "label",
             name: "docName",
@@ -84,8 +87,11 @@ export function parseNoteMeta(noteMeta: NoteMeta, docNameRoot: string): HiddenSu
     if (noteMeta.children) {
         const children: HiddenSubtreeItem[] = [];
         for (const childMeta of noteMeta.children) {
-            let newDocNameRoot = (noteMeta.dirFileName ? `${docNameRoot}/${noteMeta.dirFileName}` : docNameRoot);
-            children.push(parseNoteMeta(childMeta, newDocNameRoot));
+            let newDocNameRoot = noteMeta.dirFileName ? `${docNameRoot}/${noteMeta.dirFileName}` : docNameRoot;
+            const item = parseNoteMeta(childMeta, newDocNameRoot);
+            if (item) {
+                children.push(item);
+            }
         }
 
         item.children = children;

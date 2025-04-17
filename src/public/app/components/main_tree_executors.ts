@@ -1,4 +1,4 @@
-import appContext from "./app_context.js";
+import appContext, { type EventData } from "./app_context.js";
 import noteCreateService from "../services/note_create.js";
 import treeService from "../services/tree.js";
 import hoistedNoteService from "../services/hoisted_note.js";
@@ -10,26 +10,33 @@ import Component from "./component.js";
  * must be at the root of the component tree.
  */
 export default class MainTreeExecutors extends Component {
+    /**
+     * On mobile it will be `undefined`.
+     */
     get tree() {
         return appContext.noteTreeWidget;
     }
 
-    async cloneNotesToCommand() {
-        if (!this.tree) {
-            return;
+    async cloneNotesToCommand({ selectedOrActiveNoteIds }: EventData<"cloneNotesTo">) {
+        if (!selectedOrActiveNoteIds && this.tree) {
+            selectedOrActiveNoteIds = this.tree.getSelectedOrActiveNodes().map((node) => node.data.noteId);
         }
 
-        const selectedOrActiveNoteIds = this.tree.getSelectedOrActiveNodes().map((node) => node.data.noteId);
+        if (!selectedOrActiveNoteIds) {
+            return;
+        }
 
         this.triggerCommand("cloneNoteIdsTo", { noteIds: selectedOrActiveNoteIds });
     }
 
-    async moveNotesToCommand() {
-        if (!this.tree) {
-            return;
+    async moveNotesToCommand({ selectedOrActiveBranchIds }: EventData<"moveNotesTo">) {
+        if (!selectedOrActiveBranchIds && this.tree) {
+            selectedOrActiveBranchIds = this.tree.getSelectedOrActiveNodes().map((node) => node.data.branchId);
         }
 
-        const selectedOrActiveBranchIds = this.tree.getSelectedOrActiveNodes().map((node) => node.data.branchId);
+        if (!selectedOrActiveBranchIds) {
+            return;
+        }
 
         this.triggerCommand("moveBranchIdsTo", { branchIds: selectedOrActiveBranchIds });
     }

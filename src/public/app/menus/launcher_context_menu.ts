@@ -34,8 +34,8 @@ export default class LauncherContextMenu implements SelectMenuItemEventListener<
 
         const isVisibleRoot = note?.noteId === "_lbVisibleLaunchers";
         const isAvailableRoot = note?.noteId === "_lbAvailableLaunchers";
-        const isVisibleItem = (parentNoteId === "_lbVisibleLaunchers" || parentNoteId === "_lbMobileVisibleLaunchers");
-        const isAvailableItem = (parentNoteId === "_lbAvailableLaunchers" || parentNoteId === "_lbMobileAvailableLaunchers");
+        const isVisibleItem = parentNoteId === "_lbVisibleLaunchers" || parentNoteId === "_lbMobileVisibleLaunchers";
+        const isAvailableItem = parentNoteId === "_lbAvailableLaunchers" || parentNoteId === "_lbMobileAvailableLaunchers";
         const isItem = isVisibleItem || isAvailableItem;
         const canBeDeleted = !note?.noteId.startsWith("_"); // fixed notes can't be deleted
         const canBeReset = !canBeDeleted && note?.isLaunchBarConfig();

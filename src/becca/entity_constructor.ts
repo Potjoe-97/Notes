@@ -6,10 +6,10 @@ import BBlob from "./entities/bblob.js";
 import BBranch from "./entities/bbranch.js";
 import BEtapiToken from "./entities/betapi_token.js";
 import BNote from "./entities/bnote.js";
+import BNoteEmbedding from "./entities/bnote_embedding.js";
 import BOption from "./entities/boption.js";
 import BRecentNote from "./entities/brecent_note.js";
 import BRevision from "./entities/brevision.js";
-import BTask from "./entities/btask.js";
 
 type EntityClass = new (row?: any) => AbstractBeccaEntity<any>;
 
@@ -20,10 +20,10 @@ const ENTITY_NAME_TO_ENTITY: Record<string, ConstructorData<any> & EntityClass> 
     branches: BBranch,
     etapi_tokens: BEtapiToken,
     notes: BNote,
+    note_embeddings: BNoteEmbedding,
     options: BOption,
     recent_notes: BRecentNote,
-    revisions: BRevision,
-    tasks: BTask
+    revisions: BRevision
 };
 
 function getEntityFromEntityName(entityName: keyof typeof ENTITY_NAME_TO_ENTITY) {

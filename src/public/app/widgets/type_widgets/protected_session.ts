@@ -2,7 +2,7 @@ import protectedSessionService from "../../services/protected_session.js";
 import TypeWidget from "./type_widget.js";
 import { t } from "../../services/i18n.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="protected-session-password-component note-detail-printable">
     <style>
     .protected-session-password-component {
@@ -20,7 +20,7 @@ const TPL = `
     <form class="protected-session-password-form">
         <div class="form-group">
             <label for="protected-session-password-in-detail">${t("protected_session.enter_password_instruction")}</label>
-            <input id="protected-session-password-in-detail" class="form-control protected-session-password" type="password" autofocus>
+            <input id="protected-session-password-in-detail" class="form-control protected-session-password" type="password" autofocus autocomplete="current-password">
         </div>
 
         <button class="btn btn-primary">${t("protected_session.start_session_button")}</button>

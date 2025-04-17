@@ -22,7 +22,7 @@ import appContext, { type EventData } from "../components/app_context.js";
 import libraryLoader from "../services/library_loader.js";
 import type FNote from "../entities/fnote.js";
 
-const TPL = `<div class="toc-widget">
+const TPL = /*html*/`<div class="toc-widget">
     <style>
         .toc-widget {
             padding: 10px;
@@ -55,8 +55,8 @@ const TPL = `<div class="toc-widget">
 </div>`;
 
 interface Toc {
-    $toc: JQuery<HTMLElement>,
-    headingCount: number
+    $toc: JQuery<HTMLElement>;
+    headingCount: number;
 }
 
 export default class TocWidget extends RightPanelWidget {
@@ -89,8 +89,8 @@ export default class TocWidget extends RightPanelWidget {
             return false;
         }
 
-        const isHelpNote = (this.note.type === "doc" && this.note.noteId.startsWith("_help"));
-        const isTextNote = (this.note.type === "text");
+        const isHelpNote = this.note.type === "doc" && this.note.noteId.startsWith("_help");
+        const isTextNote = this.note.type === "text";
         const isNoteSupported = isTextNote || isHelpNote;
 
         return isNoteSupported
@@ -156,7 +156,7 @@ export default class TocWidget extends RightPanelWidget {
 
         const tocLabelValue = this.tocLabelValue;
 
-        const visible = (tocLabelValue === "" || tocLabelValue === "show") || headingCount >= (options.getInt("minTocHeadings") ?? 0);
+        const visible = tocLabelValue === "" || tocLabelValue === "show" || headingCount >= (options.getInt("minTocHeadings") ?? 0);
         this.toggleInt(visible);
         if (this.noteContext?.viewScope) {
             this.noteContext.viewScope.tocPreviousVisible = visible;
@@ -329,7 +329,7 @@ export default class TocWidget extends RightPanelWidget {
         appContext.triggerEvent("reEvaluateTocWidgetVisibility", { noteId: this.noteId });
     }
 
-    async showTocWidgetEvent({ noteId }: EventData<"showToc">) {
+    async showTocWidgetEvent({ noteId }: EventData<"showTocWidget">) {
         if (this.noteId === noteId) {
             await this.refresh();
             this.triggerCommand("reEvaluateRightPaneVisibility");

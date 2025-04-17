@@ -3,11 +3,11 @@ import toastService from "../../../../services/toast.js";
 import server from "../../../../services/server.js";
 import { t } from "../../../../services/i18n.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("vacuum_database.title")}</h4>
 
-    <p>${t("vacuum_database.description")}</p>
+    <p class="form-text">${t("vacuum_database.description")}</p>
 
     <button class="vacuum-database-button btn btn-secondary">${t("vacuum_database.button_text")}</button>
 </div>`;

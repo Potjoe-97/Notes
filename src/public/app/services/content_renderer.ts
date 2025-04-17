@@ -11,8 +11,11 @@ import FNote from "../entities/fnote.js";
 import FAttachment from "../entities/fattachment.js";
 import imageContextMenuService from "../menus/image_context_menu.js";
 import { applySingleBlockSyntaxHighlight, applySyntaxHighlight } from "./syntax_highlight.js";
-import { loadElkIfNeeded } from "./mermaid.js";
+import { loadElkIfNeeded, postprocessMermaidSvg } from "./mermaid.js";
 import { normalizeMimeTypeForCKEditor } from "./mime_type_definitions.js";
+import renderDoc from "./doc_renderer.js";
+import { t } from "i18next";
+import WheelZoom from 'vanilla-js-wheel-zoom';
 
 let idCounter = 1;
 
@@ -38,7 +41,7 @@ async function getRenderedContent(this: {} | { ctx: string }, entity: FNote | FA
 
     const $renderedContent = $('<div class="rendered-content">');
 
-    if (type === "text") {
+    if (type === "text" || type === "book") {
         await renderText(entity, $renderedContent);
     } else if (type === "code") {
         await renderCode(entity, $renderedContent);
@@ -54,6 +57,9 @@ async function getRenderedContent(this: {} | { ctx: string }, entity: FNote | FA
         await renderService.render(entity, $content);
 
         $renderedContent.append($content);
+    } else if (type === "doc" && "noteId" in entity) {
+        const $content = await renderDoc(entity);
+        $renderedContent.html($content.html());
     } else if (!options.tooltip && type === "protectedSession") {
         const $button = $(`<button class="btn btn-sm"><span class="bx bx-log-in"></span> Enter protected session</button>`).on("click", protectedSessionService.enterProtectedSession);
 
@@ -144,13 +150,19 @@ function renderImage(entity: FNote | FAttachment, $renderedContent: JQuery<HTMLE
     $renderedContent.append($img);
 
     if (options.imageHasZoom) {
-        libraryLoader.requireLibrary(libraryLoader.WHEEL_ZOOM).then(() => {
-            WZoom.create(`#${$img.attr("id")}`, {
-                maxScale: 50,
-                speed: 1.3,
-                zoomOnClick: false
-            });
-        });
+        const initZoom = async () => {
+            const element = document.querySelector(`#${$img.attr("id")}`);
+            if (element) {
+                WheelZoom.create(`#${$img.attr("id")}`, {
+                    maxScale: 50,
+                    speed: 1.3,
+                    zoomOnClick: false
+                });
+            } else {
+                requestAnimationFrame(initZoom);
+            }
+        };
+        initZoom();
     }
 
     imageContextMenuService.setupContextMenu($img);
@@ -195,22 +207,33 @@ function renderFile(entity: FNote | FAttachment, type: string, $renderedContent:
     if (entityType === "notes" && "noteId" in entity) {
         // TODO: we should make this available also for attachments, but there's a problem with "Open externally" support
         //       in attachment list
-        const $downloadButton = $('<button class="file-download btn btn-primary" type="button">Download</button>');
-        const $openButton = $('<button class="file-open btn btn-primary" type="button">Open</button>');
+        const $downloadButton = $(`
+            <button class="file-download btn btn-primary" type="button">
+                <span class="bx bx-download"></span>
+                ${t("file_properties.download")}
+            </button>
+        `);
+
+        const $openButton = $(`
+            <button class="file-open btn btn-primary" type="button">
+                <span class="bx bx-link-external"></span>
+                ${t("file_properties.open")}
+            </button>
+        `);
 
         $downloadButton.on("click", () => openService.downloadFileNote(entity.noteId));
         $openButton.on("click", () => openService.openNoteExternally(entity.noteId, entity.mime));
         // open doesn't work for protected notes since it works through a browser which isn't in protected session
         $openButton.toggle(!entity.isProtected);
 
-        $content.append($('<div style="display: flex; justify-content: space-evenly; margin-top: 5px;">').append($downloadButton).append($openButton));
+        $content.append($('<footer class="file-footer">').append($downloadButton).append($openButton));
     }
 
     $renderedContent.append($content);
 }
 
 async function renderMermaid(note: FNote | FAttachment, $renderedContent: JQuery<HTMLElement>) {
-    await libraryLoader.requireLibrary(libraryLoader.MERMAID);
+    const mermaid = (await import("mermaid")).default;
 
     const blob = await note.getBlob();
     const content = blob?.content || "";
@@ -220,13 +243,13 @@ async function renderMermaid(note: FNote | FAttachment, $renderedContent: JQuery
     const documentStyle = window.getComputedStyle(document.documentElement);
     const mermaidTheme = documentStyle.getPropertyValue("--mermaid-theme");
 
-    mermaid.mermaidAPI.initialize({ startOnLoad: false, theme: mermaidTheme.trim(), securityLevel: "antiscript" });
+    mermaid.mermaidAPI.initialize({ startOnLoad: false, theme: mermaidTheme.trim() as "default", securityLevel: "antiscript" });
 
     try {
-        await loadElkIfNeeded(content);
+        await loadElkIfNeeded(mermaid, content);
         const { svg } = await mermaid.mermaidAPI.render("in-mermaid-graph-" + idCounter++, content);
 
-        $renderedContent.append($(svg));
+        $renderedContent.append($(postprocessMermaidSvg(svg)));
     } catch (e) {
         const $error = $("<p>The diagram could not displayed.</p>");
 
@@ -239,7 +262,7 @@ async function renderMermaid(note: FNote | FAttachment, $renderedContent: JQuery
  * @param {FNote} note
  * @returns {Promise<void>}
  */
-async function renderChildrenList($renderedContent: JQuery<HTMLElement>, note: FNote) {    
+async function renderChildrenList($renderedContent: JQuery<HTMLElement>, note: FNote) {
     let childNoteIds = note.getChildNoteIds();
 
     if (!childNoteIds.length) {

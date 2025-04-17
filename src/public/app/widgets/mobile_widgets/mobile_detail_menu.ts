@@ -6,7 +6,7 @@ import branchService from "../../services/branches.js";
 import treeService from "../../services/tree.js";
 import { t } from "../../services/i18n.js";
 
-const TPL = `<button type="button" class="action-button bx"></button>`;
+const TPL = /*html*/`<button type="button" class="action-button bx"></button>`;
 
 class MobileDetailMenuWidget extends BasicWidget {
     private isHorizontalLayout: boolean;
@@ -24,12 +24,14 @@ class MobileDetailMenuWidget extends BasicWidget {
         this.$widget.on("click", async (e) => {
             const note = appContext.tabManager.getActiveContextNote();
 
-            contextMenu.show({
+            contextMenu.show<"insertChildNote" | "delete" | "showRevisions">({
                 x: e.pageX,
                 y: e.pageY,
                 items: [
-                    { title: t("mobile_detail_menu.insert_child_note"), command: "insertChildNote", uiIcon: "bx bx-plus", enabled: note.type !== "search" },
-                    { title: t("mobile_detail_menu.delete_this_note"), command: "delete", uiIcon: "bx bx-trash", enabled: note.noteId !== "root" }
+                    { title: t("mobile_detail_menu.insert_child_note"), command: "insertChildNote", uiIcon: "bx bx-plus", enabled: note?.type !== "search" },
+                    { title: t("mobile_detail_menu.delete_this_note"), command: "delete", uiIcon: "bx bx-trash", enabled: note?.noteId !== "root" },
+                    { title: "----" },
+                    { title: "Note revisions", command: "showRevisions", uiIcon: "bx bx-history" }
                 ],
                 selectMenuItemHandler: async ({ command }) => {
                     if (command === "insertChildNote") {
@@ -49,8 +51,8 @@ class MobileDetailMenuWidget extends BasicWidget {
                         if (await branchService.deleteNotes([branchId])) {
                             this.triggerCommand("setActiveScreen", { screen: "tree" });
                         }
-                    } else {
-                        throw new Error(t("mobile_detail_menu.error_unrecognized_command", { command }));
+                    } else if (command) {
+                        this.triggerCommand(command);
                     }
                 },
                 forcePositionOnMobile: true

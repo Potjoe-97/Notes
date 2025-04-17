@@ -30,11 +30,11 @@ button.btn.btn-primary:active,
 button.btn.btn-secondary:active,
 button.btn.btn-sm:not(.select-button):active,
 button.btn.btn-success:active {
-    opacity: .85;
+    opacity: 0.85;
     box-shadow: unset;
     background: var(--cmd-button-background-color) !important;
     color: var(--cmd-button-text-color) !important;
-    transform: scale(.95);
+    transform: scale(0.95);
 }
 
 button.btn.btn-primary:disabled,
@@ -57,7 +57,7 @@ button.btn.btn-secondary span.bx,
 button.btn.btn-sm span.bx,
 button.btn.btn-success span.bx {
     color: var(--cmd-button-icon-color);
-    padding-right: .35em;
+    padding-right: 0.35em;
     font-size: 1.2em;
 }
 
@@ -66,12 +66,12 @@ button.btn.btn-primary kbd,
 button.btn.btn-secondary kbd,
 button.btn.btn-sm kbd,
 button.btn.btn-success kbd {
-    margin-left: .5em;
+    margin-left: 0.5em;
     background: var(--cmd-button-keyboard-shortcut-background);
     color: var(--cmd-button-keyboard-shortcut-color);
-    font-size: .6em;
+    font-size: 0.6em;
     text-transform: uppercase;
-    letter-spacing: .5pt;
+    letter-spacing: 0.5pt;
 }
 
 /*
@@ -101,8 +101,8 @@ button.btn.btn-success kbd {
     --icon-button-hover-background: var(--tab-close-button-hover-background);
     --icon-button-hover-color: var(--tab-close-button-hover-color);
     --icon-button-size: 24px;
-    --icon-button-icon-ratio: .8;
-    
+    --icon-button-icon-ratio: 0.8;
+
     border-radius: 50%;
 }
 
@@ -124,7 +124,7 @@ button.btn.btn-success kbd {
 
 :root .icon-action:not(.global-menu-button):active::before,
 :root .tn-tool-button:active::before {
-    transform: scale(.85);
+    transform: scale(0.85);
 }
 
 :root .icon-action:not(.global-menu-button):focus-visible,
@@ -137,7 +137,7 @@ button.btn.btn-success kbd {
  */
 
 input:disabled {
-    opacity: .33;
+    opacity: 0.33;
 }
 
 /* Text boxes */
@@ -190,8 +190,9 @@ textarea:focus,
     outline-offset: 0;
     background: var(--input-focus-background);
     color: var(--input-focus-color);
-    transition: outline-color 50ms linear,
-                outline-offset 200ms ease-out;
+    transition:
+        outline-color 50ms linear,
+        outline-offset 200ms ease-out;
 }
 
 input::placeholder,
@@ -219,6 +220,7 @@ input::selection,
     border-radius: 6px;
     padding-right: 8px;
     color: var(--quick-search-color);
+    flex-wrap: nowrap;
 }
 
 .input-group:hover {
@@ -229,12 +231,12 @@ input::selection,
     outline: 3px solid var(--input-focus-outline-color);
     outline-offset: 0;
     background: var(--input-focus-background);
-    transition: outline-color 50ms linear,
-                outline-offset 200ms ease-out;
+    transition:
+        outline-color 50ms linear,
+        outline-offset 200ms ease-out;
 }
 
-.input-group input
-.input-group input:hover,
+.input-group input .input-group input:hover,
 .input-group input:focus,
 .input-group .form-control,
 .input-group .form-control:hover,
@@ -253,7 +255,7 @@ input::selection,
     --accented-background-color: transparent;
     background: transparent;
     padding: 0 4px;
-    
+
     /* Workaround to set the "color" property. */
     --muted-text-color: var(--input-action-button-color);
 }
@@ -277,7 +279,7 @@ input::selection,
 }
 
 .input-group a.disabled {
-    opacity: .5;
+    opacity: 0.5;
     /* Workaround to set the "background" property. */
     --button-disabled-background-color: transparent;
     --button-disabled-text-color: var(--input-action-button-color);
@@ -290,7 +292,7 @@ input::selection,
 .input-group .input-group-text {
     /* Background color hijack */
     --accented-background-color: transparent;
-    
+
     border: none;
     color: var(--input-placeholder-color);
     user-select: none;
@@ -299,6 +301,24 @@ input::selection,
 
 .input-group .input-group-text:not(button):not(a):not(.bx) {
     font-style: italic;
+}
+
+/*
+    Numeric input with measurement unit as a sufix
+
+    <label class="input-group tn-number-unit-pair">
+        <input ... >
+        <span class="input-group-text">meters</span>
+    </label>
+*/
+
+label.input-group.tn-number-unit-pair {
+    width: fit-content;
+}
+
+label.input-group.tn-number-unit-pair input {
+    width: 120px !important;
+    padding-inline-end: 0;
 }
 
 /* Combo box-like dropdown buttons */
@@ -319,8 +339,7 @@ select.form-control,
     outline: 3px solid transparent;
     outline-offset: 6px;
     padding-right: calc(15px + 1.5rem);
-    background: var(--input-background-color)
-                var(--dropdown-arrow);
+    background: var(--input-background-color) var(--dropdown-arrow);
     color: var(--input-text-color);
     border: unset;
     border-radius: 0.375rem;
@@ -330,8 +349,7 @@ select:hover,
 select.form-select:hover,
 select.form-control:hover,
 .select-button.dropdown-toggle.btn:hover {
-    background: var(--input-hover-background)
-                var(--dropdown-arrow);
+    background: var(--input-hover-background) var(--dropdown-arrow);
     color: var(--input-hover-color);
 }
 
@@ -347,11 +365,11 @@ select.form-control:focus,
     box-shadow: unset;
     outline: 3px solid var(--input-focus-outline-color);
     outline-offset: 0;
-    background: var(--select-focus-background)
-                var(--dropdown-arrow);
+    background: var(--select-focus-background) var(--dropdown-arrow);
     color: var(--select-focus-text-color);
-    transition: outline-color 50ms linear,
-                outline-offset 200ms ease-out;
+    transition:
+        outline-color 50ms linear,
+        outline-offset 200ms ease-out;
 }
 
 option {
@@ -360,7 +378,7 @@ option {
 
 optgroup {
     color: var(--select-group-heading-text-color);
-    font-size: .75em;
+    font-size: 0.75em;
     font-weight: normal;
     font-style: normal;
     line-height: 40px;
@@ -374,9 +392,9 @@ optgroup {
  * </label>
  */
 
- .tn-file-input {
+.tn-file-input {
     position: relative;
-    padding: .375rem 2.25rem .375rem .75rem;
+    padding: 0.375rem 2.25rem 0.375rem 0.75rem;
 }
 
 .tn-file-input input[type="file"] {
@@ -416,19 +434,17 @@ optgroup {
 /* Check boxes and radio buttons */
 
 @supports selector(label:has(*)) {
-
     /* Check box & radio button commons */
 
     /* The parent label */
     label.tn-radio,
     label.tn-checkbox {
         --box-size: 1em;
-        --box-label-gap: .5em;
+        --box-label-gap: 0.5em;
 
         position: relative;
         padding-left: calc(var(--box-size) + var(--box-label-gap)) !important;
         user-select: none;
-
     }
 
     /* The original input */
@@ -455,8 +471,8 @@ optgroup {
         height: var(--box-size);
     }
 
-    label.tn-radio:has(>input[type="radio"]:focus-visible)::before,
-    label.tn-checkbox:has(>input[type="checkbox"]:focus-visible)::before {
+    label.tn-radio:has(> input[type="radio"]:focus-visible)::before,
+    label.tn-checkbox:has(> input[type="checkbox"]:focus-visible)::before {
         outline: 2px solid var(--input-focus-outline-color);
     }
 
@@ -468,14 +484,15 @@ optgroup {
         background: var(--radio-checkbox-background);
     }
 
-    label.tn-checkbox:has(>input[type="checkbox"]:not(:disabled)):hover:before {
+    label.tn-checkbox:has(> input[type="checkbox"]:not(:disabled)):hover:before {
         background: var(--radio-checkbox-hover-background);
     }
 
     @keyframes checkbox-checked {
         from {
             transform: scale(2);
-        } to {
+        }
+        to {
             transform: scale(1);
         }
     }
@@ -484,15 +501,16 @@ optgroup {
     label.tn-checkbox::after {
         mask-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3ctitle%3echeck-bold%3c/title%3e%3cpath d='M9%2c20.42L2.79%2c14.21L5.62%2c11.38L9%2c14.77L18.88%2c4.88L21.71%2c7.71L9%2c20.42Z' /%3e%3c/svg%3e");
         mask-position: center center;
-        mask-size: .95em;
+        mask-size: 0.95em;
         background-color: var(--radio-checkbox-indicator-color);
         transform: scale(0);
         opacity: 0;
-        transition: transform 300ms ease-out,
-                    opacity 300ms linear;
+        transition:
+            transform 300ms ease-out,
+            opacity 300ms linear;
     }
 
-    label.tn-checkbox:has(>input[type="checkbox"]:checked)::after {
+    label.tn-checkbox:has(> input[type="checkbox"]:checked)::after {
         opacity: 1;
         transform: scale(1);
         transition: opacity 100ms ease-in-out;
@@ -511,15 +529,16 @@ optgroup {
         background: var(--radio-checkbox-background);
     }
 
-    label.tn-radio:has(>input[type="radio"]:not(:disabled)):hover::before {
+    label.tn-radio:has(> input[type="radio"]:not(:disabled)):hover::before {
         background: var(--radio-checkbox-hover-background);
     }
 
     @keyframes radio-checked {
         from {
             transform: scale(1.5);
-        } to {
-            transform: scale(.5);
+        }
+        to {
+            transform: scale(0.5);
         }
     }
 
@@ -528,12 +547,13 @@ optgroup {
         background: var(--radio-checkbox-indicator-color);
         transform: scale(0);
         opacity: 0;
-        transition: opacity 300ms linear,
-                    transform 300ms ease-in;
+        transition:
+            opacity 300ms linear,
+            transform 300ms ease-in;
     }
 
-    label.tn-radio:has(>input[type="radio"]:checked)::after {
-        transform: scale(.5);
+    label.tn-radio:has(> input[type="radio"]:checked)::after {
+        transform: scale(0.5);
         opacity: 1;
         transition: opacity 150ms linear;
         animation: radio-checked 200ms ease-out;
@@ -545,14 +565,14 @@ optgroup {
     label.tn-radio:has(> input[type="radio"]:disabled)::after,
     label.tn-checkbox:has(> input[type="checkbox"]:disabled)::before,
     label.tn-checkbox:has(> input[type="checkbox"]:disabled)::after {
-        opacity: .5;
+        opacity: 0.5;
     }
-
 }
 
 /* Switches */
 
-.switch-widget.component {
+.switch-widget.component,
+.note-language-container {
     --icon-button-size: 28px;
 }
 
@@ -571,17 +591,18 @@ body a.tn-link:visited,
 .use-tn-links a,
 .use-tn-links a:visited {
     --background: transparent;
-    
+
     box-shadow: 0 0 0 0 var(--background);
     border-radius: 4px;
     background: var(--background);
-    color: currentColor;
+    color: var(--link-color);
     font-weight: normal;
     text-decoration: underline;
 
-    transition: background-color 200ms ease-out,
-                box-shadow 200ms ease-out,
-                color 300ms ease-out;
+    transition:
+        background-color 200ms ease-out,
+        box-shadow 200ms ease-out,
+        color 300ms ease-out;
 }
 
 body a.tn-link:focus-visible,
@@ -590,15 +611,16 @@ body a.tn-link:focus-visible,
     outline-offset: 2px;
 }
 
-body a.tn-link:hover, 
+body a.tn-link:hover,
 .use-tn-links a:hover {
     box-shadow: 0 0 0 4px var(--link-hover-background);
     --background: var(--link-hover-background);
     color: var(--link-hover-color);
 
-    transition: background-color 100ms ease-in,
-                box-shadow 100ms ease-in,
-                color 150ms ease-in;
+    transition:
+        background-color 100ms ease-in,
+        box-shadow 100ms ease-in,
+        color 150ms ease-in;
 }
 
 a.tn-link.external:not(.no-arrow)::after,
@@ -606,16 +628,18 @@ a.tn-link[href^="http://"]:not(.no-arrow)::after,
 a.tn-link[href^="https://"]:not(.no-arrow)::after,
 .use-tn-links a.external:not(.no-arrow)::after,
 .use-tn-links a[href^="http://"]:not(.no-arrow)::after,
-.use-tn-links a[href^="https://"]:not(.no-arrow)::after {
+.use-tn-links a[href^="https://"]:not(.no-arrow)::after
+{
     display: inline-block;
-    opacity: .5;
+    opacity: 0.5;
 }
 
 @keyframes link-arrow-blink {
     from {
         opacity: 1;
-    } to {
-        opacity: .5;
+    }
+    to {
+        opacity: 0.5;
     }
 }
 
@@ -624,7 +648,8 @@ a.tn-link:hover[href^="http://"]:not(.no-arrow)::after,
 a.tn-link:hover[href^="https://"]:not(.no-arrow)::after,
 .use-tn-links a:hover.external:not(.no-arrow)::after,
 .use-tn-links a:hover[href^="http://"]:not(.no-arrow)::after,
-.use-tn-links a:hover[href^="https://"]:not(.no-arrow)::after {
+.use-tn-links a:hover[href^="https://"]:not(.no-arrow)::after
+{
     animation: link-arrow-blink 500ms linear alternate infinite;
 }
 
@@ -634,4 +659,90 @@ a.tn-link:hover[href^="https://"]:not(.no-arrow)::after,
 
 input[type="range"] {
     background: transparent;
+}
+
+/*
+ * WebKit scrollbars
+ */
+
+:root {
+    --scrollbar-thickness: 10px;
+    --scrollbar-thumb-thickness: 3px;
+    --scrollbar-thumb-hover-thickness: 6px;
+    --scrollbar-start-end-gap: 8px;
+}
+
+/* Scrollbar's body */
+
+::-webkit-scrollbar-track {
+    background-color: var(--scrollbar-background-color);
+}
+
+::-webkit-scrollbar:vertical {
+    width: var(--scrollbar-thickness) !important;
+}
+
+::-webkit-scrollbar:horizontal {
+    height: var(--scrollbar-thickness) !important;
+}
+
+/* Scrollbar's thumb */
+
+::-webkit-scrollbar-thumb {
+    --s-thumb-thickness: var(--scrollbar-thumb-thickness);
+    --s-thumb-color: var(--scrollbar-thumb-color);
+
+    --s-gradient-angle: 90deg;
+    --s-gradient-p1: calc((var(--scrollbar-thickness) - var(--s-thumb-thickness)) / 2);
+    --s-gradient-p2: calc(var(--s-gradient-p1) + var(--s-thumb-thickness));
+
+    border: none !important;
+    background: linear-gradient(var(--s-gradient-angle),
+                                transparent, transparent var(--s-gradient-p1),
+                                var(--s-thumb-color) 0px, var(--s-thumb-color) var(--s-gradient-p2),
+                                transparent 0) !important;
+
+    border-radius: calc(var(--scrollbar-thickness) / 2) !important;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    --s-gradient-angle: 0deg;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    --s-thumb-thickness: var(--scrollbar-thumb-hover-thickness);
+    --s-thumb-color: var(--scrollbar-thumb-hover-color);
+}
+
+/* Scrollbar's increment/decrement buttons (repurposed as a scrollbar start/end gap).
+ * This gap is useful also to avoid breaking the rounded corners of a container when a
+ * custom scrollbar background color is used. */
+
+::-webkit-scrollbar-button:vertical {
+    height: var(--scrollbar-start-end-gap);
+}
+
+::-webkit-scrollbar-button:horizontal {
+    width: var(--scrollbar-start-end-gap);
+}
+
+/*
+ * Firefox scrollbars
+ *
+ * Unsupported features: --scrollbar-thumb-thickness, --scrollbar-thumb-hover-thickness,
+ *                       --scrollbar-start-end-gap, --scrollbar-thumb-hover-color.
+ */
+
+:root {
+    scrollbar-color: var(--scrollbar-thumb-color) transparent;
+    scrollbar-width: var(--scrollbar-thickness);
+}
+
+@supports selector(::-webkit-scrollbar) {
+    /* Prevent the scrollbar-color and scrollbar-width properties to override the custom styles
+     * defined using ::-webkit-scrollbar. */
+    :root {
+        scrollbar-color: unset;
+        scrollbar-width: unset;
+    }
 }

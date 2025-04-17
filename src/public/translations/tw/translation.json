@@ -248,12 +248,12 @@
     "delete_all_button": "刪除所有歷史版本",
     "help_title": "關於筆記歷史版本的幫助",
     "revision_last_edited": "此歷史版本上次編輯於 {{date}}",
-    "confirm_delete_all": "您是否要刪除此筆記的所有歷史版本？此操作將擦除歷史版本的標題和內容，但仍將保留歷史版本的元數據。",
+    "confirm_delete_all": "您是否要刪除此筆記的所有歷史版本？",
     "no_revisions": "此筆記暫無歷史版本...",
-    "restore_button": "恢復此歷史版本",
+    "restore_button": "",
     "confirm_restore": "您是否要恢復此歷史版本？這將使用此歷史版本覆蓋筆記的當前標題和內容。",
-    "delete_button": "刪除此歷史版本",
-    "confirm_delete": "您是否要刪除此歷史版本？此操作將刪除歷史版本的標題和內容，但仍將保留歷史版本的元數據。",
+    "delete_button": "",
+    "confirm_delete": "您是否要刪除此歷史版本？",
     "revisions_deleted": "已刪除筆記歷史版本。",
     "revision_restored": "已恢復筆記歷史版本。",
     "revision_deleted": "已刪除筆記歷史版本。",
@@ -526,7 +526,6 @@
     "to": "到",
     "target_note": "目標筆記",
     "on_all_matched_notes": "在所有匹配的筆記上",
-    "create_given_relation": "如果筆記還沒有關係，則新增給定關係",
     "change_target_note": "或更改現有關係的目標筆記",
     "update_relation_target": "更新關係目標"
   },
@@ -1199,10 +1198,10 @@
   "etapi": {
     "title": "ETAPI",
     "description": "ETAPI 是一個 REST API，用於以編程方式訪問 Trilium 實例，而無需 UI。",
-    "see_more": "更多詳情見",
+    "see_more": "",
     "wiki": "維基",
-    "and": "和",
     "openapi_spec": "ETAPI OpenAPI 規範",
+    "swagger_ui": "",
     "create_token": "新增新的 ETAPI 令牌",
     "existing_tokens": "現有令牌",
     "no_tokens_yet": "目前還沒有令牌。點擊上面的按鈕新增一個。",
@@ -1398,9 +1397,6 @@
   "highlights_list_2": {
     "title": "高亮列表",
     "options": "選項"
-  },
-  "mermaid": {
-    "diagram_error": "圖表無法顯示。 請參考 <a href=\"https://mermaid-js.github.io/mermaid/#/flowchart?id=graph\">幫助文檔和示例</a>。"
   },
   "quick-search": {
     "placeholder": "快速搜尋",

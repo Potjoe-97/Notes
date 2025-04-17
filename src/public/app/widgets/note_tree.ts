@@ -25,8 +25,10 @@ import type FNote from "../entities/fnote.js";
 import type { NoteType } from "../entities/fnote.js";
 import type { AttributeRow, BranchRow } from "../services/load_results.js";
 import type { SetNoteOpts } from "../components/note_context.js";
+import type { TouchBarItem } from "../components/touch_bar.js";
+import type { TreeCommandNames } from "../menus/tree_context_menu.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="tree-wrapper">
     <style>
     .tree-wrapper {
@@ -159,11 +161,11 @@ interface CreateLauncherResponse {
     message: string;
     note: {
         noteId: string;
-    }
+    };
 }
 
 interface ExpandedSubtreeResponse {
-    branchIds: string[]
+    branchIds: string[];
 }
 
 interface Node extends Fancytree.NodeData {
@@ -180,7 +182,6 @@ interface RefreshContext {
 }
 
 export default class NoteTreeWidget extends NoteContextAwareWidget {
-
     private $tree!: JQuery<HTMLElement>;
     private $treeActions!: JQuery<HTMLElement>;
     private $treeSettingsButton!: JQuery<HTMLElement>;
@@ -419,16 +420,19 @@ export default class NoteTreeWidget extends NoteContextAwareWidget {
                 // click event won't propagate so let's close context menu manually
                 contextMenu.hide();
 
+                // hide all dropdowns, fix calendar widget dropdown doesn't close when click on a note
+                $('.dropdown-menu').parent('.dropdown').find('[data-bs-toggle="dropdown"]').dropdown('hide');
+
                 this.clearSelectedNodes();
 
                 const notePath = treeService.getNotePath(data.node);
 
                 const activeNoteContext = appContext.tabManager.getActiveContext();
                 const opts: SetNoteOpts = {};
-                if (activeNoteContext.viewScope?.viewMode === "contextual-help") {
+                if (activeNoteContext?.viewScope?.viewMode === "contextual-help") {
                     opts.viewScope = activeNoteContext.viewScope;
                 }
-                await activeNoteContext.setNote(notePath, opts);
+                await activeNoteContext?.setNote(notePath, opts);
             },
             expand: (event, data) => this.setExpanded(data.node.data.branchId, true),
             collapse: (event, data) => this.setExpanded(data.node.data.branchId, false),
@@ -571,10 +575,13 @@ export default class NoteTreeWidget extends NoteContextAwareWidget {
             clones: {
                 highlightActiveClones: true
             },
-            enhanceTitle: async function (event: Event, data: {
-                node: Fancytree.FancytreeNode;
-                noteId: string;
-            }) {
+            enhanceTitle: async function (
+                event: Event,
+                data: {
+                    node: Fancytree.FancytreeNode;
+                    noteId: string;
+                }
+            ) {
                 const node = data.node;
 
                 if (!node.data.noteId) {
@@ -617,10 +624,10 @@ export default class NoteTreeWidget extends NoteContextAwareWidget {
 
                 // TODO: Deduplicate with server's notes.ts#getAndValidateParent
                 if (!["search", "launcher"].includes(note.type)
-                        && !note.isOptions()
-                        && !note.isLaunchBarConfig()
-                        && !note.noteId.startsWith("_help")
-                    ) {
+                    && !note.isOptions()
+                    && !note.isLaunchBarConfig()
+                    && !note.noteId.startsWith("_help")
+                ) {
                     const $createChildNoteButton = $(`<span class="tree-item-button add-note-button bx bx-plus" title="${t("note_tree.create-child-note")}"></span>`).on(
                         "click",
                         cancelClickPropagation
@@ -1681,7 +1688,7 @@ export default class NoteTreeWidget extends NoteContextAwareWidget {
         this.triggerCommand("showImportDialog", { noteId: node.data.noteId });
     }
 
-    editNoteTitleCommand({ node }: CommandListenerData<"editNoteTitle">) {
+    editNoteTitleCommand() {
         appContext.triggerCommand("focusOnTitle");
     }
 
@@ -1756,6 +1763,40 @@ export default class NoteTreeWidget extends NoteContextAwareWidget {
 
         await ws.waitForMaxKnownEntityChangeId();
 
-        appContext.tabManager.getActiveContext().setNote(resp.note.noteId);
+        appContext.tabManager.getActiveContext()?.setNote(resp.note.noteId);
+    }
+
+    buildTouchBarCommand({ TouchBar, buildIcon }: CommandListenerData<"buildTouchBar">) {
+        const triggerCommand = (command: TreeCommandNames) => {
+            const node = this.getActiveNode();
+            const notePath = treeService.getNotePath(node);
+
+            this.triggerCommand<TreeCommandNames>(command, {
+                node,
+                notePath,
+                noteId: node.data.noteId,
+                selectedOrActiveBranchIds: this.getSelectedOrActiveBranchIds(node),
+                selectedOrActiveNoteIds: this.getSelectedOrActiveNoteIds(node)
+            });
+        }
+
+        const items: TouchBarItem[] = [
+            new TouchBar.TouchBarButton({
+                icon: buildIcon("NSImageNameTouchBarAddTemplate"),
+                click: () => {
+                    const node = this.getActiveNode();
+                    const notePath = treeService.getNotePath(node);
+                    noteCreateService.createNote(notePath, {
+                        isProtected: node.data.isProtected
+                    });
+                }
+            }),
+            new TouchBar.TouchBarButton({
+                icon: buildIcon("NSImageNameTouchBarDeleteTemplate"),
+                click: () => triggerCommand("deleteNotes")
+            })
+        ];
+
+        return items;
     }
 }

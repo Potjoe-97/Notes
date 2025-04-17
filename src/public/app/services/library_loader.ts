@@ -42,38 +42,9 @@ const CODE_MIRROR: Library = {
     css: ["node_modules/codemirror/lib/codemirror.css", "node_modules/codemirror/addon/lint/lint.css"]
 };
 
-const ESLINT: Library = {
-    js: ["libraries/eslint/eslint.js"]
-};
-
-const RELATION_MAP: Library = {
-    js: ["node_modules/jsplumb/dist/js/jsplumb.min.js", "node_modules/panzoom/dist/panzoom.min.js"],
-    css: ["stylesheets/relation_map.css"]
-};
-
-const CALENDAR_WIDGET: Library = {
-    css: ["stylesheets/calendar.css"]
-};
-
 const KATEX: Library = {
     js: ["node_modules/katex/dist/katex.min.js", "node_modules/katex/dist/contrib/mhchem.min.js", "node_modules/katex/dist/contrib/auto-render.min.js"],
     css: ["node_modules/katex/dist/katex.min.css"]
-};
-
-const WHEEL_ZOOM: Library = {
-    js: ["node_modules/vanilla-js-wheel-zoom/dist/wheel-zoom.min.js"]
-};
-
-const MERMAID: Library = {
-    js: ["node_modules/mermaid/dist/mermaid.min.js"]
-};
-
-const MARKJS: Library = {
-    js: ["node_modules/mark.js/dist/jquery.mark.es6.min.js"]
-};
-
-const I18NEXT: Library = {
-    js: ["node_modules/i18next/i18next.min.js", "node_modules/i18next-http-backend/i18nextHttpBackend.min.js"]
 };
 
 const HIGHLIGHT_JS: Library = {
@@ -102,23 +73,23 @@ const HIGHLIGHT_JS: Library = {
     }
 };
 
-const LEAFLET: Library = {
-    css: [ "node_modules/leaflet/dist/leaflet.css" ],
-}
-
 async function requireLibrary(library: Library) {
     if (library.css) {
         library.css.map((cssUrl) => requireCss(cssUrl));
     }
 
     if (library.js) {
-        for (const scriptUrl of unwrapValue(library.js)) {
+        for (const scriptUrl of await unwrapValue(library.js)) {
             await requireScript(scriptUrl);
         }
     }
 }
 
-function unwrapValue<T>(value: T | (() => T)) {
+async function unwrapValue<T>(value: T | (() => T) | Promise<(() => T)>) {
+    if (value && typeof value === "object" && "then" in value) {
+        return (await (value as Promise<() => T>))();
+    }
+
     if (typeof value === "function") {
         return (value as () => T)();
     }
@@ -187,14 +158,6 @@ export default {
     loadHighlightingTheme,
     CKEDITOR,
     CODE_MIRROR,
-    ESLINT,
-    RELATION_MAP,
-    CALENDAR_WIDGET,
     KATEX,
-    WHEEL_ZOOM,
-    MERMAID,
-    MARKJS,
-    I18NEXT,
-    HIGHLIGHT_JS,
-    LEAFLET
+    HIGHLIGHT_JS
 };

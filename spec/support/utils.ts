@@ -30,8 +30,11 @@
  * @param strings
  * @returns
  */
-export function trimIndentation(strings: TemplateStringsArray) {
-    const str = strings.toString();
+export function trimIndentation(strings: TemplateStringsArray, ...values: any[]) {
+    // Combine the strings with the values using interpolation
+    let str = strings.reduce((acc, curr, index) => {
+        return acc + curr + (values[index] !== undefined ? values[index] : '');
+    }, '');
 
     // Count the number of spaces on the first line.
     let numSpaces = 0;

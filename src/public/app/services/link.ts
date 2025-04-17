@@ -198,7 +198,7 @@ function calculateHash({ notePath, ntxId, hoistedNoteId, viewScope = {} }: NoteC
     return hash;
 }
 
-function parseNavigationStateFromUrl(url: string | undefined) {
+export function parseNavigationStateFromUrl(url: string | undefined) {
     if (!url) {
         return {};
     }
@@ -209,11 +209,7 @@ function parseNavigationStateFromUrl(url: string | undefined) {
     }
 
     const hash = url.substr(hashIdx + 1); // strip also the initial '#'
-    const [notePath, paramString] = hash.split("?");
-
-    if (!notePath.match(/^[_a-z0-9]{4,}(\/[_a-z0-9]{4,})*$/i)) {
-        return {};
-    }
+    let [notePath, paramString] = hash.split("?");
 
     const viewScope: ViewScope = {
         viewMode: "default"
@@ -242,6 +238,14 @@ function parseNavigationStateFromUrl(url: string | undefined) {
         }
     }
 
+    if (searchString) {
+        return { searchString }
+    }
+
+    if (!notePath.match(/^[_a-z0-9]{4,}(\/[_a-z0-9]{4,})*$/i)) {
+        return {};
+    }
+
     return {
         notePath,
         noteId: treeService.getNoteIdFromUrl(notePath),
@@ -252,7 +256,7 @@ function parseNavigationStateFromUrl(url: string | undefined) {
     };
 }
 
-function goToLink(evt: MouseEvent | JQuery.ClickEvent) {
+function goToLink(evt: MouseEvent | JQuery.ClickEvent | JQuery.MouseDownEvent) {
     const $link = $(evt.target as any).closest("a,.block-link");
     const hrefLink = $link.attr("href") || $link.attr("data-href");
 
@@ -274,13 +278,22 @@ function goToLinkExt(evt: MouseEvent | JQuery.ClickEvent | JQuery.MouseDownEvent
     const { notePath, viewScope } = parseNavigationStateFromUrl(hrefLink);
 
     const ctrlKey = utils.isCtrlKey(evt);
-    const isLeftClick = ("which" in evt && evt.which === 1);
-    const isMiddleClick = ("which" in evt && evt.which === 2);
-    const openInNewTab = (isLeftClick && ctrlKey) || isMiddleClick;
+    const shiftKey = evt.shiftKey;
+    const isLeftClick = "which" in evt && evt.which === 1;
+    const isMiddleClick = "which" in evt && evt.which === 2;
+    const targetIsBlank = ($link?.attr("target") === "_blank");
+    const openInNewTab = (isLeftClick && ctrlKey) || isMiddleClick || targetIsBlank;
+    const activate = (isLeftClick && ctrlKey && shiftKey) || (isMiddleClick && shiftKey);
+    const openInNewWindow = isLeftClick && evt.shiftKey && !ctrlKey;
 
     if (notePath) {
-        if (openInNewTab) {
-            appContext.tabManager.openTabWithNoteWithHoisting(notePath, { viewScope });
+        if (openInNewWindow) {
+            appContext.triggerCommand("openInWindow", { notePath, viewScope });
+        } else if (openInNewTab) {
+            appContext.tabManager.openTabWithNoteWithHoisting(notePath, {
+                activate: activate ? true : targetIsBlank,
+                viewScope
+            });
         } else if (isLeftClick) {
             const ntxId = $(evt.target as any)
                 .closest("[data-ntx-id]")
@@ -288,11 +301,15 @@ function goToLinkExt(evt: MouseEvent | JQuery.ClickEvent | JQuery.MouseDownEvent
 
             const noteContext = ntxId ? appContext.tabManager.getNoteContextById(ntxId) : appContext.tabManager.getActiveContext();
 
-            noteContext.setNote(notePath, { viewScope }).then(() => {
-                if (noteContext !== appContext.tabManager.getActiveContext()) {
-                    appContext.tabManager.activateNoteContext(noteContext.ntxId);
-                }
-            });
+            if (noteContext) {
+                noteContext.setNote(notePath, { viewScope }).then(() => {
+                    if (noteContext !== appContext.tabManager.getActiveContext()) {
+                        appContext.tabManager.activateNoteContext(noteContext.ntxId);
+                    }
+                });
+            } else {
+                appContext.tabManager.openContextWithNote(notePath, { viewScope, activate: true });
+            }
         }
     } else if (hrefLink) {
         const withinEditLink = $link?.hasClass("ck-link-actions__preview");

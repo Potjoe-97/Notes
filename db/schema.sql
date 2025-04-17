@@ -126,6 +126,19 @@ CREATE TABLE IF NOT EXISTS "attachments"
     utcDateScheduledForErasureSince TEXT DEFAULT NULL,
     isDeleted    INT  not null,
     deleteId    TEXT DEFAULT NULL);
+CREATE TABLE IF NOT EXISTS "user_data"
+(
+    tmpID INT,
+    username TEXT,
+    email TEXT,
+    userIDEncryptedDataKey TEXT,
+    userIDVerificationHash TEXT,
+    salt TEXT,
+    derivedKey TEXT,
+    isSetup TEXT DEFAULT "false",
+    UNIQUE (tmpID),
+    PRIMARY KEY (tmpID)
+);
 CREATE INDEX IDX_attachments_ownerId_role
     on attachments (ownerId, role);
 
@@ -133,13 +146,44 @@ CREATE INDEX IDX_notes_blobId on notes (blobId);
 CREATE INDEX IDX_revisions_blobId on revisions (blobId);
 CREATE INDEX IDX_attachments_blobId on attachments (blobId);
 
-CREATE TABLE IF NOT EXISTS "tasks"
-(
-	"taskId"	TEXT NOT NULL PRIMARY KEY,
-	"parentNoteId"	TEXT NOT NULL,
-	"title"	TEXT NOT NULL DEFAULT "",
-	"dueDate"	INTEGER,
-	"isDone"	INTEGER NOT NULL DEFAULT 0,
-	"isDeleted"	INTEGER NOT NULL DEFAULT 0,
-	"utcDateModified"	TEXT NOT NULL
+CREATE TABLE IF NOT EXISTS "note_embeddings" (
+    "embedId" TEXT NOT NULL PRIMARY KEY,
+    "noteId" TEXT NOT NULL,
+    "providerId" TEXT NOT NULL,
+    "modelId" TEXT NOT NULL,
+    "dimension" INTEGER NOT NULL,
+    "embedding" BLOB NOT NULL,
+    "version" INTEGER NOT NULL DEFAULT 1,
+    "dateCreated" TEXT NOT NULL,
+    "utcDateCreated" TEXT NOT NULL,
+    "dateModified" TEXT NOT NULL,
+    "utcDateModified" TEXT NOT NULL
+);
+
+CREATE INDEX "IDX_note_embeddings_noteId" ON "note_embeddings" ("noteId");
+CREATE INDEX "IDX_note_embeddings_providerId_modelId" ON "note_embeddings" ("providerId", "modelId");
+
+CREATE TABLE IF NOT EXISTS "embedding_queue" (
+    "noteId" TEXT NOT NULL PRIMARY KEY,
+    "operation" TEXT NOT NULL,
+    "dateQueued" TEXT NOT NULL,
+    "utcDateQueued" TEXT NOT NULL,
+    "priority" INTEGER NOT NULL DEFAULT 0,
+    "attempts" INTEGER NOT NULL DEFAULT 0,
+    "lastAttempt" TEXT NULL,
+    "error" TEXT NULL,
+    "failed" INTEGER NOT NULL DEFAULT 0,
+    "isProcessing" INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS "embedding_providers" (
+    "providerId" TEXT NOT NULL PRIMARY KEY,
+    "name" TEXT NOT NULL,
+    "isEnabled" INTEGER NOT NULL DEFAULT 0,
+    "priority" INTEGER NOT NULL DEFAULT 0,
+    "config" TEXT NOT NULL,
+    "dateCreated" TEXT NOT NULL,
+    "utcDateCreated" TEXT NOT NULL,
+    "dateModified" TEXT NOT NULL,
+    "utcDateModified" TEXT NOT NULL
 );

@@ -1,5 +1,3 @@
-"use strict";
-
 import ini from "ini";
 import fs from "fs";
 import dataDir from "./data_dir.js";
@@ -31,15 +29,22 @@ export interface TriliumConfig {
         certPath: string;
         keyPath: string;
         trustedReverseProxy: boolean | string;
+        corsAllowOrigin: string;
+        corsAllowMethods: string;
+        corsAllowHeaders: string;
     };
     Session: {
-        cookiePath: string;
         cookieMaxAge: number;
-    }
+    };
     Sync: {
         syncServerHost: string;
         syncServerTimeout: string;
         syncProxy: string;
+    };
+    MultiFactorAuthentication: {
+        oauthBaseUrl: string;
+        oauthClientId: string;
+        oauthClientSecret: string;
     };
 }
 
@@ -50,13 +55,13 @@ const config: TriliumConfig = {
         instanceName:
             process.env.TRILIUM_GENERAL_INSTANCENAME || iniConfig.General.instanceName || "",
 
-        noAuthentication: 
+        noAuthentication:
             envToBoolean(process.env.TRILIUM_GENERAL_NOAUTHENTICATION) || iniConfig.General.noAuthentication || false,
 
-        noBackup: 
+        noBackup:
             envToBoolean(process.env.TRILIUM_GENERAL_NOBACKUP) || iniConfig.General.noBackup || false,
 
-        noDesktopIcon: 
+        noDesktopIcon:
             envToBoolean(process.env.TRILIUM_GENERAL_NODESKTOPICON) || iniConfig.General.noDesktopIcon || false
     },
 
@@ -67,23 +72,29 @@ const config: TriliumConfig = {
         port:
             process.env.TRILIUM_NETWORK_PORT || iniConfig.Network.port || "3000",
 
-        https: 
+        https:
             envToBoolean(process.env.TRILIUM_NETWORK_HTTPS) || iniConfig.Network.https || false,
 
-        certPath: 
+        certPath:
             process.env.TRILIUM_NETWORK_CERTPATH || iniConfig.Network.certPath || "",
 
-        keyPath: 
-            process.env.TRILIUM_NETWORK_KEYPATH  || iniConfig.Network.keyPath || "",
+        keyPath:
+            process.env.TRILIUM_NETWORK_KEYPATH || iniConfig.Network.keyPath || "",
 
         trustedReverseProxy:
-            process.env.TRILIUM_NETWORK_TRUSTEDREVERSEPROXY || iniConfig.Network.trustedReverseProxy || false
+            process.env.TRILIUM_NETWORK_TRUSTEDREVERSEPROXY || iniConfig.Network.trustedReverseProxy || false,
+
+        corsAllowOrigin:
+            process.env.TRILIUM_NETWORK_CORS_ALLOW_ORIGIN || iniConfig.Network.corsAllowOrigin || "",
+
+        corsAllowMethods:
+            process.env.TRILIUM_NETWORK_CORS_ALLOW_METHODS || iniConfig.Network.corsAllowMethods || "",
+
+        corsAllowHeaders:
+            process.env.TRILIUM_NETWORK_CORS_ALLOW_HEADERS || iniConfig.Network.corsAllowHeaders || ""
     },
 
     Session: {
-        cookiePath:
-            process.env.TRILIUM_SESSION_COOKIEPATH || iniConfig?.Session?.cookiePath || "/",
-
         cookieMaxAge:
             parseInt(String(process.env.TRILIUM_SESSION_COOKIEMAXAGE)) || parseInt(iniConfig?.Session?.cookieMaxAge) || 21 * 24 * 60 * 60 // 21 Days in Seconds
     },
@@ -98,8 +109,18 @@ const config: TriliumConfig = {
         syncProxy:
             // additionally checking in iniConfig for inconsistently named syncProxy for backwards compatibility
             process.env.TRILIUM_SYNC_SERVER_PROXY || iniConfig?.Sync?.syncProxy || iniConfig?.Sync?.syncServerProxy || ""
-    }
+    },
 
+    MultiFactorAuthentication: {
+        oauthBaseUrl:
+            process.env.TRILIUM_OAUTH_BASE_URL || iniConfig?.MultiFactorAuthentication?.oauthBaseUrl || "",
+
+        oauthClientId:
+            process.env.TRILIUM_OAUTH_CLIENT_ID || iniConfig?.MultiFactorAuthentication?.oauthClientId || "",
+
+        oauthClientSecret:
+            process.env.TRILIUM_OAUTH_CLIENT_SECRET || iniConfig?.MultiFactorAuthentication?.oauthClientSecret || ""
+    }
 };
 
 export default config;

@@ -13,7 +13,7 @@ import type FNote from "../../entities/fnote.js";
 import type { NoteType } from "../../entities/fnote.js";
 import { Dropdown, Modal } from "bootstrap";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="revisions-dialog modal fade mx-auto" tabindex="-1" role="dialog">
     <style>
         .revisions-dialog .revision-content-wrapper {
@@ -188,6 +188,7 @@ export default class RevisionsDialog extends BasicWidget {
     }
 
     async loadRevisions(noteId: string) {
+        this.$title.empty();
         this.$list.empty();
         this.$content.empty();
         this.$titleButtons.empty();
@@ -247,7 +248,12 @@ export default class RevisionsDialog extends BasicWidget {
     renderContentButtons(revisionItem: RevisionItem) {
         this.$titleButtons.empty();
 
-        const $restoreRevisionButton = $(`<button class="btn btn-sm" type="button">${t("revisions.restore_button")}</button>`);
+        const $restoreRevisionButton = $(`
+            <button class="btn btn-sm" type="button">
+                <span class="bx bx-history"></span>
+                ${t("revisions.restore_button")}
+            </button>
+        `);
 
         $restoreRevisionButton.on("click", async () => {
             const text = t("revisions.confirm_restore");
@@ -261,7 +267,12 @@ export default class RevisionsDialog extends BasicWidget {
             }
         });
 
-        const $eraseRevisionButton = $(`<button class="btn btn-sm" type="button">${t("revisions.delete_button")}</button>`);
+        const $eraseRevisionButton = $(`
+            <button class="btn btn-sm" type="button">
+                <span class="bx bx-trash"></span>
+                ${t("revisions.delete_button")}
+            </button>
+        `);
 
         $eraseRevisionButton.on("click", async () => {
             const text = t("revisions.confirm_delete");
@@ -281,7 +292,12 @@ export default class RevisionsDialog extends BasicWidget {
 
         this.$titleButtons.append($eraseRevisionButton).append(" &nbsp; ");
 
-        const $downloadButton = $(`<button class="btn btn-sm btn-primary" type="button">${t("revisions.download_button")}</button>`);
+        const $downloadButton = $(`
+            <button class="btn btn-sm btn-primary" type="button">
+                <span class="bx bx-download"></span>
+                ${t("revisions.download_button")}
+            </button>
+        `);
 
         $downloadButton.on("click", () => openService.downloadRevision(revisionItem.noteId, revisionItem.revisionId));
 
@@ -305,14 +321,14 @@ export default class RevisionsDialog extends BasicWidget {
             }
         } else if (revisionItem.type === "code") {
             this.$content.html($("<pre>")
-                .text(fullRevision.content).html());
+                .text(fullRevision.content).prop("outerHTML"));
         } else if (revisionItem.type === "image") {
             if (fullRevision.mime === "image/svg+xml") {
                 let encodedSVG = encodeURIComponent(fullRevision.content); //Base64 of other format images may be embedded in svg
                 this.$content.html($("<img>")
                     .attr("src", `data:${fullRevision.mime};utf8,${encodedSVG}`)
                     .css("max-width", "100%")
-                    .css("max-height", "100%").html());
+                    .css("max-height", "100%").prop("outerHTML"));
             } else {
                 this.$content.html(
                     $("<img>")
@@ -320,7 +336,8 @@ export default class RevisionsDialog extends BasicWidget {
                         // as a URL to be used in a note. Instead, if they copy and paste it into a note, it will be uploaded as a new note
                         .attr("src", `data:${fullRevision.mime};base64,${fullRevision.content}`)
                         .css("max-width", "100%")
-                        .css("max-height", "100%").html()
+                        .css("max-height", "100%")
+                        .prop("outerHTML")
                 );
             }
         } else if (revisionItem.type === "file") {
@@ -339,7 +356,7 @@ export default class RevisionsDialog extends BasicWidget {
                 );
             }
 
-            this.$content.html($table.html());
+            this.$content.html($table.prop("outerHTML"));
         } else if (["canvas", "mindMap"].includes(revisionItem.type)) {
             const encodedTitle = encodeURIComponent(revisionItem.title);
 
@@ -347,7 +364,7 @@ export default class RevisionsDialog extends BasicWidget {
                 $("<img>")
                     .attr("src", `api/revisions/${revisionItem.revisionId}/image/${encodedTitle}?${Math.random()}`)
                     .css("max-width", "100%")
-                .html());
+                    .prop("outerHTML"));
         } else if (revisionItem.type === "mermaid") {
             const encodedTitle = encodeURIComponent(revisionItem.title);
 
@@ -355,7 +372,7 @@ export default class RevisionsDialog extends BasicWidget {
                 $("<img>")
                     .attr("src", `api/revisions/${revisionItem.revisionId}/image/${encodedTitle}?${Math.random()}`)
                     .css("max-width", "100%")
-                .html());
+                    .prop("outerHTML"));
 
             this.$content.append($("<pre>").text(fullRevision.content));
         } else {

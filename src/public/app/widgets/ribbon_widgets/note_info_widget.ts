@@ -6,7 +6,7 @@ import utils from "../../services/utils.js";
 import type { EventData } from "../../components/app_context.js";
 import type FNote from "../../entities/fnote.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="note-info-widget">
     <style>
         .note-info-widget {

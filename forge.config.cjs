@@ -1,16 +1,24 @@
 const path = require("path");
 const fs = require("fs-extra");
+const { execSync } = require("child_process");
 
 const APP_NAME = "TriliumNext Notes";
+const BIN_PATH = path.normalize("./bin/electron-forge");
 
 const extraResourcesForPlatform = getExtraResourcesForPlatform();
 const baseLinuxMakerConfigOptions = {
   icon: "./images/app-icons/png/128x128.png",
-  desktopTemplate: path.resolve("./bin/electron-forge/desktop.ejs"),
+  desktopTemplate: path.resolve(path.join(BIN_PATH, "desktop.ejs")),
   categories: ["Office", "Utility"]
 };
+const windowsSignConfiguration = process.env.WINDOWS_SIGN_EXECUTABLE ? {
+    hookModulePath: path.join(BIN_PATH, "sign-windows.cjs")
+} : undefined;
 
 module.exports = {
+    // we run electron-forge inside the ./build folder,
+    // to have it output to ./dist, we need to go up a directory first
+    outDir: "../dist",
     packagerConfig: {
         executableName: "trilium",
         name: APP_NAME,
@@ -23,6 +31,7 @@ module.exports = {
             appleIdPassword: process.env.APPLE_ID_PASSWORD,
             teamId: process.env.APPLE_TEAM_ID
         },
+        windowsSign: windowsSignConfiguration,
         extraResource: [
             // All resources should stay in Resources directory for macOS
             ...(process.platform === "darwin" ? [] : extraResourcesForPlatform),
@@ -30,6 +39,22 @@ module.exports = {
             // These always go in Resources
             "translations/",
             "node_modules/@highlightjs/cdn-assets/styles"
+        ],
+        afterPrune: [
+            (buildPath, _electronVersion, _platform, _arch, callback) => {
+                // buildPath is a temporary directory that electron-packager creates - it's in the form of
+                // /tmp/electron-packager/tmp-SjJl0s/resources/app
+                try {
+                    const cleanupNodeModulesScript = path.join(buildPath, "bin", "cleanupNodeModules.ts");
+                    // we don't have access to any devDeps like 'tsx' here, so use the built-in '--experimental-strip-types' flag instead
+                    const command = `node --experimental-strip-types ${cleanupNodeModulesScript} "${buildPath}" --skip-prune-dev-deps`;
+                    // execSync throws, if above returns any non-zero exit code
+                    execSync(command);
+                    callback()
+                } catch(err) {
+                    callback(err)
+                }
+            }
         ],
         afterComplete: [
             (buildPath, _electronVersion, platform, _arch, callback) => {
@@ -102,7 +127,8 @@ module.exports = {
             config: {
                 iconUrl: "https://raw.githubusercontent.com/TriliumNext/Notes/develop/images/app-icons/icon.ico",
                 setupIcon: "./images/app-icons/win/setup.ico",
-                loadingGif: "./images/app-icons/win/setup-banner.gif"
+                loadingGif: "./images/app-icons/win/setup-banner.gif",
+                windowsSign: windowsSignConfiguration
             }
         },
         {
@@ -126,11 +152,37 @@ module.exports = {
             name: "@electron-forge/plugin-auto-unpack-natives",
             config: {}
         }
-    ]
+    ],
+    hooks: {
+        postMake(_, makeResults) {
+            const outputDir = path.join(__dirname, "..", "upload");
+            fs.mkdirpSync(outputDir);
+            for (const makeResult of makeResults) {
+                for (const artifactPath of makeResult.artifacts) {
+                    // Ignore certain artifacts.
+                    let fileName = path.basename(artifactPath);
+                    const extension = path.extname(fileName);
+                    if (fileName === "RELEASES" || extension === ".nupkg") {
+                        continue;
+                    }
+
+                    // Override the extension for the CI.
+                    const { TRILIUM_ARTIFACT_NAME_HINT } = process.env;
+                    if (TRILIUM_ARTIFACT_NAME_HINT) {
+                        fileName = TRILIUM_ARTIFACT_NAME_HINT.replaceAll("/", "-") + extension;
+                    }
+        
+                    const outputPath = path.join(outputDir, fileName);
+                    console.log(`[Artifact] ${artifactPath} -> ${outputPath}`);
+                    fs.copyFileSync(artifactPath, outputPath);
+                }
+            }
+        }
+    }
 };
 
 function getExtraResourcesForPlatform() {
-    const resources = ["dump-db/", "./bin/tpl/anonymize-database.sql"];
+    const resources = [];
 
     const getScriptRessources = () => {
         const scripts = ["trilium-portable", "trilium-safe-mode", "trilium-no-cert-check"];

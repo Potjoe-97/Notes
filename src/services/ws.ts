@@ -17,7 +17,9 @@ if (isDev) {
     const debounce = (await import("debounce")).default;
     const debouncedReloadFrontend = debounce(() => reloadFrontend("source code change"), 200);
     chokidar
-        .watch("src/public")
+        .watch("src/public", {
+            ignored: "src/public/app/doc_notes/en/User Guide"
+        })
         .on("add", debouncedReloadFrontend)
         .on("change", debouncedReloadFrontend)
         .on("unlink", debouncedReloadFrontend);
@@ -54,6 +56,22 @@ interface Message {
     originEntityId?: string | null;
     lastModifiedMs?: number;
     filePath?: string;
+
+    // LLM streaming specific fields
+    chatNoteId?: string;
+    content?: string;
+    thinking?: string;
+    toolExecution?: {
+        action?: string;
+        tool?: string;
+        toolCallId?: string;
+        result?: string | Record<string, any>;
+        error?: string;
+        args?: Record<string, unknown>;
+    };
+    done?: boolean;
+    error?: string;
+    raw?: unknown;
 }
 
 type SessionParser = (req: IncomingMessage, params: {}, cb: () => void) => void;
@@ -113,15 +131,25 @@ function sendMessageToAllClients(message: Message) {
     const jsonStr = JSON.stringify(message);
 
     if (webSocketServer) {
-        if (message.type !== "sync-failed" && message.type !== "api-log-messages") {
+        // Special logging for LLM streaming messages
+        if (message.type === "llm-stream") {
+            log.info(`[WS-SERVER] Sending LLM stream message: chatNoteId=${message.chatNoteId}, content=${!!message.content}, thinking=${!!message.thinking}, toolExecution=${!!message.toolExecution}, done=${!!message.done}`);
+        } else if (message.type !== "sync-failed" && message.type !== "api-log-messages") {
             log.info(`Sending message to all clients: ${jsonStr}`);
         }
 
+        let clientCount = 0;
         webSocketServer.clients.forEach(function each(client) {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(jsonStr);
+                clientCount++;
             }
         });
+
+        // Log WebSocket client count for debugging
+        if (message.type === "llm-stream") {
+            log.info(`[WS-SERVER] Sent LLM stream message to ${clientCount} clients`);
+        }
     }
 }
 
@@ -137,19 +165,19 @@ function fillInAdditionalProperties(entityChange: EntityChange) {
         entityChange.entity = becca.getAttribute(entityChange.entityId);
 
         if (!entityChange.entity) {
-            entityChange.entity = sql.getRow(`SELECT * FROM attributes WHERE attributeId = ?`, [entityChange.entityId]);
+            entityChange.entity = sql.getRow(/*sql*/`SELECT * FROM attributes WHERE attributeId = ?`, [entityChange.entityId]);
         }
     } else if (entityChange.entityName === "branches") {
         entityChange.entity = becca.getBranch(entityChange.entityId);
 
         if (!entityChange.entity) {
-            entityChange.entity = sql.getRow(`SELECT * FROM branches WHERE branchId = ?`, [entityChange.entityId]);
+            entityChange.entity = sql.getRow(/*sql*/`SELECT * FROM branches WHERE branchId = ?`, [entityChange.entityId]);
         }
     } else if (entityChange.entityName === "notes") {
         entityChange.entity = becca.getNote(entityChange.entityId);
 
         if (!entityChange.entity) {
-            entityChange.entity = sql.getRow(`SELECT * FROM notes WHERE noteId = ?`, [entityChange.entityId]);
+            entityChange.entity = sql.getRow(/*sql*/`SELECT * FROM notes WHERE noteId = ?`, [entityChange.entityId]);
 
             if (entityChange.entity?.isProtected) {
                 entityChange.entity.title = protectedSessionService.decryptString(entityChange.entity.title || "");
@@ -157,7 +185,7 @@ function fillInAdditionalProperties(entityChange: EntityChange) {
         }
     } else if (entityChange.entityName === "revisions") {
         entityChange.noteId = sql.getValue<string>(
-            `SELECT noteId
+            /*sql*/`SELECT noteId
                                                     FROM revisions
                                                     WHERE revisionId = ?`,
             [entityChange.entityId]
@@ -178,22 +206,16 @@ function fillInAdditionalProperties(entityChange: EntityChange) {
         entityChange.entity = becca.getOption(entityChange.entityId);
 
         if (!entityChange.entity) {
-            entityChange.entity = sql.getRow(`SELECT * FROM options WHERE name = ?`, [entityChange.entityId]);
+            entityChange.entity = sql.getRow(/*sql*/`SELECT * FROM options WHERE name = ?`, [entityChange.entityId]);
         }
     } else if (entityChange.entityName === "attachments") {
         entityChange.entity = sql.getRow(
-            `SELECT attachments.*, LENGTH(blobs.content) AS contentLength
+            /*sql*/`SELECT attachments.*, LENGTH(blobs.content) AS contentLength
                                                 FROM attachments
                                                 JOIN blobs USING (blobId)
                                                 WHERE attachmentId = ?`,
             [entityChange.entityId]
         );
-    } else if (entityChange.entityName === "tasks") {
-        entityChange.entity = becca.getTask(entityChange.entity);
-
-        if (!entityChange.entity) {
-            entityChange.entity = sql.getRow(`SELECT * FROM tasks WHERE taskId = ?`, [entityChange.entityId]);
-        }
     }
 
     if (entityChange.entity instanceof AbstractBeccaEntity) {
@@ -211,7 +233,8 @@ const ORDERING: Record<string, number> = {
     revisions: 2,
     attachments: 3,
     notes: 1,
-    options: 0
+    options: 0,
+    note_embeddings: 3
 };
 
 function sendPing(client: WebSocket, entityChangeIds = []) {
@@ -221,7 +244,7 @@ function sendPing(client: WebSocket, entityChangeIds = []) {
         return;
     }
 
-    const entityChanges = sql.getManyRows<EntityChange>(`SELECT * FROM entity_changes WHERE id IN (???)`, entityChangeIds);
+    const entityChanges = sql.getManyRows<EntityChange>(/*sql*/`SELECT * FROM entity_changes WHERE id IN (???)`, entityChangeIds);
     if (!entityChanges) {
         return;
     }

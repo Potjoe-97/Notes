@@ -8,14 +8,13 @@ import HeadingStyleOptions from "./options/text_notes/heading_style.js";
 import TableOfContentsOptions from "./options/text_notes/table_of_contents.js";
 import HighlightsListOptions from "./options/text_notes/highlights_list.js";
 import TextAutoReadOnlySizeOptions from "./options/text_notes/text_auto_read_only_size.js";
-import VimKeyBindingsOptions from "./options/code_notes/vim_key_bindings.js";
-import WrapLinesOptions from "./options/code_notes/wrap_lines.js";
+import CodeEditorOptions from "./options/code_notes/code_editor.js";
 import CodeAutoReadOnlySizeOptions from "./options/code_notes/code_auto_read_only_size.js";
 import CodeMimeTypesOptions from "./options/code_notes/code_mime_types.js";
 import ImageOptions from "./options/images/images.js";
 import SpellcheckOptions from "./options/spellcheck.js";
 import PasswordOptions from "./options/password/password.js";
-import ProtectedSessionTimeoutOptions from "./options/password/protected_session_timeout.js"
+import ProtectedSessionTimeoutOptions from "./options/password/protected_session_timeout.js";
 import EtapiOptions from "./options/etapi.js";
 import BackupOptions from "./options/backup.js";
 import SyncOptions from "./options/sync.js";
@@ -33,14 +32,20 @@ import DatabaseAnonymizationOptions from "./options/advanced/database_anonymizat
 import BackendLogWidget from "./content/backend_log.js";
 import AttachmentErasureTimeoutOptions from "./options/other/attachment_erasure_timeout.js";
 import RibbonOptions from "./options/appearance/ribbon.js";
-import LocalizationOptions from "./options/appearance/i18n.js";
+import MultiFactorAuthenticationOptions from './options/multi_factor_authentication.js';
+import LocalizationOptions from "./options/i18n/i18n.js";
 import CodeBlockOptions from "./options/appearance/code_block.js";
 import EditorOptions from "./options/text_notes/editor.js";
 import ShareSettingsOptions from "./options/other/share_settings.js";
+import AiSettingsOptions from "./options/ai_settings.js";
 import type FNote from "../../entities/fnote.js";
 import type NoteContextAwareWidget from "../note_context_aware_widget.js";
+import { t } from "i18next";
+import LanguageOptions from "./options/i18n/language.js";
+import type { EventData, EventNames } from "../../components/app_context.js";
+import type BasicWidget from "../basic_widget.js";
 
-const TPL = `<div class="note-detail-content-widget note-detail-printable">
+const TPL = /*html*/`<div class="note-detail-content-widget note-detail-printable">
     <style>
         .type-contentWidget .note-detail {
             height: 100%;
@@ -54,22 +59,60 @@ const TPL = `<div class="note-detail-content-widget note-detail-printable">
             padding: 15px;
             height: 100%;
         }
+
+        .note-detail.full-height .note-detail-content-widget-content {
+            padding: 0;
+        }
     </style>
 
     <div class="note-detail-content-widget-content"></div>
 </div>`;
 
 const CONTENT_WIDGETS: Record<string, (typeof NoteContextAwareWidget)[]> = {
-    _optionsAppearance: [LocalizationOptions, ThemeOptions, FontsOptions, CodeBlockOptions, ElectronIntegrationOptions, MaxContentWidthOptions, RibbonOptions],
-    _optionsShortcuts: [KeyboardShortcutsOptions],
-    _optionsTextNotes: [EditorOptions, HeadingStyleOptions, TableOfContentsOptions, HighlightsListOptions, TextAutoReadOnlySizeOptions],
-    _optionsCodeNotes: [VimKeyBindingsOptions, WrapLinesOptions, CodeAutoReadOnlySizeOptions, CodeMimeTypesOptions],
-    _optionsImages: [ImageOptions],
-    _optionsSpellcheck: [SpellcheckOptions],
-    _optionsPassword: [PasswordOptions, ProtectedSessionTimeoutOptions],
-    _optionsEtapi: [EtapiOptions],
-    _optionsBackup: [BackupOptions],
-    _optionsSync: [SyncOptions],
+    _optionsAppearance: [
+        ThemeOptions,
+        FontsOptions,
+        CodeBlockOptions,
+        ElectronIntegrationOptions,
+        MaxContentWidthOptions,
+        RibbonOptions
+    ],
+    _optionsShortcuts: [
+        KeyboardShortcutsOptions
+    ],
+    _optionsTextNotes: [
+        EditorOptions,
+        HeadingStyleOptions,
+        TableOfContentsOptions,
+        HighlightsListOptions,
+        TextAutoReadOnlySizeOptions
+    ],
+    _optionsCodeNotes: [
+        CodeEditorOptions,
+        CodeMimeTypesOptions,
+        CodeAutoReadOnlySizeOptions
+    ],
+    _optionsImages: [
+        ImageOptions
+    ],
+    _optionsSpellcheck: [
+        SpellcheckOptions
+    ],
+    _optionsPassword: [
+        PasswordOptions,
+        ProtectedSessionTimeoutOptions
+    ],
+    _optionsMFA: [MultiFactorAuthenticationOptions],
+    _optionsEtapi: [
+        EtapiOptions
+    ],
+    _optionsBackup: [
+        BackupOptions
+    ],
+    _optionsSync: [
+        SyncOptions
+    ],
+    _optionsAi: [AiSettingsOptions],
     _optionsOther: [
         SearchEngineOptions,
         TrayOptions,
@@ -77,16 +120,34 @@ const CONTENT_WIDGETS: Record<string, (typeof NoteContextAwareWidget)[]> = {
         AttachmentErasureTimeoutOptions,
         RevisionsSnapshotIntervalOptions,
         RevisionSnapshotsLimitOptions,
-        NetworkConnectionsOptions,
         HtmlImportTagsOptions,
-        ShareSettingsOptions
+        ShareSettingsOptions,
+        NetworkConnectionsOptions
     ],
-    _optionsAdvanced: [DatabaseIntegrityCheckOptions, DatabaseAnonymizationOptions, AdvancedSyncOptions, VacuumDatabaseOptions],
-    _backendLog: [BackendLogWidget]
+    _optionsLocalization: [
+        LocalizationOptions,
+        LanguageOptions
+    ],
+    _optionsAdvanced: [
+        AdvancedSyncOptions,
+        DatabaseIntegrityCheckOptions,
+        DatabaseAnonymizationOptions,
+        VacuumDatabaseOptions
+    ],
+    _backendLog: [
+        BackendLogWidget
+    ]
 };
 
+/**
+ * Type widget that displays one or more widgets based on the type of note, generally used for options and other interactive notes such as the backend log.
+ *
+ * One important aspect is that, like its parent {@link TypeWidget}, the content widgets don't receive all events by default and they must be manually added
+ * to the propagation list in {@link TypeWidget.handleEventInChildren}.
+ */
 export default class ContentWidgetTypeWidget extends TypeWidget {
     private $content!: JQuery<HTMLElement>;
+    private widget?: BasicWidget;
 
     static getType() {
         return "contentWidget";
@@ -116,10 +177,12 @@ export default class ContentWidgetTypeWidget extends TypeWidget {
                 this.child(widget);
 
                 this.$content.append(widget.render());
+                this.widget = widget;
                 await widget.refresh();
             }
         } else {
-            this.$content.append(`Unknown widget for "${note.noteId}"`);
+            this.$content.append(t("content_widget.unknown_widget", { id: note.noteId }));
         }
     }
+
 }

@@ -1,0 +1,57 @@
+<p>When a note has one or more child notes, they will be listed at the end
+  of the note for easy navigation.</p>
+<h2>Configuration</h2>
+<ul>
+  <li>To hide the note list for a particular note, simply apply the <code>hideChildrenOverview</code> 
+    <a
+    href="#root/_help_zEY4DaJG4YT5">label</a>.</li>
+  <li>For some view types, such as Grid view, only a subset of notes will be
+    displayed and pagination can be used to navigate through all of them for
+    performance reasons. To adjust the number of notes per page, set <code>pageSize</code> to
+    the desired number.</li>
+</ul>
+<h2>View types</h2>
+<p>By default, the notes will be displayed in a grid, however there are also
+  some other view types available.</p>
+<aside class="admonition tip">
+  <p>Generally the view type can only be changed in a&nbsp;<a class="reference-link"
+    href="#root/_help_GTwFsgaA0lCt">Book</a>&nbsp;note from the&nbsp;<a class="reference-link"
+    href="#root/_help_BlN9DFI679QC">Ribbon</a>, but it can also be changed
+    manually on any type of note using the <code>#viewType</code> attribute.</p>
+</aside>
+<h3>Grid view</h3>
+<figure class="image image-style-align-center">
+  <img style="aspect-ratio:1025/655;" src="1_Note List_image.png" width="1025"
+  height="655">
+</figure>
+<p>This view presents the child notes in a grid format, allowing for a more
+  visual navigation experience.</p>
+<ul>
+  <li>For&nbsp;<a class="reference-link" href="#root/_help_iPIMuisry3hd">Text</a>&nbsp;notes,
+    the text can be slighly scrollable via the mouse wheel to reveal more context.</li>
+  <li>For&nbsp;<a class="reference-link" href="#root/_help_6f9hih2hXXZk">Code</a>&nbsp;notes,
+    syntax highlighting is applied.</li>
+  <li>For&nbsp;<a class="reference-link" href="#root/_help_W8vYD3Q1zjCR">File</a>&nbsp;notes,
+    a preview is made available for audio, video and PDF notes.</li>
+  <li>If the note does not have a content, a list of its child notes will be
+    displayed instead.</li>
+</ul>
+<p>This is the default view type.</p>
+<h3>List view</h3>
+<figure class="image image-style-align-center">
+  <img style="aspect-ratio:1013/526;" src="Note List_image.png" width="1013"
+  height="526">
+</figure>
+<p>In the list view mode, each note is displayed in a single row with only
+  the title and the icon of the note being visible by the default. By pressing
+  the expand button it's possible to view the content of the note, as well
+  as the children of the note (recursively).</p>
+<h3>Calendar view</h3>
+<figure class="image image-style-align-center">
+  <img style="aspect-ratio:1090/598;" src="2_Note List_image.png" width="1090"
+  height="598">
+</figure>
+<p>In the calendar view, child notes are represented as events, with a start
+  date and optionally an end date. The view also has interaction support
+  such as moving or creating new events. See&nbsp;<a class="reference-link"
+  href="#root/_help_xWbu3jpNWapp">Calendar View</a>&nbsp;for more information.</p>

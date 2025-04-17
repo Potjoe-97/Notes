@@ -1,8 +1,9 @@
 import type { Map } from "leaflet";
-import library_loader from "../services/library_loader.js";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import NoteContextAwareWidget from "./note_context_aware_widget.js";
 
-const TPL = `\
+const TPL = /*html*/`\
 <div class="geo-map-widget">
     <style>
         .note-detail-geo-map,
@@ -19,10 +20,10 @@ const TPL = `\
     </style>
 
     <div class="geo-map-container"></div>
-</div>`
+</div>`;
 
-export type Leaflet = typeof import("leaflet");
-export type InitCallback = ((L: Leaflet) => void);
+export type Leaflet = typeof L;
+export type InitCallback = (L: Leaflet) => void;
 
 export default class GeoMapWidget extends NoteContextAwareWidget {
 
@@ -40,24 +41,18 @@ export default class GeoMapWidget extends NoteContextAwareWidget {
 
         this.$container = this.$widget.find(".geo-map-container");
 
-        library_loader.requireLibrary(library_loader.LEAFLET)
-            .then(async () => {
-                const L = (await import("leaflet")).default;
+        const map = L.map(this.$container[0], {
+            worldCopyJump: true
+        });
 
-                const map = L.map(this.$container[0], {
-                    worldCopyJump: true
-                });
+        this.map = map;
+        if (this.initCallback) {
+            this.initCallback(L);
+        }
 
-                this.map = map;
-                if (this.initCallback) {
-                    this.initCallback(L);
-                }
-
-                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    detectRetina: true
-                }).addTo(map);
-            });
+        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            detectRetina: true
+        }).addTo(map);
     }
-
 }

@@ -1,3 +1,11 @@
 {
-  "recommendations": ["lokalise.i18n-ally", "editorconfig.editorconfig"]
+  "recommendations": [
+    "lokalise.i18n-ally",
+    "editorconfig.editorconfig",
+    "vitest.explorer",
+    "ms-playwright.playwright",
+    "tobermory.es6-string-html",
+    "dbaeumer.vscode-eslint",
+    "yzhang.markdown-all-in-one"
+  ]
 }

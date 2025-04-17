@@ -57,7 +57,8 @@ export function hashedBlobId(content: string | Buffer) {
 }
 
 export function toBase64(plainText: string | Buffer) {
-    return Buffer.from(plainText).toString("base64");
+    const buffer = (Buffer.isBuffer(plainText) ? plainText : Buffer.from(plainText));
+    return buffer.toString("base64");
 }
 
 export function fromBase64(encodedText: string) {
@@ -179,6 +180,9 @@ export function removeTextFileExtension(filePath: string) {
         case ".markdown":
         case ".html":
         case ".htm":
+        case ".excalidraw":
+        case ".mermaid":
+        case ".mmd":
             return filePath.substring(0, filePath.length - extension.length);
         default:
             return filePath;
@@ -352,7 +356,6 @@ export function processStringOrBuffer(data: string | Buffer | null) {
     }
 
     const detectedEncoding = chardet.detect(data);
-    console.log("Detected as ", detectedEncoding);
     switch (detectedEncoding) {
         case "UTF-16LE":
             return stripBom(data.toString("utf-16le"));
@@ -361,6 +364,11 @@ export function processStringOrBuffer(data: string | Buffer | null) {
             return data.toString("utf-8");
     }
 }
+
+export function safeExtractMessageAndStackFromError(err: unknown): [errMessage: string, errStack: string | undefined] {
+    return (err instanceof Error) ? [err.message, err.stack] as const : ["Unknown Error", undefined] as const;
+}
+
 
 export default {
     compareVersions,
@@ -392,6 +400,7 @@ export default {
     removeDiacritic,
     removeTextFileExtension,
     replaceAll,
+    safeExtractMessageAndStackFromError,
     sanitizeSqlIdentifier,
     stripTags,
     timeLimit,

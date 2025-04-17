@@ -29,7 +29,7 @@ const NOTE_TYPE_ICONS = {
     contentWidget: "bx bxs-widget",
     mindMap: "bx bx-sitemap",
     geoMap: "bx bx-map-alt",
-    taskList: "bx bx-list-check"
+    aiChat: "bx bx-bot"
 };
 
 /**
@@ -37,7 +37,7 @@ const NOTE_TYPE_ICONS = {
  * end user. Those types should be used only for checking against, they are
  * not for direct use.
  */
-export type NoteType = "file" | "image" | "search" | "noteMap" | "launcher" | "doc" | "contentWidget" | "text" | "relationMap" | "render" | "canvas" | "mermaid" | "book" | "webView" | "code" | "mindMap" | "geoMap" | "taskList";
+export type NoteType = "file" | "image" | "search" | "noteMap" | "launcher" | "doc" | "contentWidget" | "text" | "relationMap" | "render" | "canvas" | "mermaid" | "book" | "webView" | "code" | "mindMap" | "geoMap" | "aiChat";
 
 export interface NotePathRecord {
     isArchived: boolean;
@@ -152,7 +152,7 @@ class FNote {
 
         for (const branchId of Object.values(this.childToBranch)) {
             const notePosition = this.froca.getBranch(branchId)?.notePosition;
-            if (notePosition) {
+            if (notePosition !== undefined) {
                 branchIdPos[branchId] = notePosition;
             }
         }
@@ -330,6 +330,7 @@ class FNote {
         // notes/clones cannot form tree cycles, it is possible to create attribute inheritance cycle via templates
         // when template instance is a parent of template itself
         if (path.includes(this.noteId)) {
+            console.log("Forming a path");
             return [];
         }
 
@@ -952,6 +953,12 @@ class FNote {
         return null;
     }
 
+    /**
+     * Executes this {@link FNote} as a front-end or back-end script.
+     *
+     * @throws an {@link Error} if the note has an incorrect note type or MIME for execution.
+     * @returns a promise that resolves when the script has been run. Additionally, for front-end notes, the promise will contain the value that is returned by the script.
+     */
     async executeScript() {
         if (!this.isJavaScript()) {
             throw new Error(`Note ${this.noteId} is of type ${this.type} and mime ${this.mime} and thus cannot be executed`);

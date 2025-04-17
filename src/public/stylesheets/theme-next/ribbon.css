@@ -1,3 +1,32 @@
+@container info-section (max-width: 800px) {
+    table, tbody, tr, td, th {
+        display: block;
+        padding: 0 !important;
+    }
+
+    tbody {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    tr {
+        flex-grow: 1;
+    }
+
+    tr:has(.file-buttons) {
+        width: 100%;
+    }
+
+    th {
+        font-size: .85em;
+    }
+
+    td {
+        margin-bottom: .5em;
+    }
+}
+
 /*
  * Promoted attributes
  */
@@ -5,6 +34,52 @@
 div.promoted-attributes-container {
     margin-top: 8px;
     margin-bottom: 8px;
+}
+
+/*
+ * File/Image Properties and Note Info
+ */
+
+ /* The property label */
+.note-info-widget-table th,
+.file-properties-widget .file-table th,
+.image-properties > div:first-child > span > strong {
+    opacity: 0.65;
+    font-weight: 500;
+}
+
+.file-properties-widget {
+    container: info-section / inline-size;
+}
+
+.file-properties-widget .file-table {
+    margin: 12px;
+    width: unset;
+}
+
+.file-properties-widget td:has(.file-buttons) {
+    padding: 8px 0 0 0;
+}
+
+/* The button bar */
+.file-properties-widget .file-buttons,
+.image-properties > div:last-of-type {
+    padding: 0;
+    margin: 0;
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.file-properties-widget .file-buttons button {
+    white-space: nowrap;
+}
+
+/* The properties row for images */
+.image-properties > div:first-child {
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    gap: 10px 40px;
 }
 
 /*
@@ -17,7 +92,7 @@ div.note-type-dropdown .check {
     margin-right: 6px;
 }
 
- /* Editability dropdown */
+/* Editability dropdown */
 
 div.editability-dropdown a.dropdown-item {
     padding: 4px 16px 4px 0;
@@ -29,8 +104,8 @@ div.editability-dropdown a.dropdown-item {
 }
 
 .editability-dropdown .dropdown-item .description {
-    opacity: .75;
-    font-size: .85em;
+    opacity: 0.75;
+    font-size: 0.85em;
 }
 
 /*
@@ -38,8 +113,8 @@ div.editability-dropdown a.dropdown-item {
  */
 
 .attribute-list .add-new-attribute-button,
-.attribute-list .save-attributes-button  {
-    bottom: .3em;
+.attribute-list .save-attributes-button {
+    bottom: 0.3em;
 }
 
 .attribute-list .save-attributes-button {
@@ -69,13 +144,13 @@ div.editability-dropdown a.dropdown-item {
  * Note info
  */
 
-.note-info-widget-table th {
-    opacity: .65;
-    font-weight: 500;
-}
-
 :root .note-info-widget-table button.calculate-button {
     min-width: 0;
     padding: 4px 10px !important;
-    font-size: .8em;
+    font-size: 0.8em;
+}
+
+/* Narrow width layout */
+.note-info-widget {
+    container: info-section / inline-size;
 }

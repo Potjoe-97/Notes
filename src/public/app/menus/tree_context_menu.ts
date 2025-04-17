@@ -12,6 +12,7 @@ import { t } from "../services/i18n.js";
 import type NoteTreeWidget from "../widgets/note_tree.js";
 import type FAttachment from "../entities/fattachment.js";
 import type { SelectMenuItemEventListener } from "../components/events.js";
+import utils from "../services/utils.js";
 
 // TODO: Deduplicate once client/server is well split.
 interface ConvertToAttachmentResponse {
@@ -44,7 +45,7 @@ export default class TreeContextMenu implements SelectMenuItemEventListener<Tree
         const note = this.node.data.noteId ? await froca.getNote(this.node.data.noteId) : null;
         const branch = froca.getBranch(this.node.data.branchId);
         const isNotRoot = note?.noteId !== "root";
-        const isHoisted = note?.noteId === appContext.tabManager.getActiveContext().hoistedNoteId;
+        const isHoisted = note?.noteId === appContext.tabManager.getActiveContext()?.hoistedNoteId;
         const parentNote = isNotRoot && branch ? await froca.getNote(branch.parentNoteId) : null;
 
         // some actions don't support multi-note, so they are disabled when notes are selected,
@@ -204,6 +205,10 @@ export default class TreeContextMenu implements SelectMenuItemEventListener<Tree
     async selectMenuItemHandler({ command, type, templateNoteId }: MenuCommandItem<TreeCommandNames>) {
         const notePath = treeService.getNotePath(this.node);
 
+        if (utils.isMobile()) {
+            this.treeWidget.triggerCommand("setActiveScreen", { screen: "detail" });
+        }
+
         if (command === "openInTab") {
             appContext.tabManager.openTabWithNoteWithHoisting(notePath);
         } else if (command === "insertNoteAfter") {
@@ -226,8 +231,8 @@ export default class TreeContextMenu implements SelectMenuItemEventListener<Tree
                 templateNoteId: templateNoteId
             });
         } else if (command === "openNoteInSplit") {
-            const subContexts = appContext.tabManager.getActiveContext().getSubContexts();
-            const { ntxId } = subContexts[subContexts.length - 1];
+            const subContexts = appContext.tabManager.getActiveContext()?.getSubContexts();
+            const { ntxId } = subContexts?.[subContexts.length - 1] ?? {};
 
             this.treeWidget.triggerCommand("openNewNoteSplit", { ntxId, notePath });
         } else if (command === "convertNoteToAttachment") {

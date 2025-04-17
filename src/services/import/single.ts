@@ -12,6 +12,7 @@ import { getNoteTitle, processStringOrBuffer } from "../../services/utils.js";
 import importUtils from "./utils.js";
 import htmlSanitizer from "../html_sanitizer.js";
 import type { File } from "./common.js";
+import type { NoteType } from "../../becca/entities/rows.js";
 
 function importSingleFile(taskContext: TaskContext, file: File, parentNote: BNote) {
     const mime = mimeService.getMime(file.originalname) || file.mimetype;
@@ -24,6 +25,10 @@ function importSingleFile(taskContext: TaskContext, file: File, parentNote: BNot
         } else if (mime === "text/plain") {
             return importPlainText(taskContext, file, parentNote);
         }
+    }
+
+    if (mime === "text/vnd.mermaid") {
+        return importCustomType(taskContext, file, parentNote, "mermaid", mime);
     }
 
     if (taskContext?.data?.codeImportedAsCode && mimeService.getType(taskContext.data, mime) === "code") {
@@ -73,11 +78,34 @@ function importCodeNote(taskContext: TaskContext, file: File, parentNote: BNote)
     const detectedMime = mimeService.getMime(file.originalname) || file.mimetype;
     const mime = mimeService.normalizeMimeType(detectedMime);
 
+    let type: NoteType = "code";
+    if (file.originalname.endsWith(".excalidraw")) {
+        type = "canvas";
+    }
+
     const { note } = noteService.createNewNote({
         parentNoteId: parentNote.noteId,
         title,
         content,
-        type: "code",
+        type,
+        mime: mime,
+        isProtected: parentNote.isProtected && protectedSessionService.isProtectedSessionAvailable()
+    });
+
+    taskContext.increaseProgressCount();
+
+    return note;
+}
+
+function importCustomType(taskContext: TaskContext, file: File, parentNote: BNote, type: NoteType, mime: string) {
+    const title = getNoteTitle(file.originalname, !!taskContext.data?.replaceUnderscoresWithSpaces);
+    const content = processStringOrBuffer(file.buffer);
+
+    const { note } = noteService.createNewNote({
+        parentNoteId: parentNote.noteId,
+        title,
+        content,
+        type,
         mime: mime,
         isProtected: parentNote.isProtected && protectedSessionService.isProtectedSessionAvailable()
     });

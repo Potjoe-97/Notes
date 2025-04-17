@@ -13,11 +13,12 @@ function getFullAnonymizationScript() {
         .map((attr) => `'${attr.name}'`)
         .join(", ");
 
-    const anonymizeScript = `
+    const anonymizeScript = /*sql*/`\
 UPDATE etapi_tokens SET tokenHash = 'API token hash value';
 UPDATE notes SET title = 'title' WHERE title NOT IN ('root', '_hidden', '_share');
 UPDATE blobs SET content = 'text' WHERE content IS NOT NULL;
 UPDATE revisions SET title = 'title';
+UPDATE attachments SET title = 'title';
 
 UPDATE attributes SET name = 'name', value = 'value' WHERE type = 'label' AND name NOT IN(${builtinAttrNames});
 UPDATE attributes SET name = 'name' WHERE type = 'relation' AND name NOT IN (${builtinAttrNames});
@@ -35,7 +36,7 @@ VACUUM;
 }
 
 function getLightAnonymizationScript() {
-    return `UPDATE blobs SET content = 'text' WHERE content IS NOT NULL AND blobId NOT IN (
+    return /*sql*/`UPDATE blobs SET content = 'text' WHERE content IS NOT NULL AND blobId NOT IN (
                 SELECT blobId FROM notes WHERE mime IN ('application/javascript;env=backend', 'application/javascript;env=frontend')
             UNION ALL
                 SELECT blobId FROM revisions WHERE mime IN ('application/javascript;env=backend', 'application/javascript;env=frontend')

@@ -1,5 +1,3 @@
-"use strict";
-
 import dateNoteService from "../../services/date_notes.js";
 import sql from "../../services/sql.js";
 import cls from "../../services/cls.js";
@@ -15,12 +13,20 @@ function getDayNote(req: Request) {
     return dateNoteService.getDayNote(req.params.date);
 }
 
+function getWeekFirstDayNote(req: Request) {
+    return dateNoteService.getWeekFirstDayNote(req.params.date);
+}
+
 function getWeekNote(req: Request) {
-    return dateNoteService.getWeekNote(req.params.date);
+    return dateNoteService.getWeekNote(req.params.week);
 }
 
 function getMonthNote(req: Request) {
     return dateNoteService.getMonthNote(req.params.month);
+}
+
+function getQuarterNote(req: Request) {
+    return dateNoteService.getQuarterNote(req.params.quarter);
 }
 
 function getYearNote(req: Request) {
@@ -43,9 +49,9 @@ function getDayNotesForMonth(req: Request) {
             AND attr.value LIKE '${month}%'`;
 
     if (calendarRoot) {
-        const rows = sql.getRows<{ date: string, noteId: string }>(query);
+        const rows = sql.getRows<{ date: string; noteId: string }>(query);
         const result: Record<string, string> = {};
-        for (const {date, noteId} of rows) {
+        for (const { date, noteId } of rows) {
             const note = becca.getNote(noteId);
             if (note?.hasAncestor(String(calendarRoot))) {
                 result[date] = noteId;
@@ -58,8 +64,8 @@ function getDayNotesForMonth(req: Request) {
     }
 }
 
-function saveSqlConsole(req: Request) {
-    return specialNotesService.saveSqlConsole(req.body.sqlConsoleNoteId);
+async function saveSqlConsole(req: Request) {
+    return await specialNotesService.saveSqlConsole(req.body.sqlConsoleNoteId);
 }
 
 function createSqlConsole() {
@@ -101,8 +107,10 @@ function createOrUpdateScriptLauncherFromApi(req: Request) {
 export default {
     getInboxNote,
     getDayNote,
+    getWeekFirstDayNote,
     getWeekNote,
     getMonthNote,
+    getQuarterNote,
     getYearNote,
     getDayNotesForMonth,
     createSqlConsole,

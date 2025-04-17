@@ -18,7 +18,7 @@ export default class NoteListRenderer {
             parentNote,
             noteIds,
             showNotePath
-        }
+        };
 
         if (this.viewType === "list" || this.viewType === "grid") {
             this.viewMode = new ListOrGridView(this.viewType, args);

@@ -1,11 +1,12 @@
-"use strict";
-
-import { isElectron } from "../services/utils.js";
+import { isElectron, safeExtractMessageAndStackFromError } from "../services/utils.js";
 import multer from "multer";
 import log from "../services/log.js";
 import express from "express";
 const router = express.Router();
 import auth from "../services/auth.js";
+import openID from '../services/open_id.js';
+import totp from './api/totp.js';
+import recoveryCodes from './api/recovery_codes.js';
 import cls from "../services/cls.js";
 import sql from "../services/sql.js";
 import entityChangesService from "../services/entity_changes.js";
@@ -60,6 +61,11 @@ import etapiTokensApiRoutes from "./api/etapi_tokens.js";
 import relationMapApiRoute from "./api/relation-map.js";
 import otherRoute from "./api/other.js";
 import shareRoutes from "../share/routes.js";
+import embeddingsRoute from "./api/embeddings.js";
+import ollamaRoute from "./api/ollama.js";
+import openaiRoute from "./api/openai.js";
+import anthropicRoute from "./api/anthropic.js";
+import llmRoute from "./api/llm.js";
 
 import etapiAuthRoutes from "../etapi/auth.js";
 import etapiAppInfoRoutes from "../etapi/app_info.js";
@@ -70,9 +76,8 @@ import etapiNoteRoutes from "../etapi/notes.js";
 import etapiSpecialNoteRoutes from "../etapi/special_notes.js";
 import etapiSpecRoute from "../etapi/spec.js";
 import etapiBackupRoute from "../etapi/backup.js";
-
 import apiDocsRoute from "./api_docs.js";
-import * as tasksRoute from "./api/tasks.js";
+
 
 const MAX_ALLOWED_FILE_SIZE_MB = 250;
 const GET = "get",
@@ -115,8 +120,22 @@ function register(app: express.Application) {
     route(PST, "/set-password", [auth.checkAppInitialized, auth.checkPasswordNotSet], loginRoute.setPassword);
     route(GET, "/setup", [], setupRoute.setupPage);
 
-    apiRoute(GET, "/api/tree", treeApiRoute.getTree);
-    apiRoute(PST, "/api/tree/load", treeApiRoute.load);
+
+    apiRoute(GET, '/api/totp/generate', totp.generateSecret);
+    apiRoute(GET, '/api/totp/status', totp.getTOTPStatus);
+    apiRoute(GET, '/api/totp/get', totp.getSecret);
+
+    apiRoute(GET, '/api/oauth/status', openID.getOAuthStatus);
+    apiRoute(GET, '/api/oauth/validate', openID.isTokenValid);
+
+    apiRoute(PST, '/api/totp_recovery/set', recoveryCodes.setRecoveryCodes);
+    apiRoute(PST, '/api/totp_recovery/verify', recoveryCodes.verifyRecoveryCode);
+    apiRoute(GET, '/api/totp_recovery/generate', recoveryCodes.generateRecoveryCodes);
+    apiRoute(GET, '/api/totp_recovery/enabled', recoveryCodes.checkForRecoveryKeys);
+    apiRoute(GET, '/api/totp_recovery/used', recoveryCodes.getUsedRecoveryCodes);
+
+    apiRoute(GET, '/api/tree', treeApiRoute.getTree);
+    apiRoute(PST, '/api/tree/load', treeApiRoute.load);
 
     apiRoute(GET, "/api/notes/:noteId", notesApiRoute.getNote);
     apiRoute(GET, "/api/notes/:noteId/blob", notesApiRoute.getNoteBlob);
@@ -257,6 +276,7 @@ function register(app: express.Application) {
     route(PST, "/api/setup/sync-seed", [auth.checkAppNotInitialized], setupApiRoute.saveSyncSeed, apiResultHandler, false);
 
     apiRoute(GET, "/api/autocomplete", autocompleteApiRoute.getAutocomplete);
+    apiRoute(GET, "/api/autocomplete/notesCount", autocompleteApiRoute.getNotesCount);
     apiRoute(GET, "/api/quick-search/:searchString", searchRoute.quickSearch);
     apiRoute(GET, "/api/search-note/:noteId", searchRoute.searchFromNote);
     apiRoute(PST, "/api/search-and-execute-note/:noteId", searchRoute.searchAndExecute);
@@ -280,11 +300,6 @@ function register(app: express.Application) {
     apiRoute(PATCH, "/api/etapi-tokens/:etapiTokenId", etapiTokensApiRoutes.patchToken);
     apiRoute(DEL, "/api/etapi-tokens/:etapiTokenId", etapiTokensApiRoutes.deleteToken);
 
-    apiRoute(GET, "/api/tasks/:parentNoteId", tasksRoute.getTasks);
-    apiRoute(PST, "/api/tasks", tasksRoute.createNewTask);
-    apiRoute(PST, "/api/tasks/:taskId/toggle", tasksRoute.toggleTaskDone);
-    apiRoute(PATCH, "/api/tasks/:taskId", tasksRoute.updateTask);
-
     // in case of local electron, local calls are allowed unauthenticated, for server they need auth
     const clipperMiddleware = isElectron ? [] : [auth.checkEtapiToken];
 
@@ -296,8 +311,10 @@ function register(app: express.Application) {
 
     apiRoute(GET, "/api/special-notes/inbox/:date", specialNotesRoute.getInboxNote);
     apiRoute(GET, "/api/special-notes/days/:date", specialNotesRoute.getDayNote);
-    apiRoute(GET, "/api/special-notes/weeks/:date", specialNotesRoute.getWeekNote);
+    apiRoute(GET, "/api/special-notes/week-first-day/:date", specialNotesRoute.getWeekFirstDayNote);
+    apiRoute(GET, "/api/special-notes/weeks/:week", specialNotesRoute.getWeekNote);
     apiRoute(GET, "/api/special-notes/months/:month", specialNotesRoute.getMonthNote);
+    apiRoute(GET, "/api/special-notes/quarters/:quarter", specialNotesRoute.getQuarterNote);
     apiRoute(GET, "/api/special-notes/years/:year", specialNotesRoute.getYearNote);
     apiRoute(GET, "/api/special-notes/notes-for-month/:month", specialNotesRoute.getDayNotesForMonth);
     apiRoute(PST, "/api/special-notes/sql-console", specialNotesRoute.createSqlConsole);
@@ -374,6 +391,44 @@ function register(app: express.Application) {
     etapiSpecialNoteRoutes.register(router);
     etapiSpecRoute.register(router);
     etapiBackupRoute.register(router);
+
+    // LLM Chat API
+    apiRoute(PST, "/api/llm/chat", llmRoute.createSession);
+    apiRoute(GET, "/api/llm/chat", llmRoute.listSessions);
+    apiRoute(GET, "/api/llm/chat/:sessionId", llmRoute.getSession);
+    apiRoute(PATCH, "/api/llm/chat/:sessionId", llmRoute.updateSession);
+    apiRoute(DEL, "/api/llm/chat/:chatNoteId", llmRoute.deleteSession);
+    apiRoute(PST, "/api/llm/chat/:chatNoteId/messages", llmRoute.sendMessage);
+    apiRoute(PST, "/api/llm/chat/:chatNoteId/messages/stream", llmRoute.streamMessage);
+
+    // LLM index management endpoints - reorganized for REST principles
+    apiRoute(GET, "/api/llm/indexes/stats", llmRoute.getIndexStats);
+    apiRoute(PST, "/api/llm/indexes", llmRoute.startIndexing); // Create index process
+    apiRoute(GET, "/api/llm/indexes/failed", llmRoute.getFailedIndexes);
+    apiRoute(PUT, "/api/llm/indexes/notes/:noteId", llmRoute.retryFailedIndex); // Update index for note
+    apiRoute(PUT, "/api/llm/indexes/failed", llmRoute.retryAllFailedIndexes); // Update all failed indexes
+    apiRoute(GET, "/api/llm/indexes/notes/similar", llmRoute.findSimilarNotes); // Get similar notes
+    apiRoute(GET, "/api/llm/indexes/context", llmRoute.generateQueryContext); // Get context
+    apiRoute(PST, "/api/llm/indexes/notes/:noteId", llmRoute.indexNote); // Create index for specific note
+
+    // LLM embeddings endpoints
+    apiRoute(GET, "/api/llm/embeddings/similar/:noteId", embeddingsRoute.findSimilarNotes);
+    apiRoute(PST, "/api/llm/embeddings/search", embeddingsRoute.searchByText);
+    apiRoute(GET, "/api/llm/embeddings/providers", embeddingsRoute.getProviders);
+    apiRoute(PATCH, "/api/llm/embeddings/providers/:providerId", embeddingsRoute.updateProvider);
+    apiRoute(PST, "/api/llm/embeddings/reprocess", embeddingsRoute.reprocessAllNotes);
+    apiRoute(GET, "/api/llm/embeddings/queue-status", embeddingsRoute.getQueueStatus);
+    apiRoute(GET, "/api/llm/embeddings/stats", embeddingsRoute.getEmbeddingStats);
+    apiRoute(GET, "/api/llm/embeddings/failed", embeddingsRoute.getFailedNotes);
+    apiRoute(PST, "/api/llm/embeddings/retry/:noteId", embeddingsRoute.retryFailedNote);
+    apiRoute(PST, "/api/llm/embeddings/retry-all-failed", embeddingsRoute.retryAllFailedNotes);
+    apiRoute(PST, "/api/llm/embeddings/rebuild-index", embeddingsRoute.rebuildIndex);
+    apiRoute(GET, "/api/llm/embeddings/index-rebuild-status", embeddingsRoute.getIndexRebuildStatus);
+
+    // LLM provider endpoints - moved under /api/llm/providers hierarchy
+    apiRoute(GET, "/api/llm/providers/ollama/models", ollamaRoute.listModels);
+    apiRoute(GET, "/api/llm/providers/openai/models", openaiRoute.listModels);
+    apiRoute(GET, "/api/llm/providers/anthropic/models", anthropicRoute.listModels);
 
     // API Documentation
     apiDocsRoute.register(app);
@@ -477,7 +532,7 @@ function route(method: HttpMethod, path: string, middleware: express.Handler[], 
 
             if (result?.then) {
                 // promise
-                result.then((promiseResult: unknown) => handleResponse(resultHandler, req, res, promiseResult, start)).catch((e: any) => handleException(e, method, path, res));
+                result.then((promiseResult: unknown) => handleResponse(resultHandler, req, res, promiseResult, start)).catch((e: unknown) => handleException(e, method, path, res));
             } else {
                 handleResponse(resultHandler, req, res, result, start);
             }
@@ -488,27 +543,28 @@ function route(method: HttpMethod, path: string, middleware: express.Handler[], 
 }
 
 function handleResponse(resultHandler: ApiResultHandler, req: express.Request, res: express.Response, result: unknown, start: number) {
-    const responseLength = resultHandler(req, res, result);
+    // Skip result handling if the response has already been handled
+    if ((res as any).triliumResponseHandled) {
+        // Just log the request without additional processing
+        log.request(req, res, Date.now() - start, 0);
+        return;
+    }
 
+    const responseLength = resultHandler(req, res, result);
     log.request(req, res, Date.now() - start, responseLength);
 }
 
-function handleException(e: any, method: HttpMethod, path: string, res: express.Response) {
-    log.error(`${method} ${path} threw exception: '${e.message}', stack: ${e.stack}`);
+function handleException(e: unknown | Error, method: HttpMethod, path: string, res: express.Response) {
+    const [errMessage, errStack] = safeExtractMessageAndStackFromError(e);
 
-    if (e instanceof ValidationError) {
-        res.status(400).json({
-            message: e.message
-        });
-    } else if (e instanceof NotFoundError) {
-        res.status(404).json({
-            message: e.message
-        });
-    } else {
-        res.status(500).json({
-            message: e.message
-        });
-    }
+    log.error(`${method} ${path} threw exception: '${errMessage}', stack: ${errStack}`);
+
+    const resStatusCode = (e instanceof ValidationError || e instanceof NotFoundError) ? e.statusCode : 500;
+
+    res.status(resStatusCode).json({
+        message: errMessage
+    });
+
 }
 
 function createUploadMiddleware() {

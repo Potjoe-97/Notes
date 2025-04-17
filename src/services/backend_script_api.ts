@@ -58,7 +58,7 @@ interface NoteAndBranch {
     branch: BBranch;
 }
 
-interface Api {
+export interface Api {
     /**
      * Note where the script started executing (entrypoint).
      * As an analogy, in C this would be the file which contains the main() function of the current process.
@@ -224,14 +224,14 @@ interface Api {
      * @param date in YYYY-MM-DD format
      * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
      */
-    getDayNote(date: string, rootNote?: BNote): BNote | null;
+    getDayNote(date: string, rootNote?: BNote): Promise<BNote | null>;
 
     /**
      * Returns today's day note. If such note doesn't exist, it is created.
      *
      * @param rootNote specify calendar root note, normally leave empty to use the default calendar
      */
-    getTodayNote(rootNote?: BNote): BNote | null;
+    getTodayNote(rootNote?: BNote): Promise<BNote | null>;
 
     /**
      * Returns note for the first date of the week of the given date.
@@ -239,15 +239,15 @@ interface Api {
      * @param date in YYYY-MM-DD format
      * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
      */
-    getWeekNote(
-        date: string,
-        options: {
-            // TODO: Deduplicate type with date_notes.ts once ES modules are added.
-            /** either "monday" (default) or "sunday" */
-            startOfTheWeek: "monday" | "sunday";
-        },
-        rootNote: BNote
-    ): BNote | null;
+    getWeekFirstDayNote(date: string, rootNote: BNote): Promise<BNote | null>;
+
+    /**
+     * Returns week note for given date. If such a note doesn't exist, it is created.
+     *
+     * @param date in YYYY-MM-DD format
+     * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
+     */
+    getWeekNote(date: string, rootNote: BNote): Promise<BNote | null>;
 
     /**
      * Returns month note for given date. If such a note doesn't exist, it is created.
@@ -255,7 +255,15 @@ interface Api {
      * @param date in YYYY-MM format
      * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
      */
-    getMonthNote(date: string, rootNote: BNote): BNote | null;
+    getMonthNote(date: string, rootNote: BNote): Promise<BNote | null>;
+
+    /**
+     * Returns quarter note for given date. If such a note doesn't exist, it is created.
+     *
+     * @param date in YYYY-MM format
+     * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
+     */
+    getQuarterNote(date: string, rootNote: BNote): Promise<BNote | null>;
 
     /**
      * Returns year note for given year. If such a note doesn't exist, it is created.
@@ -552,8 +560,10 @@ function BackendScriptApi(this: Api, currentNote: BNote, apiParams: ApiParams) {
     this.getRootCalendarNote = dateNoteService.getRootCalendarNote;
     this.getDayNote = dateNoteService.getDayNote;
     this.getTodayNote = dateNoteService.getTodayNote;
+    this.getWeekFirstDayNote = dateNoteService.getWeekFirstDayNote;
     this.getWeekNote = dateNoteService.getWeekNote;
     this.getMonthNote = dateNoteService.getMonthNote;
+    this.getQuarterNote = dateNoteService.getQuarterNote;
     this.getYearNote = dateNoteService.getYearNote;
 
     this.sortNotes = (parentNoteId, sortConfig = {}) => treeService.sortNotes(parentNoteId, sortConfig.sortBy || "title", !!sortConfig.reverse, !!sortConfig.foldersFirst);
@@ -685,5 +695,5 @@ function BackendScriptApi(this: Api, currentNote: BNote, apiParams: ApiParams) {
 }
 
 export default BackendScriptApi as any as {
-    new (currentNote: BNote, apiParams: ApiParams): Api;
+    new(currentNote: BNote, apiParams: ApiParams): Api;
 };

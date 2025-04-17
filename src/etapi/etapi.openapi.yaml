@@ -694,7 +694,7 @@ paths:
     /calendar/weeks/{date}:
         get:
             description: returns a week note for a given date. Gets created if doesn't exist.
-            operationId: getWeekNote
+            operationId: getWeekFirstDayNote
             parameters:
                 - name: date
                   in: path

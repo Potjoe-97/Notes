@@ -29,7 +29,7 @@ describe("sanitize", () => {
                     </tbody>
                 </table>
             </figure>`;
-    const clean = trimIndentation`\
+        const clean = trimIndentation`\
             <p>
                 <span style="color:hsl(0, 0%, 90%)">
                     Hi
@@ -48,6 +48,6 @@ describe("sanitize", () => {
                     </tbody>
                 </table>
             </figure>`;
-        expect(html_sanitizer.sanitize(dirty)) .toBe(clean);
+        expect(html_sanitizer.sanitize(dirty)).toBe(clean);
     });
 });

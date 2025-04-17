@@ -22,6 +22,20 @@ describe("#getMime", () => {
         ],
 
         [
+            "File extension ('.excalidraw') that is defined in EXTENSION_TO_MIME",
+            ["test.excalidraw"], "application/json"
+        ],
+
+        [
+            "File extension ('.mermaid') that is defined in EXTENSION_TO_MIME",
+            ["test.mermaid"], "text/vnd.mermaid"
+        ],
+        [
+            "File extension ('.mermaid') that is defined in EXTENSION_TO_MIME",
+            ["test.mmd"], "text/vnd.mermaid"
+        ],
+
+        [
             "File extension with inconsistent capitalization that is defined in EXTENSION_TO_MIME",
             ["test.gRoOvY"], "text/x-groovy"
         ],
@@ -41,7 +55,7 @@ describe("#getMime", () => {
         const [testDesc, fnParams, expected] = testCase;
         it(`${testDesc}: '${fnParams} should return '${expected}'`, () => {
             const actual = mimeService.getMime(...fnParams);
-            expect(actual).toEqual(expected);
+            expect(actual, testDesc).toEqual(expected);
         });
     });
 });
@@ -60,7 +74,7 @@ describe("#getType", () => {
         ],
 
         [
-            "w/ import options set and an image mime type – it should return 'image'", 
+            "w/ import options set and an image mime type – it should return 'image'",
             [{}, "image/jpeg"], "image"
         ],
 
@@ -75,22 +89,22 @@ describe("#getType", () => {
         ],
 
         [
-            "w/ codeImportedAsCode: true and a mime type that is in CODE_MIME_TYPES – it should return 'code'", 
+            "w/ codeImportedAsCode: true and a mime type that is in CODE_MIME_TYPES – it should return 'code'",
             [{codeImportedAsCode: true}, "text/css"], "code"
         ],
 
         [
-            "w/ codeImportedAsCode: false and a mime type that is in CODE_MIME_TYPES – it should return 'file' not 'code'", 
+            "w/ codeImportedAsCode: false and a mime type that is in CODE_MIME_TYPES – it should return 'file' not 'code'",
             [{codeImportedAsCode: false}, "text/css"], "file"
         ],
 
         [
-            "w/ textImportedAsText: true and 'text/html' mime type – it should return 'text'", 
+            "w/ textImportedAsText: true and 'text/html' mime type – it should return 'text'",
             [{textImportedAsText: true}, "text/html"], "text"
         ],
 
         [
-            "w/ textImportedAsText: true and 'text/markdown' mime type – it should return 'text'", 
+            "w/ textImportedAsText: true and 'text/markdown' mime type – it should return 'text'",
             [{textImportedAsText: true}, "text/markdown"], "text"
         ],
 
@@ -125,23 +139,23 @@ describe("#normalizeMimeType", () => {
     const testCases: TestCase<typeof mimeService.normalizeMimeType, string | undefined>[] = [
 
         [
-            "empty mime should return undefined", 
+            "empty mime should return undefined",
             [""], undefined
         ],
         [
-            "a mime that's defined in CODE_MIME_TYPES should return the same mime", 
+            "a mime that's defined in CODE_MIME_TYPES should return the same mime",
             ["text/x-python"], "text/x-python"
         ],
         [
-            "a mime (with capitalization inconsistencies) that's defined in CODE_MIME_TYPES should return the same mime in lowercase", 
+            "a mime (with capitalization inconsistencies) that's defined in CODE_MIME_TYPES should return the same mime in lowercase",
             ["text/X-pYthOn"], "text/x-python"
         ],
         [
-            "a mime that's non defined in CODE_MIME_TYPES should return undefined", 
+            "a mime that's non defined in CODE_MIME_TYPES should return undefined",
             ["application/zip"], undefined
         ],
         [
-            "a mime that's defined in CODE_MIME_TYPES with a 'rewrite rule' should return the rewritten mime", 
+            "a mime that's defined in CODE_MIME_TYPES with a 'rewrite rule' should return the rewritten mime",
             ["text/markdown"], "text/x-markdown"
         ]
     ];

@@ -1,11 +1,14 @@
-import type { EventData } from "../../components/app_context.js";
+import type { CommandListenerData, EventData } from "../../components/app_context.js";
 import type FNote from "../../entities/fnote.js";
 import { t } from "../../services/i18n.js";
 import keyboardActionService from "../../services/keyboard_actions.js";
 import options from "../../services/options.js";
 import AbstractCodeTypeWidget from "./abstract_code_type_widget.js";
+import appContext from "../../components/app_context.js";
+import type { TouchBarItem } from "../../components/touch_bar.js";
+import { hasTouchBar } from "../../services/utils.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="note-detail-code note-detail-printable">
     <style>
     .note-detail-code {
@@ -24,8 +27,6 @@ const TPL = `
 
 export default class EditableCodeTypeWidget extends AbstractCodeTypeWidget {
 
-    private $editor!: JQuery<HTMLElement>;
-
     static getType() {
         return "editableCode";
     }
@@ -40,7 +41,7 @@ export default class EditableCodeTypeWidget extends AbstractCodeTypeWidget {
         super.doRender();
     }
 
-    getExtraOpts() {
+    getExtraOpts(): Partial<CodeMirrorOpts> {
         return {
             keyMap: options.is("vimKeymapEnabled") ? "vim" : "default",
             lint: true,
@@ -59,10 +60,14 @@ export default class EditableCodeTypeWidget extends AbstractCodeTypeWidget {
         const blob = await this.note?.getBlob();
 
         await this.spacedUpdate.allowUpdateWithoutChange(() => {
-            this._update(note, blob?.content);
+            this._update(note, blob?.content ?? "");
         });
 
         this.show();
+
+        if (this.parent && hasTouchBar) {
+            this.triggerCommand("refreshTouchBar");
+        }
     }
 
     getData() {
@@ -80,4 +85,19 @@ export default class EditableCodeTypeWidget extends AbstractCodeTypeWidget {
 
         resolve(this.codeEditor);
     }
+
+    buildTouchBarCommand({ TouchBar, buildIcon }: CommandListenerData<"buildTouchBar">) {
+        const items: TouchBarItem[] = [];
+        const note = this.note;
+
+        if (note?.mime.startsWith("application/javascript") || note?.mime === "text/x-sqlite;schema=trilium") {
+            items.push(new TouchBar.TouchBarButton({
+                icon: buildIcon("NSImageNameTouchBarPlayTemplate"),
+                click: () => appContext.triggerCommand("runActiveNote")
+            }));
+        }
+
+        return items;
+    }
+
 }

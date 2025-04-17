@@ -17,6 +17,7 @@ import shortcutService from "./shortcuts.js";
 import dialogService from "./dialog.js";
 import type FNote from "../entities/fnote.js";
 import { t } from "./i18n.js";
+import dayjs from "dayjs";
 import type NoteContext from "../components/note_context.js";
 import type NoteDetailWidget from "../widgets/note_detail.js";
 import type Component from "../components/component.js";
@@ -58,7 +59,7 @@ export interface Entity {
 
 type Func = ((...args: unknown[]) => unknown) | string;
 
-interface Api {
+export interface Api {
     /**
      * Container of all the rendered script content
      * */
@@ -84,7 +85,7 @@ interface Api {
      * See {@link https://day.js.org} for documentation
      * @see https://day.js.org
      */
-    dayjs: typeof window.dayjs;
+    dayjs: typeof dayjs;
 
     RightPanelWidget: typeof RightPanelWidget;
     NoteContextAwareWidget: typeof NoteContextAwareWidget;
@@ -362,6 +363,14 @@ interface Api {
      *
      * @param date - e.g. "2019-04-29"
      */
+    getWeekFirstDayNote: typeof dateNotesService.getWeekFirstDayNote;
+
+    /**
+     * Returns week note for given date. If such a note doesn't exist, it is automatically created.
+     *
+     * @param date in YYYY-MM-DD format
+     * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
+     */
     getWeekNote: typeof dateNotesService.getWeekNote;
 
     /**
@@ -370,6 +379,14 @@ interface Api {
      * @param month - e.g. "2019-04"
      */
     getMonthNote: typeof dateNotesService.getMonthNote;
+
+    /**
+     * Returns quarter note for given date. If such a note doesn't exist, it is automatically created.
+     *
+     * @param date in YYYY-MM format
+     * @param rootNote - specify calendar root note, normally leave empty to use the default calendar
+     */
+    getQuarterNote: typeof dateNotesService.getQuarterNote;
 
     /**
      * Returns year-note. If it doesn't exist, it is automatically created.
@@ -456,13 +473,13 @@ function FrontendScriptApi(this: Api, startNote: FNote, currentNote: FNote, orig
     this.BasicWidget = BasicWidget;
 
     this.activateNote = async (notePath) => {
-        await appContext.tabManager.getActiveContext().setNote(notePath);
+        await appContext.tabManager.getActiveContext()?.setNote(notePath);
     };
 
     this.activateNewNote = async (notePath) => {
         await ws.waitForMaxKnownEntityChangeId();
 
-        await appContext.tabManager.getActiveContext().setNote(notePath);
+        await appContext.tabManager.getActiveContext()?.setNote(notePath);
         await appContext.triggerEvent("focusAndSelectTitle", {});
     };
 
@@ -479,8 +496,8 @@ function FrontendScriptApi(this: Api, startNote: FNote, currentNote: FNote, orig
     this.openSplitWithNote = async (notePath, activate) => {
         await ws.waitForMaxKnownEntityChangeId();
 
-        const subContexts = appContext.tabManager.getActiveContext().getSubContexts();
-        const { ntxId } = subContexts[subContexts.length - 1];
+        const subContexts = appContext.tabManager.getActiveContext()?.getSubContexts();
+        const { ntxId } = subContexts?.[subContexts.length - 1] ?? {};
 
         await appContext.triggerCommand("openNewNoteSplit", { ntxId, notePath });
 
@@ -590,15 +607,48 @@ function FrontendScriptApi(this: Api, startNote: FNote, currentNote: FNote, orig
 
     this.addTextToActiveContextEditor = (text) => appContext.triggerCommand("addTextToActiveEditor", { text });
 
-    this.getActiveContextNote = () => appContext.tabManager.getActiveContextNote();
-    this.getActiveContext = () => appContext.tabManager.getActiveContext();
-    this.getActiveMainContext = () => appContext.tabManager.getActiveMainContext();
+    this.getActiveContextNote = (): FNote => {
+        const note = appContext.tabManager.getActiveContextNote();
+        if (!note) {
+            throw new Error("No active context note found");
+        }
+        return note;
+    };
+
+    this.getActiveContext = (): NoteContext => {
+        const context = appContext.tabManager.getActiveContext();
+        if (!context) {
+            throw new Error("No active context found");
+        }
+        return context;
+    };
+
+    this.getActiveMainContext = (): NoteContext => {
+        const context = appContext.tabManager.getActiveMainContext();
+        if (!context) {
+            throw new Error("No active main context found");
+        }
+        return context;
+    };
 
     this.getNoteContexts = () => appContext.tabManager.getNoteContexts();
     this.getMainNoteContexts = () => appContext.tabManager.getMainNoteContexts();
 
-    this.getActiveContextTextEditor = () => appContext.tabManager.getActiveContext()?.getTextEditor();
-    this.getActiveContextCodeEditor = () => appContext.tabManager.getActiveContext()?.getCodeEditor();
+    this.getActiveContextTextEditor = () => {
+        const context = appContext.tabManager.getActiveContext();
+        if (!context) {
+            throw new Error("No active context found");
+        }
+        return context.getTextEditor();
+    };
+
+    this.getActiveContextCodeEditor = () => {
+        const context = appContext.tabManager.getActiveContext();
+        if (!context) {
+            throw new Error("No active context found");
+        }
+        return context.getCodeEditor();
+    };
 
     this.getActiveNoteDetailWidget = () => new Promise((resolve) => appContext.triggerCommand("executeInActiveNoteDetailWidget", { callback: resolve }));
     this.getActiveContextNotePath = () => appContext.tabManager.getActiveContextNotePath();
@@ -617,8 +667,10 @@ function FrontendScriptApi(this: Api, startNote: FNote, currentNote: FNote, orig
 
     this.getTodayNote = dateNotesService.getTodayNote;
     this.getDayNote = dateNotesService.getDayNote;
+    this.getWeekFirstDayNote = dateNotesService.getWeekFirstDayNote;
     this.getWeekNote = dateNotesService.getWeekNote;
     this.getMonthNote = dateNotesService.getMonthNote;
+    this.getQuarterNote = dateNotesService.getQuarterNote;
     this.getYearNote = dateNotesService.getYearNote;
 
     this.setHoistedNoteId = (noteId) => {
@@ -664,5 +716,5 @@ function FrontendScriptApi(this: Api, startNote: FNote, currentNote: FNote, orig
 }
 
 export default FrontendScriptApi as any as {
-    new (startNote: FNote, currentNote: FNote, originEntity: Entity | null, $container: JQuery<HTMLElement> | null): Api;
+    new(startNote: FNote, currentNote: FNote, originEntity: Entity | null, $container: JQuery<HTMLElement> | null): Api;
 };

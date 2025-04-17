@@ -9,7 +9,7 @@ import optionService from "../../services/options.js";
 import contentHashService from "../../services/content_hash.js";
 import log from "../../services/log.js";
 import syncOptions from "../../services/sync_options.js";
-import utils from "../../services/utils.js";
+import utils, { safeExtractMessageAndStackFromError } from "../../services/utils.js";
 import ws from "../../services/ws.js";
 import type { Request } from "express";
 import type { EntityChange } from "../../services/entity_changes_interface.js";
@@ -30,10 +30,11 @@ async function testSync() {
         syncService.sync();
 
         return { success: true, message: t("test_sync.successful") };
-    } catch (e: any) {
+    } catch (e: unknown) {
+        const [errMessage] = safeExtractMessageAndStackFromError(e);
         return {
             success: false,
-            message: e.message
+            error: errMessage
         };
     }
 }

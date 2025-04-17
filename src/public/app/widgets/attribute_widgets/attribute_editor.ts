@@ -15,7 +15,7 @@ import type { CommandData, EventData, EventListener, FilteredCommandNames } from
 import type { default as FAttribute, AttributeType } from "../../entities/fattribute.js";
 import type FNote from "../../entities/fnote.js";
 import { escapeQuotes } from "../../services/utils.js";
-import { buildConfig } from "../type_widgets/ckeditor/toolbars.js";
+import { buildConfig } from "../type_widgets/ckeditor/config.js";
 
 const HELP_TEXT = `
 <p>${t("attribute_editor.help_text_body1")}</p>
@@ -24,7 +24,7 @@ const HELP_TEXT = `
 
 <p>${t("attribute_editor.help_text_body3")}</p>`;
 
-const TPL = `
+const TPL = /*html*/`
 <div style="position: relative; padding-top: 10px; padding-bottom: 10px">
     <style>
     .attribute-list-editor {
@@ -174,12 +174,14 @@ const editorConfig = {
         "SelectAll",
         "IncludeNote",
         "CutToNote",
-        "Mathematics",
+        "Math",
         "AutoformatMath",
         "indentBlockShortcutPlugin",
         "removeFormatLinksPlugin",
         "Footnotes",
-        "Mermaid"
+        "Mermaid",
+        "Kbd",
+        "Admonition"
     ],
     toolbar: {
         items: []

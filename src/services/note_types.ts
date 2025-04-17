@@ -8,7 +8,7 @@ const noteTypes = [
     { type: "relationMap", defaultMime: "application/json" },
     { type: "book", defaultMime: "" },
     { type: "noteMap", defaultMime: "" },
-    { type: "mermaid", defaultMime: "text/plain" },
+    { type: "mermaid", defaultMime: "text/vnd.mermaid" },
     { type: "canvas", defaultMime: "application/json" },
     { type: "webView", defaultMime: "" },
     { type: "launcher", defaultMime: "" },
@@ -16,7 +16,7 @@ const noteTypes = [
     { type: "contentWidget", defaultMime: "" },
     { type: "mindMap", defaultMime: "application/json" },
     { type: "geoMap", defaultMime: "application/json" },
-    { type: "taskList", defaultMime: "" }
+    { type: "aiChat", defaultMime: "application/json" }
 ];
 
 function getDefaultMimeForNoteType(typeName: string) {

@@ -4,6 +4,7 @@ import type { BrowserContext } from "@playwright/test";
 interface GotoOpts {
     url?: string;
     isMobile?: boolean;
+    preserveTabs?: boolean;
 }
 
 const BASE_URL = "http://127.0.0.1:8082";
@@ -14,8 +15,12 @@ export default class App {
 
     readonly tabBar: Locator;
     readonly noteTree: Locator;
+    readonly noteTreeActiveNote: Locator;
+    readonly noteTreeHoistedNote: Locator;
     readonly launcherBar: Locator;
     readonly currentNoteSplit: Locator;
+    readonly currentNoteSplitTitle: Locator;
+    readonly currentNoteSplitContent: Locator;
     readonly sidebar: Locator;
 
     constructor(page: Page, context: BrowserContext) {
@@ -24,12 +29,16 @@ export default class App {
 
         this.tabBar = page.locator(".tab-row-widget-container");
         this.noteTree = page.locator(".tree-wrapper");
+        this.noteTreeActiveNote = this.noteTree.locator(".fancytree-node.fancytree-active");
+        this.noteTreeHoistedNote = this.noteTree.locator(".fancytree-node", { has: page.locator(".unhoist-button") });
         this.launcherBar = page.locator("#launcher-container");
-        this.currentNoteSplit = page.locator(".note-split:not(.hidden-ext)")
+        this.currentNoteSplit = page.locator(".note-split:not(.hidden-ext)");
+        this.currentNoteSplitTitle = this.currentNoteSplit.locator(".note-title");
+        this.currentNoteSplitContent = this.currentNoteSplit.locator(".note-detail-printable.visible");
         this.sidebar = page.locator("#right-pane");
     }
 
-    async goto({ url, isMobile }: GotoOpts = {}) {
+    async goto({ url, isMobile, preserveTabs }: GotoOpts = {}) {
         await this.context.addCookies([
             {
                 url: BASE_URL,
@@ -42,19 +51,21 @@ export default class App {
             url = "/";
         }
 
-        await this.page.goto(url, { waitUntil: "networkidle" });
+        await this.page.goto(url, { waitUntil: "networkidle", timeout: 30_000 });
 
         // Wait for the page to load.
         if (url === "/") {
-            await expect(this.page.locator(".tree"))
-                .toContainText("Trilium Integration Test");
-            await this.closeAllTabs();
+            await expect(this.page.locator(".tree")).toContainText("Trilium Integration Test");
+            if (!preserveTabs) {
+                await this.closeAllTabs();
+            }
         }
     }
 
     async goToNoteInNewTab(noteTitle: string) {
         const autocomplete = this.currentNoteSplit.locator(".note-autocomplete");
         await autocomplete.fill(noteTitle);
+        await expect(this.currentNoteSplit.locator(".note-detail-empty-results")).toContainText(noteTitle);
         await autocomplete.press("ArrowDown");
         await autocomplete.press("Enter");
     }
@@ -76,6 +87,8 @@ export default class App {
      */
     async closeAllTabs() {
         await this.triggerCommand("closeAllTabs");
+        // Page in Playwright is not updated somehow, need to click on the tab to make sure it's rendered
+        await this.getTab(0).click();
     }
 
     /**
@@ -94,6 +107,30 @@ export default class App {
     }
 
     /**
+     * Opens the note context menu by clicking on it, looks for the item with the given text and clicks it.
+     *
+     * Assertions are put in place to make sure the menu is open and closed after the click.
+     * @param itemToFind the text of the item to find in the menu.
+     */
+    async openAndClickNoteActionMenu(itemToFind: string) {
+        const noteActionsButton = this.currentNoteSplit.locator(".note-actions");
+        await noteActionsButton.click();
+
+        const dropdownMenu = noteActionsButton.locator(".dropdown-menu");
+        await this.page.waitForTimeout(100);
+        await expect(dropdownMenu).toBeVisible();
+        dropdownMenu.getByText(itemToFind).click();
+        await expect(dropdownMenu).not.toBeVisible();
+    }
+
+    /**
+     * Obtains the locator to the find and replace widget, if it's being displayed.
+     */
+    get findAndReplaceWidget() {
+        return this.page.locator(".component.visible.find-replace-widget");
+    }
+
+    /**
      * Executes any Trilium command on the client.
      * @param command the command to send.
      */
@@ -109,11 +146,12 @@ export default class App {
         });
 
         expect(csrfToken).toBeTruthy();
-        await expect(await this.page.request.put(`${BASE_URL}/api/options/${key}/${value}`, {
-            headers: {
-                "x-csrf-token": csrfToken
-            }
-        })).toBeOK();
+        await expect(
+            await this.page.request.put(`${BASE_URL}/api/options/${key}/${value}`, {
+                headers: {
+                    "x-csrf-token": csrfToken
+                }
+            })
+        ).toBeOK();
     }
-
 }

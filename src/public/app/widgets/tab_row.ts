@@ -1,21 +1,22 @@
-import Draggabilly, { type DraggabillyCallback, type MoveVector } from "draggabilly";
+import Draggabilly, { type MoveVector } from "draggabilly";
 import { t } from "../services/i18n.js";
 import BasicWidget from "./basic_widget.js";
 import contextMenu from "../menus/context_menu.js";
 import utils from "../services/utils.js";
 import keyboardActionService from "../services/keyboard_actions.js";
-import appContext, { type CommandData, type CommandListenerData, type EventData } from "../components/app_context.js";
+import appContext, { type CommandNames, type CommandListenerData, type EventData } from "../components/app_context.js";
 import froca from "../services/froca.js";
 import attributeService from "../services/attributes.js";
 import type NoteContext from "../components/note_context.js";
 
 const isDesktop = utils.isDesktop();
 
-const TAB_CONTAINER_MIN_WIDTH = 24;
+const TAB_CONTAINER_MIN_WIDTH = 100;
 const TAB_CONTAINER_MAX_WIDTH = 240;
 const TAB_CONTAINER_LEFT_PADDING = 5;
-const NEW_TAB_WIDTH = 32;
-const MIN_FILLER_WIDTH = (isDesktop ? 50 : 15);
+const SCROLL_BUTTON_WIDTH = 36;
+const NEW_TAB_WIDTH = 36;
+const MIN_FILLER_WIDTH = isDesktop ? 50 : 15;
 const MARGIN_WIDTH = 5;
 
 const TAB_SIZE_SMALL = 84;
@@ -32,6 +33,8 @@ const TAB_TPL = `
   </div>
 </div>`;
 
+const CONTAINER_ANCHOR_TPL = `<div class="tab-row-container-anchor"></div>`;
+
 const NEW_TAB_BUTTON_TPL = `<div class="note-new-tab" data-trigger-command="openNewTab" title="${t("tab_row.add_new_tab")}">+</div>`;
 const FILLER_TPL = `<div class="tab-row-filler"></div>`;
 
@@ -39,11 +42,11 @@ const TAB_ROW_TPL = `
 <div class="tab-row-widget">
     <style>
     .tab-row-widget {
+        display:flex;
         box-sizing: border-box;
         position: relative;
         width: 100%;
         background: var(--main-background-color);
-        overflow: hidden;
         user-select: none;
     }
 
@@ -59,7 +62,6 @@ const TAB_ROW_TPL = `
     .tab-row-widget .tab-row-widget-container {
         box-sizing: border-box;
         position: relative;
-        width: 100%;
         height: 100%;
     }
 
@@ -74,15 +76,12 @@ const TAB_ROW_TPL = `
     }
 
     .note-new-tab {
-        position: absolute;
-        left: 0;
-        width: 36px;
-        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 ${NEW_TAB_WIDTH}px;
+        height: ${NEW_TAB_WIDTH}px;
         padding: 1px;
-        border: 0;
-        margin: 0;
-        z-index: 1;
-        text-align: center;
         font-size: 24px;
         cursor: pointer;
         box-sizing: border-box;
@@ -96,11 +95,22 @@ const TAB_ROW_TPL = `
     .tab-row-filler {
         box-sizing: border-box;
         -webkit-app-region: drag;
-        position: absolute;
-        left: 0;
         height: 100%;
+        min-width: ${MIN_FILLER_WIDTH}px;
+        flex-grow: 1;
     }
 
+    .tab-row-container-anchor{
+        position: absolute;
+        left: 0;
+        width: 0px;
+        height: 36px;
+        border: 0;
+        margin: 0;
+        z-index: 1;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
     body.mobile .tab-row-filler {
         display: none;
     }
@@ -184,6 +194,38 @@ const TAB_ROW_TPL = `
         text-align: center;
     }
 
+    .tab-scroll-button-left, .tab-scroll-button-right {
+        display: none;
+        flex: 0 0 ${SCROLL_BUTTON_WIDTH}px;
+        height: ${SCROLL_BUTTON_WIDTH}px;
+        padding: 1px 1px 1px 1px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+
+    .tab-scroll-button-left {
+        color: var(--active-tab-text-color);
+        box-shadow: inset -1px 0 0 0 var(--main-border-color);
+    }
+    
+    .tab-scroll-button-right {
+        color: var(--active-tab-text-color);
+        box-shadow: inset 1px 0 0 0 var(--main-border-color);
+    }
+
+    .tab-scroll-button-left.disabled,
+    .tab-scroll-button-right.disabled {
+        color: var(--inactive-tab-text-color);
+        box-shadow: none;
+        pointer-events: none;
+    }
+
+    .tab-scroll-button-left:hover,
+    .tab-scroll-button-right:hover {
+        background-color: var(--tab-background-color, var(--inactive-tab-hover-background-color));
+    }
+
     .tab-row-widget .note-tab:hover .note-tab-wrapper {
         background-color: var(--tab-background-color, var(--inactive-tab-hover-background-color));
     }
@@ -231,9 +273,29 @@ const TAB_ROW_TPL = `
     .tab-row-widget:not(.tab-row-widget-is-sorting) .note-tab.note-tab-was-just-dragged {
         transition: transform 120ms ease-in-out;
     }
+    .tab-row-widget-wrapper {
+        display: flex;
+        box-sizing: border-box;
+        width: 100%;
+        height: 100%;
+    }
+        
+    .tab-row-widget-scrolling-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none; /* Firefox */
+    }
+    /* Chrome/Safari */
+    .tab-row-widget-scrolling-container::-webkit-scrollbar {
+        display: none;  
+    }
+    
     </style>
-
-    <div class="tab-row-widget-container"></div>
+    <div class="tab-scroll-button-left bx bx-chevron-left"></div>
+    <div class="tab-row-widget-scrolling-container">
+        <div class="tab-row-widget-container"></div>
+    </div>
+    <div class="tab-scroll-button-right bx bx-chevron-right"></div>
 </div>`;
 
 export default class TabRowWidget extends BasicWidget {
@@ -244,11 +306,24 @@ export default class TabRowWidget extends BasicWidget {
     private draggabillyDragging?: Draggabilly | null;
 
     private $style!: JQuery<HTMLElement>;
+    private $tabScrollingContainer!: JQuery<HTMLElement>;
+    private $tabContainer!: JQuery<HTMLElement>;
+    private $scrollButtonLeft!: JQuery<HTMLElement>;
+    private $scrollButtonRight!: JQuery<HTMLElement>;
+    private $containerAnchor!: JQuery<HTMLElement>;
     private $filler!: JQuery<HTMLElement>;
     private $newTab!: JQuery<HTMLElement>;
+    private updateScrollTimeout: ReturnType<typeof setTimeout> | undefined;
+
+    private newTabOuterWidth: number = 0;
+    private scrollButtonsOuterWidth: number = 0;
 
     doRender() {
         this.$widget = $(TAB_ROW_TPL);
+        this.$tabScrollingContainer = this.$widget.children(".tab-row-widget-scrolling-container");
+        this.$tabContainer = this.$widget.find(".tab-row-widget-container");
+        this.$scrollButtonLeft = this.$widget.children(".tab-scroll-button-left");
+        this.$scrollButtonRight = this.$widget.children(".tab-scroll-button-right");
 
         const documentStyle = window.getComputedStyle(document.documentElement);
         this.showNoteIcons = documentStyle.getPropertyValue("--tab-note-icons") === "true";
@@ -257,18 +332,20 @@ export default class TabRowWidget extends BasicWidget {
 
         this.setupStyle();
         this.setupEvents();
+        this.setupContainerAnchor();
         this.setupDraggabilly();
         this.setupNewButton();
         this.setupFiller();
         this.layoutTabs();
         this.setVisibility();
+        this.setupScrollEvents();
 
         this.$widget.on("contextmenu", ".note-tab", (e) => {
             e.preventDefault();
 
             const ntxId = $(e.target).closest(".note-tab").attr("data-ntx-id");
 
-            contextMenu.show({
+            contextMenu.show<CommandNames>({
                 x: e.pageX,
                 y: e.pageY,
                 items: [
@@ -300,6 +377,60 @@ export default class TabRowWidget extends BasicWidget {
         this.$widget.append(this.$style);
     }
 
+    scrollTabContainer(direction: number, behavior: ScrollBehavior = "smooth") {
+        const currentScrollLeft = this.$tabScrollingContainer[0]?.scrollLeft;
+        this.$tabScrollingContainer[0].scrollTo({
+            left: currentScrollLeft + direction,
+            behavior
+        });
+    };
+
+    setupScrollEvents() {
+        let isScrolling = false;
+        this.$tabScrollingContainer[0].addEventListener('wheel', (event) => {
+            if (!isScrolling) {
+                isScrolling = true;
+                requestAnimationFrame(() => {
+                    this.scrollTabContainer(event.deltaY * 1.5, 'instant');
+                    isScrolling = false;
+                });
+            }
+        });
+
+        this.$scrollButtonLeft[0].addEventListener('click', () => this.scrollTabContainer(-200));
+        this.$scrollButtonRight[0].addEventListener('click', () => this.scrollTabContainer(200));
+
+        this.$tabScrollingContainer[0].addEventListener('scroll', () => {
+            clearTimeout(this.updateScrollTimeout);
+            this.updateScrollTimeout = setTimeout(() => {
+                this.updateScrollButtonState();
+            }, 100);
+        });
+    }
+
+    updateScrollButtonState() {
+        const scrollLeft = this.$tabScrollingContainer[0].scrollLeft;
+        const scrollWidth = this.$tabScrollingContainer[0].scrollWidth;
+        const clientWidth = this.$tabScrollingContainer[0].clientWidth;
+        // Detect whether the scrollbar is at the far left or far right.
+        this.$scrollButtonLeft.toggleClass("disabled", Math.abs(scrollLeft) <= 1);
+        this.$scrollButtonRight.toggleClass("disabled", Math.abs(scrollLeft + clientWidth - scrollWidth) <= 1);
+    }
+
+    setScrollButtonVisibility(show: boolean = true) {
+        if (show) {
+            this.$scrollButtonLeft.css("display", "flex");
+            this.$scrollButtonRight.css("display", "flex");
+            clearTimeout(this.updateScrollTimeout);
+            this.updateScrollTimeout = setTimeout(() => {
+                this.updateScrollButtonState();
+            }, 200);
+        } else {
+            this.$scrollButtonLeft.css("display", "none");
+            this.$scrollButtonRight.css("display", "none");
+        }
+    }
+
     setupEvents() {
         new ResizeObserver((_) => {
             this.cleanUpPreviouslyDraggedTabs();
@@ -317,14 +448,32 @@ export default class TabRowWidget extends BasicWidget {
         return Array.prototype.slice.call(this.$widget.find(".note-tab"));
     }
 
-    get $tabContainer() {
-        return this.$widget.find(".tab-row-widget-container");
+    updateOuterWidth() {
+        if (this.newTabOuterWidth == 0) {
+            this.newTabOuterWidth = this.$newTab?.outerWidth(true) ?? 0;
+        }
+        if (this.scrollButtonsOuterWidth == 0) {
+            this.scrollButtonsOuterWidth = (this.$scrollButtonLeft?.outerWidth(true) ?? 0) + (this.$scrollButtonRight?.outerWidth(true) ?? 0);
+        }
     }
+
 
     get tabWidths() {
         const numberOfTabs = this.tabEls.length;
-        const tabsContainerWidth = this.$tabContainer[0].clientWidth - NEW_TAB_WIDTH - MIN_FILLER_WIDTH;
-        const marginWidth = (numberOfTabs - 1) * MARGIN_WIDTH;
+        // this.$newTab may include margin, and using NEW_TAB_WIDTH could cause tabsContainerWidth to be slightly larger,
+        // resulting in misaligned scrollbars/buttons. Therefore, use outerwidth.
+        this.updateOuterWidth();
+        let tabsContainerWidth = Math.floor(this.$widget.width() ?? 0);
+        tabsContainerWidth -= this.newTabOuterWidth + MIN_FILLER_WIDTH;
+        // Check whether the scroll buttons need to be displayed.
+        if ((TAB_CONTAINER_MIN_WIDTH + MARGIN_WIDTH) * numberOfTabs > tabsContainerWidth) {
+            tabsContainerWidth -= this.scrollButtonsOuterWidth;
+            this.setScrollButtonVisibility(true);
+        } else {
+            this.setScrollButtonVisibility(false);
+        }
+
+        const marginWidth = (numberOfTabs - 1) * MARGIN_WIDTH + TAB_CONTAINER_LEFT_PADDING;
         const targetWidth = (tabsContainerWidth - marginWidth) / numberOfTabs;
         const clampedTargetWidth = Math.max(TAB_CONTAINER_MIN_WIDTH, Math.min(TAB_CONTAINER_MAX_WIDTH, targetWidth));
         const flooredClampedTargetWidth = Math.floor(clampedTargetWidth);
@@ -344,10 +493,6 @@ export default class TabRowWidget extends BasicWidget {
             }
         }
 
-        if (this.$filler) {
-            this.$filler.css("width", `${extraWidthRemaining + MIN_FILLER_WIDTH}px`);
-        }
-
         return widths;
     }
 
@@ -362,10 +507,9 @@ export default class TabRowWidget extends BasicWidget {
 
         position -= MARGIN_WIDTH; // the last margin should not be applied
 
-        const newTabPosition = position;
-        const fillerPosition = position + 32;
+        const anchorPosition = position;
 
-        return { tabPositions, newTabPosition, fillerPosition };
+        return { tabPositions, anchorPosition };
     }
 
     layoutTabs() {
@@ -386,15 +530,14 @@ export default class TabRowWidget extends BasicWidget {
 
         let styleHTML = "";
 
-        const { tabPositions, newTabPosition, fillerPosition } = this.getTabPositions();
+        const { tabPositions, anchorPosition } = this.getTabPositions();
 
         tabPositions.forEach((position, i) => {
             styleHTML += `.note-tab:nth-child(${i + 1}) { transform: translate3d(${position}px, 0, 0)} `;
         });
 
-        styleHTML += `.note-new-tab { transform: translate3d(${newTabPosition}px, 0, 0) } `;
-        styleHTML += `.tab-row-filler { transform: translate3d(${fillerPosition}px, 0, 0) } `;
-
+        styleHTML += `.tab-row-container-anchor { transform: translate3d(${anchorPosition}px, 0, 0) } `;
+        styleHTML += `.tab-row-widget-container {width: ${anchorPosition}px}`;
         this.$style.html(styleHTML);
     }
 
@@ -406,8 +549,7 @@ export default class TabRowWidget extends BasicWidget {
         $tab.addClass("note-tab-was-just-added");
 
         setTimeout(() => $tab.removeClass("note-tab-was-just-added"), 500);
-
-        this.$newTab.before($tab);
+        this.$containerAnchor.before($tab);
         this.setVisibility();
         this.setTabCloseEvent($tab);
         this.updateTitle($tab, t("tab_row.new_tab"));
@@ -419,13 +561,13 @@ export default class TabRowWidget extends BasicWidget {
     closeActiveTabCommand({ $el }: CommandListenerData<"closeActiveTab">) {
         const ntxId = $el.closest(".note-tab").attr("data-ntx-id");
 
-        appContext.tabManager.removeNoteContext(ntxId);
+        appContext.tabManager.removeNoteContext(ntxId ?? null);
     }
 
     setTabCloseEvent($tab: JQuery<HTMLElement>) {
         $tab.on("mousedown", (e) => {
             if (e.which === 2) {
-                appContext.tabManager.removeNoteContext($tab.attr("data-ntx-id"));
+                appContext.tabManager.removeNoteContext($tab.attr("data-ntx-id") ?? null);
 
                 return true; // event has been handled
             }
@@ -494,7 +636,7 @@ export default class TabRowWidget extends BasicWidget {
         return $tab.attr("data-ntx-id");
     }
 
-    noteContextRemovedEvent({ ntxIds }: EventData<"noteContextRemovedEvent">) {
+    noteContextRemovedEvent({ ntxIds }: EventData<"noteContextRemoved">) {
         for (const ntxId of ntxIds) {
             this.removeTab(ntxId);
         }
@@ -507,6 +649,7 @@ export default class TabRowWidget extends BasicWidget {
     setupDraggabilly() {
         const tabEls = this.tabEls;
         const { tabPositions } = this.getTabPositions();
+        let initialScrollLeft = 0;
 
         if (this.isDragging && this.draggabillyDragging) {
             this.isDragging = false;
@@ -516,7 +659,7 @@ export default class TabRowWidget extends BasicWidget {
             this.draggabillyDragging.element.style.transform = "";
             this.draggabillyDragging.dragEnd();
             this.draggabillyDragging.isDragging = false;
-            this.draggabillyDragging.positionDrag = () => {}; // Prevent Draggabilly from updating tabEl.style.transform in later frames
+            this.draggabillyDragging.positionDrag = () => { }; // Prevent Draggabilly from updating tabEl.style.transform in later frames
             this.draggabillyDragging.destroy();
             this.draggabillyDragging = null;
         }
@@ -533,7 +676,7 @@ export default class TabRowWidget extends BasicWidget {
 
             this.draggabillies.push(draggabilly);
 
-            draggabilly.on("pointerDown", () => {
+            draggabilly.on("staticClick", () => {
                 appContext.tabManager.activateNoteContext(tabEl.getAttribute("data-ntx-id"));
             });
 
@@ -542,11 +685,20 @@ export default class TabRowWidget extends BasicWidget {
                 this.draggabillyDragging = draggabilly;
                 tabEl.classList.add("note-tab-is-dragging");
                 this.$widget.addClass("tab-row-widget-is-sorting");
+
+                initialScrollLeft = this.$tabScrollingContainer?.scrollLeft() ?? 0;
+                draggabilly.positionDrag = () => { };
             });
 
             draggabilly.on("dragEnd", () => {
                 this.isDragging = false;
-                const finalTranslateX = parseFloat(tabEl.style.left);
+                const currentScrollLeft = this.$tabScrollingContainer?.scrollLeft() ?? 0;
+                const scrollDelta = currentScrollLeft - initialScrollLeft;
+                const translateX = parseFloat(tabEl.style.left) + scrollDelta;
+                const maxTranslateX = this.$tabContainer[0]?.offsetWidth - tabEl.offsetWidth;
+                const minTranslateX = 0;
+                const finalTranslateX = Math.min(maxTranslateX, Math.max(minTranslateX, translateX));
+
                 tabEl.style.transform = `translate3d(0, 0, 0)`;
 
                 // Animate dragged tab back into its place
@@ -570,12 +722,31 @@ export default class TabRowWidget extends BasicWidget {
                 });
             });
 
-            draggabilly.on("dragMove", (event: unknown, pointer: unknown, moveVector: MoveVector) => {
+            draggabilly.on("dragMove", (event: unknown, pointer: PointerEvent, moveVector: MoveVector) => {
                 // The current index be computed within the event since it can change during the dragMove
                 const tabEls = this.tabEls;
                 const currentIndex = tabEls.indexOf(tabEl);
 
-                const currentTabPositionX = originalTabPositionX + moveVector.x;
+                const scorllContainerBounds = this.$tabScrollingContainer[0]?.getBoundingClientRect();
+                const pointerX = pointer.pageX;
+                const scrollSpeed = 100; // The increment of each scroll.
+                // Check if the mouse is near the edge of the container and trigger scrolling.
+                if (pointerX < scorllContainerBounds.left) {
+                    this.scrollTabContainer(- scrollSpeed);
+                } else if (pointerX > scorllContainerBounds.right) {
+                    this.scrollTabContainer(scrollSpeed);
+                }
+
+                const currentScrollLeft = this.$tabScrollingContainer?.scrollLeft() ?? 0;
+                const scrollDelta = currentScrollLeft - initialScrollLeft;
+                let translateX = moveVector.x + scrollDelta;
+
+                // Limit the `translateX` so that `tabEl` cannot exceed the left and right boundaries of the container.
+                const maxTranslateX = this.$tabContainer[0]?.offsetWidth - tabEl.offsetWidth - originalTabPositionX;
+                const minTranslateX = - originalTabPositionX;
+                translateX = Math.min(maxTranslateX, Math.max(minTranslateX, translateX));
+                tabEl.style.transform = `translate3d(${translateX}px, 0, 0)`;
+                const currentTabPositionX = originalTabPositionX + translateX;
                 const destinationIndexTarget = this.closest(currentTabPositionX, tabPositions);
                 const destinationIndex = Math.max(0, Math.min(tabEls.length, destinationIndexTarget));
 
@@ -594,8 +765,7 @@ export default class TabRowWidget extends BasicWidget {
         if (destinationIndex < originIndex) {
             tabEl.parentNode?.insertBefore(tabEl, this.tabEls[destinationIndex]);
         } else {
-            const beforeEl = this.tabEls[destinationIndex + 1] || this.$newTab[0];
-
+            const beforeEl = this.tabEls[destinationIndex + 1] || this.$containerAnchor[0];
             tabEl.parentNode?.insertBefore(tabEl, beforeEl);
         }
         this.triggerEvent("tabReorder", { ntxIdsInOrder: this.getNtxIdsInOrder() });
@@ -604,14 +774,19 @@ export default class TabRowWidget extends BasicWidget {
 
     setupNewButton() {
         this.$newTab = $(NEW_TAB_BUTTON_TPL);
-
-        this.$tabContainer.append(this.$newTab);
+        this.$widget.append(this.$newTab);
     }
 
     setupFiller() {
         this.$filler = $(FILLER_TPL);
 
-        this.$tabContainer.append(this.$filler);
+        this.$widget.append(this.$filler);
+    }
+
+    setupContainerAnchor() {
+        this.$containerAnchor = $(CONTAINER_ANCHOR_TPL);
+
+        this.$tabContainer.append(this.$containerAnchor);
     }
 
     closest(value: number, array: number[]) {
@@ -628,7 +803,7 @@ export default class TabRowWidget extends BasicWidget {
         return closestIndex;
     }
 
-    noteSwitchedAndActivatedEvent({ noteContext }: EventData<"noteSwitchedAndActivatedEvent">) {
+    noteSwitchedAndActivatedEvent({ noteContext }: EventData<"noteSwitchedAndActivated">) {
         this.activeContextChangedEvent();
 
         this.updateTabById(noteContext.mainNtxId || noteContext.ntxId);
@@ -638,7 +813,7 @@ export default class TabRowWidget extends BasicWidget {
         this.updateTabById(noteContext.mainNtxId || noteContext.ntxId);
     }
 
-    noteContextReorderEvent({ oldMainNtxId, newMainNtxId }: EventData<"noteContextReorderEvent">) {
+    noteContextReorderEvent({ oldMainNtxId, newMainNtxId }: EventData<"noteContextReorder">) {
         if (!oldMainNtxId || !newMainNtxId) {
             // no need to update tab row
             return;
@@ -649,8 +824,8 @@ export default class TabRowWidget extends BasicWidget {
         this.updateTabById(newMainNtxId);
     }
 
-    contextsReopenedEvent({ mainNtxId, tabPosition }: EventData<"contextsReopenedEvent">) {
-        if (mainNtxId === undefined || tabPosition === undefined) {
+    contextsReopenedEvent({ mainNtxId, tabPosition }: EventData<"contextsReopened">) {
+        if (!mainNtxId || !tabPosition) {
             // no tab reopened
             return;
         }
@@ -660,7 +835,9 @@ export default class TabRowWidget extends BasicWidget {
 
     updateTabById(ntxId: string | null) {
         const $tab = this.getTabById(ntxId);
-
+        $tab[0].scrollIntoView({
+            behavior: 'smooth'
+        });
         const noteContext = appContext.tabManager.getNoteContextById(ntxId);
 
         this.updateTab($tab, noteContext);
@@ -748,7 +925,7 @@ export default class TabRowWidget extends BasicWidget {
     hoistedNoteChangedEvent({ ntxId }: EventData<"hoistedNoteChanged">) {
         const $tab = this.getTabById(ntxId);
 
-        if ($tab) {
+        if ($tab && ntxId) {
             const noteContext = appContext.tabManager.getNoteContextById(ntxId);
 
             this.updateTab($tab, noteContext);

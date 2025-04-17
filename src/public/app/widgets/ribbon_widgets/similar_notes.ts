@@ -6,7 +6,7 @@ import NoteContextAwareWidget from "../note_context_aware_widget.js";
 import type FNote from "../../entities/fnote.js";
 import type { EventData } from "../../components/app_context.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="similar-notes-widget">
     <style>
     .similar-notes-wrapper {
@@ -39,7 +39,6 @@ interface SimilarNote {
     notePath: string[];
     noteId: string;
 }
-
 
 export default class SimilarNotesWidget extends NoteContextAwareWidget {
 

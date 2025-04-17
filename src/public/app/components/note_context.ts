@@ -16,7 +16,7 @@ export interface SetNoteOpts {
     viewScope?: ViewScope;
 }
 
-export type GetTextEditorCallback = () => void;
+export type GetTextEditorCallback = (editor: TextEditor) => void;
 
 class NoteContext extends Component implements EventListener<"entitiesReloaded"> {
     ntxId: string | null;
@@ -311,7 +311,7 @@ class NoteContext extends Component implements EventListener<"entitiesReloaded">
 
     async getCodeEditor() {
         return this.timeout(
-            new Promise((resolve) =>
+            new Promise<CodeMirrorInstance>((resolve) =>
                 appContext.triggerCommand("executeWithCodeEditor", {
                     resolve,
                     ntxId: this.ntxId
@@ -369,7 +369,8 @@ class NoteContext extends Component implements EventListener<"entitiesReloaded">
 
         const { note, viewScope } = this;
 
-        let title = viewScope?.viewMode === "default" ? note.title : `${note.title}: ${viewScope?.viewMode}`;
+        const isNormalView = (viewScope?.viewMode === "default" || viewScope?.viewMode === "contextual-help");
+        let title = (isNormalView ? note.title : `${note.title}: ${viewScope?.viewMode}`);
 
         if (viewScope?.attachmentId) {
             // assuming the attachment has been already loaded

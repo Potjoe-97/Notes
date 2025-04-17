@@ -11,7 +11,7 @@ import config from "./config.js";
  */
 
 function get(name: keyof typeof config.Sync) {
-  return (config["Sync"] && config["Sync"][name]) || optionService.getOption(name);
+    return (config["Sync"] && config["Sync"][name]) || optionService.getOption(name);
 }
 
 export default {

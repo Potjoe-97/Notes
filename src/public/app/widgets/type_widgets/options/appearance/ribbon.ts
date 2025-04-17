@@ -2,18 +2,22 @@ import type { OptionMap } from "../../../../../../services/options_interface.js"
 import { t } from "../../../../services/i18n.js";
 import OptionsWidget from "../options_widget.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("ribbon.widgets")}</h4>
-    <label class="tn-checkbox">
-        <input type="checkbox" class="promoted-attributes-open-in-ribbon form-check-input">
-        ${t("ribbon.promoted_attributes_message")}
-    </label>
+    <div>
+        <label class="tn-checkbox">
+            <input type="checkbox" class="promoted-attributes-open-in-ribbon form-check-input">
+            ${t("ribbon.promoted_attributes_message")}
+        </label>
+    </div>
 
-    <label class="tn-checkbox">
-        <input type="checkbox" class="edited-notes-open-in-ribbon form-check-input">
-        ${t("ribbon.edited_notes_message")}
-    </label>
+    <div>
+        <label class="tn-checkbox">
+            <input type="checkbox" class="edited-notes-open-in-ribbon form-check-input">
+            ${t("ribbon.edited_notes_message")}
+        </label>
+    </div>
 </div>`;
 
 export default class RibbonOptions extends OptionsWidget {

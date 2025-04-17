@@ -51,12 +51,12 @@ function createSqlConsole() {
     return note;
 }
 
-function saveSqlConsole(sqlConsoleNoteId: string) {
+async function saveSqlConsole(sqlConsoleNoteId: string) {
     const sqlConsoleNote = becca.getNote(sqlConsoleNoteId);
     if (!sqlConsoleNote) throw new Error(`Unable to find SQL console note ID: ${sqlConsoleNoteId}`);
     const today = dateUtils.localNowDate();
 
-    const sqlConsoleHome = attributeService.getNoteWithLabel("sqlConsoleHome") || dateNoteService.getDayNote(today);
+    const sqlConsoleHome = attributeService.getNoteWithLabel("sqlConsoleHome") || await dateNoteService.getDayNote(today);
 
     const result = sqlConsoleNote.cloneTo(sqlConsoleHome.noteId);
 

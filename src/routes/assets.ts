@@ -5,7 +5,7 @@ import express from "express";
 import { isDev, isElectron } from "../services/utils.js";
 import type serveStatic from "serve-static";
 
-const persistentCacheStatic = (root: string, options?: serveStatic.ServeStaticOptions<express.Response<any, Record<string, any>>>) => {
+const persistentCacheStatic = (root: string, options?: serveStatic.ServeStaticOptions<express.Response<unknown, Record<string, unknown>>>) => {
     if (!isDev) {
         options = {
             maxAge: "1y",
@@ -50,8 +50,8 @@ async function register(app: express.Application) {
     app.use(`/assets/vX/stylesheets`, express.static(path.join(srcRoot, "public/stylesheets")));
     app.use(`/${assetPath}/libraries`, persistentCacheStatic(path.join(srcRoot, "..", "libraries")));
     app.use(`/assets/vX/libraries`, express.static(path.join(srcRoot, "..", "libraries")));
-    app.use(`/node_modules/@excalidraw/excalidraw/dist/`, express.static(path.join(srcRoot, "..", "node_modules/@excalidraw/excalidraw/dist/")));
-    app.use(`/${assetPath}/node_modules/@excalidraw/excalidraw/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/@excalidraw/excalidraw/dist/")));
+    app.use(`/node_modules/@excalidraw/excalidraw/dist/fonts/`, express.static(path.join(srcRoot, "..", "node_modules/@excalidraw/excalidraw/dist/prod/fonts/")));
+    app.use(`/${assetPath}/node_modules/@excalidraw/excalidraw/dist/fonts/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/@excalidraw/excalidraw/dist/prod/fonts/")));
 
     // KaTeX
     app.use(`/${assetPath}/node_modules/katex/dist/katex.min.js`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/katex/dist/katex.min.js")));
@@ -61,33 +61,17 @@ async function register(app: express.Application) {
     app.use(`/node_modules/katex/dist/`, express.static(path.join(srcRoot, "..", "node_modules/katex/dist/")));
     app.use(`/${assetPath}/node_modules/katex/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/katex/dist/")));
 
-    app.use(`/${assetPath}/node_modules/dayjs/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/dayjs/")));
-
     app.use(`/${assetPath}/node_modules/boxicons/css/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/boxicons/css/")));
     app.use(`/${assetPath}/node_modules/boxicons/fonts/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/boxicons/fonts/")));
-
-    app.use(`/${assetPath}/node_modules/mermaid/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/mermaid/dist/")));
 
     app.use(`/${assetPath}/node_modules/jquery/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/jquery/dist/")));
 
     app.use(`/${assetPath}/node_modules/jquery-hotkeys/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/jquery-hotkeys/")));
 
-    app.use(`/${assetPath}/node_modules/split.js/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/split.js/dist/")));
-
-    app.use(`/${assetPath}/node_modules/panzoom/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/panzoom/dist/")));
-
     // i18n
-    app.use(`/${assetPath}/node_modules/i18next/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/i18next/")));
-    app.use(`/${assetPath}/node_modules/i18next-http-backend/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/i18next-http-backend/")));
     app.use(`/${assetPath}/translations/`, persistentCacheStatic(path.join(srcRoot, "public", "translations/")));
 
     app.use(`/${assetPath}/node_modules/eslint/bin/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/eslint/bin/")));
-
-    app.use(`/${assetPath}/node_modules/jsplumb/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/jsplumb/dist/")));
-
-    app.use(`/${assetPath}/node_modules/vanilla-js-wheel-zoom/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/vanilla-js-wheel-zoom/dist/")));
-
-    app.use(`/${assetPath}/node_modules/mark.js/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/mark.js/dist/")));
 
     // Deprecated, https://www.npmjs.com/package/autocomplete.js?activeTab=readme
     app.use(`/${assetPath}/node_modules/autocomplete.js/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/autocomplete.js/dist/")));
@@ -102,11 +86,7 @@ async function register(app: express.Application) {
     app.use(`/${assetPath}/node_modules/codemirror/mode/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/codemirror/mode/")));
     app.use(`/${assetPath}/node_modules/codemirror/keymap/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/codemirror/keymap/")));
 
-    app.use(`/${assetPath}/node_modules/mind-elixir/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/mind-elixir/dist/")));
-    app.use(`/${assetPath}/node_modules/@mind-elixir/node-menu/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/@mind-elixir/node-menu/dist/")));
     app.use(`/${assetPath}/node_modules/@highlightjs/cdn-assets/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/@highlightjs/cdn-assets/")));
-
-    app.use(`/${assetPath}/node_modules/leaflet/dist/`, persistentCacheStatic(path.join(srcRoot, "..", "node_modules/leaflet/dist/")));
 }
 
 export default {

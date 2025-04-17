@@ -5,8 +5,9 @@ import type CommandButtonWidget from "../buttons/command_button.js";
 import type FNote from "../../entities/fnote.js";
 import type { NoteType } from "../../entities/fnote.js";
 import type { EventData, EventNames } from "../../components/app_context.js";
+import type NoteActionsWidget from "../buttons/note_actions.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="ribbon-container">
     <style>
     .ribbon-container {
@@ -116,13 +117,15 @@ const TPL = `
     <div class="ribbon-body-container"></div>
 </div>`;
 
+type ButtonWidget = (CommandButtonWidget | NoteActionsWidget);
+
 export default class RibbonContainer extends NoteContextAwareWidget {
 
     private lastActiveComponentId?: string | null;
     private lastNoteType?: NoteType;
 
     private ribbonWidgets: NoteContextAwareWidget[];
-    private buttonWidgets: CommandButtonWidget[];
+    private buttonWidgets: ButtonWidget[];
     private $tabContainer!: JQuery<HTMLElement>;
     private $buttonContainer!: JQuery<HTMLElement>;
     private $bodyContainer!: JQuery<HTMLElement>;
@@ -139,7 +142,8 @@ export default class RibbonContainer extends NoteContextAwareWidget {
         return super.isEnabled() && this.noteContext?.viewScope?.viewMode === "default";
     }
 
-    ribbon(widget: NoteContextAwareWidget) { // TODO: Base class
+    ribbon(widget: NoteContextAwareWidget) {
+        // TODO: Base class
         super.child(widget);
 
         this.ribbonWidgets.push(widget);
@@ -147,7 +151,7 @@ export default class RibbonContainer extends NoteContextAwareWidget {
         return this;
     }
 
-    button(widget: CommandButtonWidget) {
+    button(widget: ButtonWidget) {
         super.child(widget);
 
         this.buttonWidgets.push(widget);
@@ -200,10 +204,10 @@ export default class RibbonContainer extends NoteContextAwareWidget {
 
                 if (refreshActiveTab) {
                     if (handleEventPromise) {
-                        handleEventPromise.then(() => (activeChild as any).focus()); // TODO: Base class
+                        handleEventPromise.then(() => (activeChild as any).focus?.()); // TODO: Base class
                     } else {
                         // TODO: Base class
-                        (activeChild as any)?.focus();
+                        (activeChild as any).focus?.();
                     }
                 }
             }
@@ -236,7 +240,12 @@ export default class RibbonContainer extends NoteContextAwareWidget {
             const $ribbonTitle = $('<div class="ribbon-tab-title">')
                 .attr("data-ribbon-component-id", ribbonWidget.componentId)
                 .attr("data-ribbon-component-name", (ribbonWidget as any).name as string) // TODO: base class for ribbon widgets
-                .append($('<span class="ribbon-tab-title-icon">').addClass(ret.icon).attr("title", ret.title).attr("data-toggle-command", (ribbonWidget as any).toggleCommand)) // TODO: base class
+                .append(
+                    $('<span class="ribbon-tab-title-icon">')
+                        .addClass(ret.icon)
+                        .attr("title", ret.title)
+                        .attr("data-toggle-command", (ribbonWidget as any).toggleCommand)
+                ) // TODO: base class
                 .append(" ")
                 .append($('<span class="ribbon-tab-title-label">').text(ret.title));
 

@@ -4,12 +4,9 @@ import electron from "electron";
 import electronDebug from "electron-debug";
 import electronDl from "electron-dl";
 import sqlInit from "./src/services/sql_init.js";
-import appIconService from "./src/services/app_icon.js";
 import windowService from "./src/services/window.js";
 import tray from "./src/services/tray.js";
-
-import sourceMapSupport from "source-map-support";
-sourceMapSupport.install();
+import options from "./src/services/options.js";
 
 // Prevent Trilium starting twice on first install and on uninstall for the Windows installer.
 if ((await import("electron-squirrel-startup")).default) {
@@ -19,14 +16,11 @@ if ((await import("electron-squirrel-startup")).default) {
 // Adds debug features like hotkeys for triggering dev tools and reload
 electronDebug();
 
-appIconService.installLocalAppIcon();
-
 electronDl({ saveAs: true });
 
 // needed for excalidraw export https://github.com/zadam/trilium/issues/4271
 electron.app.commandLine.appendSwitch("enable-experimental-web-platform-features");
-
-electron.app.userAgentFallback = `${electron.app.getName()} ${electron.app.getVersion()}`;
+electron.app.commandLine.appendSwitch("lang", options.getOptionOrNull("formattingLocale") ?? "en");
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

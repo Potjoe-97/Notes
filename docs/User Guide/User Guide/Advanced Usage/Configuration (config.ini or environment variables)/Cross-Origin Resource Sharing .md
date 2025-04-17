@@ -1,0 +1,6 @@
+# Cross-Origin Resource Sharing (CORS)
+By default, Trilium cannot be accessed in web browsers by requests coming from other domains/origins than Trilium itself. 
+
+However, it is possible to manually configure [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS) since Trilium v0.93.0 using environment variables or `config.ini`, as follows:
+
+<figure class="table" style="width:100%;"><table class="ck-table-resized"><colgroup><col style="width:26.93%;"><col style="width:32.46%;"><col style="width:40.61%;"></colgroup><thead><tr><th>CORS Header</th><th>Corresponding option in <code>config.ini</code></th><th>Corresponding option in environment variables in the <code>Network</code> section</th></tr></thead><tbody><tr><td><code>Access-Control-Allow-Origin</code></td><td><code>TRILIUM_NETWORK_CORS_ALLOW_ORIGIN</code></td><td><code>corsAllowOrigin</code>&nbsp;</td></tr><tr><td><code>Access-Control-Allow-Methods</code></td><td><code>TRILIUM_NETWORK_CORS_ALLOW_METHODS</code></td><td><code>corsAllowMethods</code>&nbsp;</td></tr><tr><td><code>Access-Control-Allow-Headers</code></td><td><code>TRILIUM_NETWORK_CORS_ALLOW_HEADERS</code></td><td><code>corsAllowHeaders</code></td></tr></tbody></table></figure>

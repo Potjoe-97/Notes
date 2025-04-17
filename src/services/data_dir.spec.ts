@@ -64,17 +64,17 @@ describe("data_dir.ts unit tests", async () => {
         type TestCaseGetPlatformAppDataDir = [description: string, fnValue: Parameters<typeof getPlatformAppDataDir>, expectedValue: string | null, osHomedirMockValue: string | null];
 
         const testCases: TestCaseGetPlatformAppDataDir[] = [
-            ["w/ unsupported OS it should return 'null'", ["aix", undefined], null, null],
+            [ "w/ unsupported OS it should return 'null'", [ "aix", undefined ], null, null ],
 
-            ["w/ win32 and no APPDATA set it should return 'null'", ["win32", undefined], null, null],
+            [ "w/ win32 and no APPDATA set it should return 'null'", [ "win32", undefined ], null, null ],
 
-            ["w/ win32 and set APPDATA it should return set 'APPDATA'", ["win32", "AppData"], "AppData", null],
+            [ "w/ win32 and set APPDATA it should return set 'APPDATA'", [ "win32", "AppData" ], "AppData", null ],
 
-            ["w/ linux it should return '~/.local/share'", ["linux", undefined], "/home/mock/.local/share", "/home/mock"],
+            [ "w/ linux it should return '~/.local/share'", [ "linux", undefined ], "/home/mock/.local/share", "/home/mock" ],
 
-            ["w/ linux and wrongly set APPDATA it should ignore APPDATA and return '~/.local/share'", ["linux", "FakeAppData"], "/home/mock/.local/share", "/home/mock"],
+            [ "w/ linux and wrongly set APPDATA it should ignore APPDATA and return '~/.local/share'", [ "linux", "FakeAppData" ], "/home/mock/.local/share", "/home/mock" ],
 
-            ["w/ darwin it should return '~/Library/Application Support'", ["darwin", undefined], "/Users/mock/Library/Application Support", "/Users/mock"]
+            [ "w/ darwin it should return '~/Library/Application Support'", [ "darwin", undefined ], "/Users/mock/Library/Application Support", "/Users/mock" ]
         ];
 
         beforeEach(() => {
@@ -83,7 +83,7 @@ describe("data_dir.ts unit tests", async () => {
         });
 
         testCases.forEach((testCase) => {
-            const [testDescription, fnValues, expected, osHomedirMockValue] = testCase;
+            const [ testDescription, fnValues, expected, osHomedirMockValue ] = testCase;
             return it(testDescription, () => {
                 mockFn.osHomedirMock.mockReturnValue(osHomedirMockValue);
                 const actual = getPlatformAppDataDir(...fnValues);
@@ -272,7 +272,7 @@ describe("data_dir.ts unit tests", async () => {
     });
 
     describe("#getDataDirs()", () => {
-        const envKeys: Omit<keyof ReturnType<typeof getDataDirs>, "TRILIUM_DATA_DIR">[] = ["DOCUMENT_PATH", "BACKUP_DIR", "LOG_DIR", "ANONYMIZED_DB_DIR", "CONFIG_INI_PATH"];
+        const envKeys: Omit<keyof ReturnType<typeof getDataDirs>, "TRILIUM_DATA_DIR">[] = [ "DOCUMENT_PATH", "BACKUP_DIR", "LOG_DIR", "ANONYMIZED_DB_DIR", "CONFIG_INI_PATH", "TMP_DIR" ];
 
         const setMockedEnv = (prefix: string | null) => {
             envKeys.forEach((key) => {

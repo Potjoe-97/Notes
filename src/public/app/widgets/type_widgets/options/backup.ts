@@ -5,7 +5,7 @@ import server from "../../../services/server.js";
 import toastService from "../../../services/toast.js";
 import type { OptionMap } from "../../../../../services/options_interface.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("backup.automatic_backup")}</h4>
 
@@ -32,7 +32,7 @@ const TPL = `
         </li>
     </ul>
 
-    <p>${t("backup.backup_recommendation")}</p>
+    <p class="form-text">${t("backup.backup_recommendation")}</p>
 </div>
 
 <div class="options-section">

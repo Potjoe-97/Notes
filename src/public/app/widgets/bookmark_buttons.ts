@@ -41,7 +41,7 @@ export default class BookmarkButtons extends FlexContainer<Component> {
                 : new OpenNoteButtonWidget(note).class("launcher-button");
 
             if (this.settings.titlePlacement) {
-                if (!('settings' in buttonWidget)) {
+                if (!("settings" in buttonWidget)) {
                     (buttonWidget as any).settings = {};
                 }
 

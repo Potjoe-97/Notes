@@ -3,7 +3,7 @@ import { t } from "../../services/i18n.js";
 import type FNote from "../../entities/fnote.js";
 import type { EventData } from "../../components/app_context.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="note-detail-book note-detail-printable">
     <style>
     .note-detail-book-auto-help {
@@ -36,9 +36,7 @@ export default class BookTypeWidget extends TypeWidget {
     }
 
     async doRefresh(note: FNote) {
-        this.$helpNoChildren.toggle(
-            !this.note?.hasChildren()
-            && this.note?.getAttributeValue("label", "viewType") !== "calendar");
+        this.$helpNoChildren.toggle(!this.note?.hasChildren() && this.note?.getAttributeValue("label", "viewType") !== "calendar");
     }
 
     entitiesReloadedEvent({ loadResults }: EventData<"entitiesReloaded">) {

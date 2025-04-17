@@ -9,7 +9,7 @@ import { t } from "../../services/i18n.js";
 import type { EventData } from "../../components/app_context.js";
 import { Modal } from "bootstrap";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="export-dialog modal fade mx-auto" tabindex="-1" role="dialog">
     <style>
     .export-dialog .export-form .form-check {
@@ -105,13 +105,6 @@ const TPL = `
                             <label class="form-check-label tn-radio">
                                 <input class="form-check-input" type="radio" name="export-single-format" value="markdown">
                                 ${t("export.format_markdown")}
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <label class="form-check-label tn-radio">
-                                <input class="form-check-input" type="radio" name="export-single-format" value="pdf">
-                                ${t("export.format_pdf")}
                             </label>
                         </div>
                     </div>
@@ -250,7 +243,7 @@ ws.subscribeToMessages(async (message) => {
             message: message,
             icon: "arrow-square-up-right"
         };
-    };
+    }
 
     if (message.taskType !== "export") {
         return;

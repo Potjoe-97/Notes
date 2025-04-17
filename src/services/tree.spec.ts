@@ -12,11 +12,13 @@ describe("Tree", () => {
     beforeEach(() => {
         becca.reset();
 
-        rootNote = new NoteBuilder(new BNote({
-            noteId: "root",
-            title: "root",
-            type: "text"
-        }))
+        rootNote = new NoteBuilder(
+            new BNote({
+                noteId: "root",
+                title: "root",
+                type: "text"
+            })
+        );
         new BBranch({
             branchId: "none_root",
             noteId: "root",
@@ -30,17 +32,19 @@ describe("Tree", () => {
                     transactional: (cb: Function) => {
                         cb();
                     },
-                    execute: () => { },
-                    replace: () => { },
-                    getMap: () => { }
+                    execute: () => {},
+                    replace: () => {},
+                    getMap: () => {}
                 }
-            }
+            };
         });
 
         vi.mock("./sql_init.js", () => {
             return {
-                dbReady: () => { console.log("Hello world") }
-            }
+                dbReady: () => {
+                    console.log("Hello world");
+                }
+            };
         });
     });
 
@@ -48,19 +52,19 @@ describe("Tree", () => {
         rootNote.label("sorted", "order");
 
         // Add values which have a defined order.
-        for (let i=0; i<=5; i++) {
+        for (let i = 0; i <= 5; i++) {
             rootNote.child(note(String(i)).label("order", String(i)));
         }
 
         // Add a few values which have no defined order.
-        for (let i=6; i<10; i++) {
+        for (let i = 6; i < 10; i++) {
             rootNote.child(note(String(i)));
         }
 
-        const expectedOrder = [ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' ];
+        const expectedOrder = [ "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" ];
 
         // Sort a few times to ensure that the resulting order is the same.
-        for (let i=0; i<5; i++) {
+        for (let i = 0; i < 5; i++) {
             cls.init(() => {
                 tree.sortNotesIfNeeded(rootNote.note.noteId);
             });

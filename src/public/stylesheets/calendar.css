@@ -35,7 +35,7 @@
     padding: 0 0.5rem 0.5rem 0.5rem;
 }
 
-.calendar-dropdown-widget .calendar-header > div {
+.calendar-dropdown-widget .calendar-header>div {
     display: flex;
     justify-content: center;
     flex-grow: 1;
@@ -67,7 +67,8 @@
 }
 
 .calendar-dropdown-widget .calendar-header .dropdown-toggle::after {
-    border: unset; /* Disable the dropdown arrow */
+    border: unset;
+    /* Disable the dropdown arrow */
 }
 
 .calendar-dropdown-widget .calendar-week {
@@ -75,13 +76,12 @@
     flex-wrap: wrap;
 }
 
-
 .calendar-dropdown-widget .calendar-week span {
     flex-direction: column;
-    flex: 0 0 14.28%;
+    flex: 0 0 12.5%;
     font-size: 1rem;
     font-weight: bold;
-    max-width: 14.28%;
+    max-width: 12.5%;
     padding-top: 5px;
     padding-bottom: 5px;
     text-align: center;
@@ -93,13 +93,40 @@
     flex-wrap: wrap;
 }
 
+.calendar-dropdown-widget .calendar-week-number {
+    color: var(--muted-text-color) !important;
+    position: relative;
+}
+
+.calendar-dropdown-widget .calendar-week-number::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--main-border-color);
+    z-index: 2;
+}
+
+.calendar-dropdown-widget .calendar-week-number-disabled {
+    align-items: center;
+    color: var(--main-text-color);
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 12.5%;
+    max-width: 12.5%;
+    padding: 0.4rem 0;
+    font-size: 120%;
+}
+
 .calendar-dropdown-widget .calendar-date {
     align-items: center;
     color: var(--main-text-color);
     display: flex;
     flex-direction: column;
-    flex: 0 0 14.28%;
-    max-width: 14.28%;
+    flex: 0 0 12.5%;
+    max-width: 12.5%;
     padding: 0.4rem 0;
     font-size: 120%;
 }
@@ -129,4 +156,18 @@
 
 .calendar-dropdown-widget .calendar-date:not(.calendar-date-active) {
     cursor: pointer;
+}
+
+.calendar-dropdown-widget .calendar-date-prev-month,
+.calendar-dropdown-widget .calendar-date-next-month {
+    color: var(--muted-text-color);
+    opacity: 0.6;
+}
+
+.calendar-dropdown-widget .calendar-date-prev-month:hover,
+.calendar-dropdown-widget .calendar-date-next-month:hover {
+    opacity: 1;
+    background-color: var(--hover-item-background-color);
+    color: var(--hover-item-text-color);
+    text-decoration: underline;
 }

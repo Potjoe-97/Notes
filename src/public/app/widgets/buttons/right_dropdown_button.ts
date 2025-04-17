@@ -2,15 +2,15 @@ import BasicWidget from "../basic_widget.js";
 import { Tooltip, Dropdown } from "bootstrap";
 type PopoverPlacement = Tooltip.PopoverPlacement;
 
-const TPL = `
-<div class="dropdown right-dropdown-widget dropend">
+const TPL = /*html*/`
+<div class="dropdown right-dropdown-widget">
     <button type="button" data-bs-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false"
             class="bx right-dropdown-button launcher-button"></button>
 
     <div class="tooltip-trigger"></div>
 
-    <div class="dropdown-menu dropdown-menu-right"></div>
+    <div class="dropdown-menu"></div>
 </div>
 `;
 
@@ -40,7 +40,11 @@ export default class RightDropdownButtonWidget extends BasicWidget {
     doRender() {
         this.$widget = $(TPL);
         this.$dropdownMenu = this.$widget.find(".dropdown-menu");
-        this.dropdown = Dropdown.getOrCreateInstance(this.$widget.find("[data-bs-toggle='dropdown']")[0]);
+        this.dropdown = Dropdown.getOrCreateInstance(this.$widget.find("[data-bs-toggle='dropdown']")[0], {
+            popperConfig: {
+                placement: this.settings.titlePlacement,
+            }
+        });
 
         this.$tooltip = this.$widget.find(".tooltip-trigger").attr("title", this.title);
         this.tooltip = new Tooltip(this.$tooltip[0], {

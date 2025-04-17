@@ -76,18 +76,17 @@ async function backupNow(name: string) {
     return await syncMutexService.doExclusively(async () => {
         const backupFile = `${dataDir.BACKUP_DIR}/backup-${name}.db`;
 
-        await sql.copyDatabase(backupFile);
+        if (!fs.existsSync(dataDir.BACKUP_DIR)) {
+            fs.mkdirSync(dataDir.BACKUP_DIR, 0o700);
+        }
 
+        log.info("Creating backup...");
+        await sql.copyDatabase(backupFile);
         log.info(`Created backup at ${backupFile}`);
 
         return backupFile;
     });
 }
-
-if (!fs.existsSync(dataDir.BACKUP_DIR)) {
-    fs.mkdirSync(dataDir.BACKUP_DIR, 0o700);
-}
-
 export default {
     getExistingBackups,
     backupNow,

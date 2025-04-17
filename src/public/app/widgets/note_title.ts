@@ -9,7 +9,7 @@ import shortcutService from "../services/shortcuts.js";
 import utils from "../services/utils.js";
 import type FNote from "../entities/fnote.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="note-title-widget">
     <style>
     .note-title-widget {
@@ -89,9 +89,12 @@ export default class NoteTitleWidget extends NoteContextAwareWidget {
     }
 
     async refreshWithNote(note: FNote) {
-        const isReadOnly = (note.isProtected && !protectedSessionHolder.isProtectedSessionAvailable()) || utils.isLaunchBarConfig(note.noteId) || this.noteContext?.viewScope?.viewMode !== "default";
+        const isReadOnly =
+            (note.isProtected && !protectedSessionHolder.isProtectedSessionAvailable())
+            || utils.isLaunchBarConfig(note.noteId)
+            || this.noteContext?.viewScope?.viewMode !== "default";
 
-        this.$noteTitle.val(isReadOnly ? await this.noteContext?.getNavigationTitle() || "" : note.title);
+        this.$noteTitle.val(isReadOnly ? (await this.noteContext?.getNavigationTitle()) || "" : note.title);
         this.$noteTitle.prop("readonly", isReadOnly);
 
         this.setProtectedStatus(note);

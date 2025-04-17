@@ -54,7 +54,7 @@ export default class TimeSelector extends OptionsWidget {
         this.optionValueId = options.optionValueId;
         this.optionTimeScaleId = options.optionTimeScaleId;
         this.includedTimeScales = options.includedTimeScales || new Set(["seconds", "minutes", "hours", "days"]);
-        this.minimumSeconds = options.minimumSeconds || 0
+        this.minimumSeconds = options.minimumSeconds || 0;
     }
 
     doRender() {
@@ -131,10 +131,10 @@ export default class TimeSelector extends OptionsWidget {
 
     private setInternalTimeInSeconds(time: number) {
         if (time < this.minimumSeconds) {
-            toastService.showError(t("time_selector.minimum_input", {minimumSeconds: this.minimumSeconds}));
-            return this.internalTimeInSeconds = this.minimumSeconds;
+            toastService.showError(t("time_selector.minimum_input", { minimumSeconds: this.minimumSeconds }));
+            return (this.internalTimeInSeconds = this.minimumSeconds);
         }
-        return this.internalTimeInSeconds = time;
+        return (this.internalTimeInSeconds = time);
     }
 
 }

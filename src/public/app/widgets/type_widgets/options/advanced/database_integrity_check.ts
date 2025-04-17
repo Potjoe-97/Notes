@@ -3,11 +3,11 @@ import toastService from "../../../../services/toast.js";
 import server from "../../../../services/server.js";
 import { t } from "../../../../services/i18n.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("database_integrity_check.title")}</h4>
 
-    <p>${t("database_integrity_check.description")}</p>
+    <p class="form-text">${t("database_integrity_check.description")}</p>
 
     <button class="check-integrity-button btn btn-secondary">${t("database_integrity_check.check_button")}</button>
     <button class="find-and-fix-consistency-issues-button btn btn-secondary">${t("consistency_checks.find_and_fix_button")}</button>

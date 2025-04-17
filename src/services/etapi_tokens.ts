@@ -48,6 +48,11 @@ function parseAuthToken(auth: string | undefined) {
         auth = basicAuthChunks[1];
     }
 
+    if (auth.startsWith("Bearer ")) {
+        // allow also bearer auth format
+        auth = auth.substring(7);
+    }
+
     const chunks = auth.split("_");
 
     if (chunks.length === 1) {

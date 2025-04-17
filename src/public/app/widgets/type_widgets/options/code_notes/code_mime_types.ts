@@ -3,7 +3,7 @@ import OptionsWidget from "../options_widget.js";
 import mimeTypesService from "../../../../services/mime_types.js";
 import type { OptionMap } from "../../../../../../services/options_interface.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("code_mime_types.title")}</h4>
 
@@ -97,9 +97,8 @@ export default class CodeMimeTypesOptions extends OptionsWidget {
         const checkbox = $(`<label class="tn-checkbox">`)
             .append($('<input type="checkbox" class="form-check-input">').attr("id", id).attr("data-mime-type", mimeType.mime).prop("checked", mimeType.enabled))
             .on("change", () => this.save())
-            .append(mimeType.title)
+            .append(mimeType.title);
 
-        return $("<li>")
-            .append(checkbox);
+        return $("<li>").append(checkbox);
     }
 }

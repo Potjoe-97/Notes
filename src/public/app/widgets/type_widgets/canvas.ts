@@ -2,15 +2,16 @@ import TypeWidget from "./type_widget.js";
 import utils from "../../services/utils.js";
 import linkService from "../../services/link.js";
 import server from "../../services/server.js";
+import asset_path from "../../../../services/asset_path.js";
 import type FNote from "../../entities/fnote.js";
-import type { default as ExcalidrawLib } from "@excalidraw/excalidraw";
-import type { ExcalidrawElement, Theme } from "@excalidraw/excalidraw/types/element/types.js";
-import type { AppState, BinaryFileData, ExcalidrawImperativeAPI, ExcalidrawProps, LibraryItem, SceneData } from "@excalidraw/excalidraw/types/types.js";
+import type { ExcalidrawElement, Theme } from "@excalidraw/excalidraw/element/types";
+import type { AppState, BinaryFileData, ExcalidrawImperativeAPI, ExcalidrawProps, LibraryItem, SceneData } from "@excalidraw/excalidraw/types";
 import type { JSX } from "react";
 import type React from "react";
 import type { Root } from "react-dom/client";
+import "@excalidraw/excalidraw/index.css";
 
-const TPL = `
+const TPL = /*html*/`
     <div class="canvas-widget note-detail-canvas note-detail-printable note-detail">
         <style>
         .excalidraw .App-menu_top .buttonList {
@@ -26,11 +27,6 @@ const TPL = `
 
         .excalidraw-wrapper {
             height: 100%;
-        }
-
-        .excalidraw button[data-testid="json-export-button"] {
-            display: none !important;
-        }
 
         :root[dir="ltr"]
         .excalidraw
@@ -44,10 +40,6 @@ const TPL = `
             display: none !important;
         }
 
-        button[data-testid='save-button'], button[data-testid='json-export-button'] {
-            display: none !important; /* these exports don't work, user should use import/export dialog */
-        }
-
         .library-button {
             display: none !important; /* library won't work without extra support which isn't currently implemented */
         }
@@ -59,9 +51,9 @@ const TPL = `
 `;
 
 interface CanvasContent {
-    elements: ExcalidrawElement[],
-    files: BinaryFileData[],
-    appState: Partial<AppState>
+    elements: ExcalidrawElement[];
+    files: BinaryFileData[];
+    appState: Partial<AppState>;
 }
 
 interface AttachmentMetadata {
@@ -123,7 +115,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
     private librarycache: LibraryItem[];
     private attachmentMetadata: AttachmentMetadata[];
     private themeStyle!: Theme;
-    private excalidrawLib!: typeof ExcalidrawLib;
+    private excalidrawLib!: typeof import("@excalidraw/excalidraw");
     private excalidrawApi!: ExcalidrawImperativeAPI;
     private excalidrawWrapperRef!: React.RefObject<HTMLElement | null>;
 
@@ -138,9 +130,9 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
         this.SCENE_VERSION_INITIAL = -1; // -1 indicates that it is fresh. excalidraw scene version is always >0
         this.SCENE_VERSION_ERROR = -2; // -2 indicates error
 
-        // ensure that assets are loaded from trilium
-        // TODO:
-        (window as any).EXCALIDRAW_ASSET_PATH = `${window.location.origin}/node_modules/@excalidraw/excalidraw/dist/`;
+        // currently required by excalidraw, in order to allows self-hosting fonts locally.
+        // this avoids making excalidraw load the fonts from an external CDN.
+        (window as any).EXCALIDRAW_ASSET_PATH = `${window.location.origin}/${asset_path}/app-dist/excalidraw/`;
 
         // temporary vars
         this.currentNoteId = "";
@@ -198,7 +190,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
         }
         (window.process.env as any).PREACT = false;
 
-        const excalidraw = (await import("@excalidraw/excalidraw"));
+        const excalidraw = await import("@excalidraw/excalidraw");
         this.excalidrawLib = excalidraw;
 
         const { createRoot } = await import("react-dom/client");
@@ -361,7 +353,8 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
         const svgString = svg.outerHTML;
 
         const activeFiles: Record<string, BinaryFileData> = {};
-        elements.forEach((element) => {
+        // TODO: Used any where upstream typings appear to be broken.
+        elements.forEach((element: any) => {
             if ("fileId" in element && element.fileId) {
                 activeFiles[element.fileId] = files[element.fileId];
             }
@@ -386,7 +379,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
 
             // there's no separate method to get library items, so have to abuse this one
             const libraryItems = await this.excalidrawApi.updateLibrary({
-                libraryItems(currentLibraryItems) {
+                libraryItems() {
                     return [];
                 },
                 merge: true
@@ -395,7 +388,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
             // excalidraw saves the library as a own state. the items are saved to libraryItems. then we compare the library right now with a libraryitemcache. The cache is filled when we first load the Library into the note.
             //We need the cache to delete old attachments later in the server.
 
-            const libraryItemsMissmatch = this.librarycache.filter((obj1) => !libraryItems.some((obj2) => obj1.id === obj2.id));
+            const libraryItemsMissmatch = this.librarycache.filter((obj1) => !libraryItems.some((obj2: LibraryItem) => obj1.id === obj2.id));
 
             // before we saved the metadata of the attachments in a cache. the title of the attachment is a combination of libraryitem  ´s ID und it´s name.
             // we compare the library items in the libraryitemmissmatch variable (this one saves all libraryitems that are different to the state right now. E.g. you delete 1 item, this item is saved as mismatch)
@@ -476,7 +469,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
     createExcalidrawReactApp(react: typeof React, excalidrawComponent: React.MemoExoticComponent<(props: ExcalidrawProps) => JSX.Element>) {
         const excalidrawWrapperRef = react.useRef<HTMLElement>(null);
         this.excalidrawWrapperRef = excalidrawWrapperRef;
-        const [dimensions, setDimensions] = react.useState<{ width?: number, height?: number}>({
+        const [dimensions, setDimensions] = react.useState<{ width?: number; height?: number }>({
             width: undefined,
             height: undefined
         });
@@ -541,10 +534,6 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
                     excalidrawAPI: (api: ExcalidrawImperativeAPI) => {
                         this.excalidrawApi = api;
                     },
-                    onPaste: (data: unknown, event: unknown) => {
-                        console.log("Verbose: excalidraw internal paste. No trilium action implemented.", data, event);
-                        return false;
-                    },
                     onLibraryChange: () => {
                         this.libraryChanged = true;
 
@@ -562,7 +551,7 @@ export default class ExcalidrawTypeWidget extends TypeWidget {
                     UIOptions: {
                         canvasActions: {
                             saveToActiveFile: false,
-                            saveAsImage: false
+                            export: false
                         }
                     }
                 })

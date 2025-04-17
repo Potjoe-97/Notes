@@ -1,23 +1,21 @@
-"use strict";
-
 import type { Request } from "express";
-
-import attributeService from "../../services/attributes.js";
-import cloneService from "../../services/cloning.js";
-import noteService from "../../services/notes.js";
-import dateNoteService from "../../services/date_notes.js";
-import dateUtils from "../../services/date_utils.js";
-import imageService from "../../services/image.js";
-import appInfo from "../../services/app_info.js";
-import ws from "../../services/ws.js";
-import log from "../../services/log.js";
-import utils from "../../services/utils.js";
-import path from "path";
-import htmlSanitizer from "../../services/html_sanitizer.js";
-import attributeFormatter from "../../services/attribute_formatter.js";
 import jsdom from "jsdom";
+import path from "path";
+
 import type BNote from "../../becca/entities/bnote.js";
 import ValidationError from "../../errors/validation_error.js";
+import appInfo from "../../services/app_info.js";
+import attributeFormatter from "../../services/attribute_formatter.js";
+import attributeService from "../../services/attributes.js";
+import cloneService from "../../services/cloning.js";
+import dateNoteService from "../../services/date_notes.js";
+import dateUtils from "../../services/date_utils.js";
+import htmlSanitizer from "../../services/html_sanitizer.js";
+import imageService from "../../services/image.js";
+import log from "../../services/log.js";
+import noteService from "../../services/notes.js";
+import utils from "../../services/utils.js";
+import ws from "../../services/ws.js";
 const { JSDOM } = jsdom;
 
 interface Image {
@@ -26,16 +24,16 @@ interface Image {
     imageId: string;
 }
 
-function addClipping(req: Request) {
+async function addClipping(req: Request) {
     // if a note under the clipperInbox has the same 'pageUrl' attribute,
     // add the content to that note and clone it under today's inbox
     // otherwise just create a new note under today's inbox
-    let { title, content, pageUrl, images } = req.body;
+    const { title, content, images } = req.body;
     const clipType = "clippings";
 
-    const clipperInbox = getClipperInboxNote();
+    const clipperInbox = await getClipperInboxNote();
 
-    pageUrl = htmlSanitizer.sanitizeUrl(pageUrl);
+    const pageUrl = htmlSanitizer.sanitizeUrl(req.body.pageUrl);
     let clippingNote = findClippingNote(clipperInbox, pageUrl, clipType);
 
     if (!clippingNote) {
@@ -89,27 +87,26 @@ function findClippingNote(clipperInboxNote: BNote, pageUrl: string, clipType: st
     return clipType ? notes.find((note) => note.getOwnedLabelValue("clipType") === clipType) : notes[0];
 }
 
-function getClipperInboxNote() {
+async function getClipperInboxNote() {
     let clipperInbox = attributeService.getNoteWithLabel("clipperInbox");
 
     if (!clipperInbox) {
-        clipperInbox = dateNoteService.getDayNote(dateUtils.localNowDate());
+        clipperInbox = await dateNoteService.getDayNote(dateUtils.localNowDate());
     }
 
     return clipperInbox;
 }
 
-function createNote(req: Request) {
-    let { title, content, pageUrl, images, clipType, labels } = req.body;
+async function createNote(req: Request) {
+    const { content, images, labels } = req.body;
 
-    if (!title || !title.trim()) {
-        title = `Clipped note from ${pageUrl}`;
-    }
+    const clipType = htmlSanitizer.sanitize(req.body.clipType);
+    const pageUrl = htmlSanitizer.sanitizeUrl(req.body.pageUrl);
 
-    clipType = htmlSanitizer.sanitize(clipType);
+    const trimmedTitle = (typeof req.body.title === "string") ? req.body.title.trim() : "";
+    const title = trimmedTitle || `Clipped note from ${pageUrl}`;
 
-    const clipperInbox = getClipperInboxNote();
-    pageUrl = htmlSanitizer.sanitizeUrl(pageUrl);
+    const clipperInbox = await getClipperInboxNote();
     let note = findClippingNote(clipperInbox, pageUrl, clipType);
 
     if (!note) {
@@ -123,8 +120,6 @@ function createNote(req: Request) {
         note.setLabel("clipType", clipType);
 
         if (pageUrl) {
-            pageUrl = htmlSanitizer.sanitizeUrl(pageUrl);
-
             note.setLabel("pageUrl", pageUrl);
             note.setLabel("iconClass", "bx bx-globe");
         }
@@ -139,7 +134,7 @@ function createNote(req: Request) {
 
     const existingContent = note.getContent();
     if (typeof existingContent !== "string") {
-        throw new ValidationError("Invalid note content tpye.");
+        throw new ValidationError("Invalid note content type.");
     }
     const rewrittenContent = processContent(images, note, content);
     const newContent = `${existingContent}${existingContent.trim() ? "<br/>" : ""}${rewrittenContent}`;
@@ -218,10 +213,10 @@ function handshake() {
     };
 }
 
-function findNotesByUrl(req: Request) {
-    let pageUrl = req.params.noteUrl;
-    const clipperInbox = getClipperInboxNote();
-    let foundPage = findClippingNote(clipperInbox, pageUrl, null);
+async function findNotesByUrl(req: Request) {
+    const pageUrl = req.params.noteUrl;
+    const clipperInbox = await getClipperInboxNote();
+    const foundPage = findClippingNote(clipperInbox, pageUrl, null);
     return {
         noteId: foundPage ? foundPage.noteId : null
     };

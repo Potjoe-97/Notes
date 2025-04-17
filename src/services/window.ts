@@ -19,6 +19,26 @@ import { t } from "i18next";
 // Prevent the window being garbage collected
 let mainWindow: BrowserWindow | null;
 let setupWindow: BrowserWindow | null;
+let allWindows: BrowserWindow[] = []; // // Used to store all windows, sorted by the order of focus.
+
+function trackWindowFocus(win: BrowserWindow) {
+    // We need to get the last focused window from allWindows. If the last window is closed, we return the previous window.
+    // Therefore, we need to push the window into the allWindows array every time it gets focused.
+    win.on("focus", () => {
+        allWindows = allWindows.filter(w => !w.isDestroyed() && w !== win);
+        allWindows.push(win);
+        if (!optionService.getOptionBool("disableTray")) {
+            ipcMain.emit("reload-tray");
+        }
+    });
+
+    win.on("closed", () => {
+        allWindows = allWindows.filter(w => !w.isDestroyed());
+        if (!optionService.getOptionBool("disableTray")) {
+            ipcMain.emit("reload-tray");
+        }
+    });
+}
 
 async function createExtraWindow(extraWindowHash: string) {
     const spellcheckEnabled = optionService.getOptionBool("spellCheckEnabled");
@@ -42,6 +62,8 @@ async function createExtraWindow(extraWindowHash: string) {
     win.loadURL(`http://127.0.0.1:${port}/?extraWindow=1${extraWindowHash}`);
 
     configureWebContents(win.webContents, spellcheckEnabled);
+
+    trackWindowFocus(win);
 }
 
 ipcMain.on("create-extra-window", (event, arg) => {
@@ -65,7 +87,7 @@ ipcMain.on("export-as-pdf", async (e, opts: ExportAsPdfOpts) => {
         filters: [
             {
                 name: t("pdf.export_filter"),
-                extensions: [ "pdf" ]
+                extensions: ["pdf"]
             }
         ]
     });
@@ -134,6 +156,8 @@ async function createMainWindow(app: App) {
         y: mainWindowState.y,
         width: mainWindowState.width,
         height: mainWindowState.height,
+        minWidth: 500,
+        minHeight: 400,
         title: "TriliumNext Notes",
         webPreferences: {
             nodeIntegration: true,
@@ -154,18 +178,21 @@ async function createMainWindow(app: App) {
     configureWebContents(mainWindow.webContents, spellcheckEnabled);
 
     app.on("second-instance", (event, commandLine) => {
+        const lastFocusedWindow = getLastFocusedWindow();
         if (commandLine.includes("--new-window")) {
             createExtraWindow("");
-        } else if (mainWindow) {
+        } else if (lastFocusedWindow) {
             // Someone tried to run a second instance, we should focus our window.
             // see www.ts "requestSingleInstanceLock" for the rest of this logic with explanation
-            if (mainWindow.isMinimized()) {
-                mainWindow.restore();
+            if (lastFocusedWindow.isMinimized()) {
+                lastFocusedWindow.restore();
             }
-
-            mainWindow.focus();
+            lastFocusedWindow.show();
+            lastFocusedWindow.focus();
         }
     });
+
+    trackWindowFocus(mainWindow);
 }
 
 function getWindowExtraOpts() {
@@ -185,8 +212,15 @@ function getWindowExtraOpts() {
     }
 
     // Window effects (Mica)
-    if (optionService.getOptionBool("backgroundEffects") && isWindows) {
-        extraOpts.backgroundMaterial = "auto";
+    if (optionService.getOptionBool("backgroundEffects")) {
+        if (isMac) {
+            // Vibrancy not yet supported.
+        } else if (isWindows) {
+            extraOpts.backgroundMaterial = "auto";
+        } else {
+            // Linux or other platforms.
+            extraOpts.transparent = true;
+        }
     }
 
     return extraOpts;
@@ -230,9 +264,12 @@ function getIcon() {
 
 async function createSetupWindow() {
     const { BrowserWindow } = await import("electron"); // should not be statically imported
+    const width = 750;
+    const height = 650;
     setupWindow = new BrowserWindow({
-        width: 800,
-        height: 800,
+        width,
+        height,
+        resizable: false,
         title: "TriliumNext Notes Setup",
         icon: getIcon(),
         webPreferences: {
@@ -296,10 +333,20 @@ function getMainWindow() {
     return mainWindow;
 }
 
+function getLastFocusedWindow() {
+    return allWindows.length > 0 ? allWindows[allWindows.length - 1] : null;
+}
+
+function getAllWindows() {
+    return allWindows;
+}
+
 export default {
     createMainWindow,
     createSetupWindow,
     closeSetupWindow,
     registerGlobalShortcuts,
-    getMainWindow
+    getMainWindow,
+    getLastFocusedWindow,
+    getAllWindows
 };

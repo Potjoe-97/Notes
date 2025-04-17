@@ -20,7 +20,7 @@ import { Dropdown } from "bootstrap";
 import type FNote from "../../entities/fnote.js";
 import type { AttributeType } from "../../entities/fattribute.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="search-definition-widget">
     <style>
     .search-setting-table {
@@ -246,7 +246,7 @@ export default class SearchDefinitionWidget extends NoteContextAwareWidget {
 
             await ws.waitForMaxKnownEntityChangeId();
 
-            await appContext.tabManager.getActiveContext().setNote(notePath);
+            await appContext.tabManager.getActiveContext()?.setNote(notePath);
             // Note the {{- notePathTitle}} in json file is not typo, it's unescaping
             // See https://www.i18next.com/translation-function/interpolation#unescape
             toastService.showMessage(t("search_definition.search_note_saved", { notePathTitle: await treeService.getNotePathTitle(notePath) }));

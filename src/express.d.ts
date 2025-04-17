@@ -4,6 +4,10 @@ export declare module "express-serve-static-core" {
     interface Request {
         session: Session & {
             loggedIn: boolean;
+            lastAuthState: {
+                totpEnabled: boolean;
+                ssoEnabled: boolean;
+            };
         };
         headers: {
             "x-local-date"?: string;
@@ -16,6 +20,8 @@ export declare module "express-serve-static-core" {
             "trilium-component-id"?: string;
             "trilium-local-now-datetime"?: string;
             "trilium-hoisted-note-id"?: string;
+
+            "user-agent"?: string;
         };
     }
 }

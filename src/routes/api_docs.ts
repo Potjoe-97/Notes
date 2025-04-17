@@ -1,4 +1,4 @@
-import type { Application, Router } from "express";
+import type { Application } from "express";
 import swaggerUi from "swagger-ui-express";
 import { readFile } from "fs/promises";
 import { fileURLToPath } from "url";
@@ -7,9 +7,7 @@ import yaml from "js-yaml";
 import type { JsonObject } from "swagger-ui-express";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const etapiDocument = yaml.load(
-    await readFile(join(__dirname, "../etapi/etapi.openapi.yaml"), "utf8")
-) as JsonObject;
+const etapiDocument = yaml.load(await readFile(join(__dirname, "../etapi/etapi.openapi.yaml"), "utf8")) as JsonObject;
 const apiDocument = JSON.parse(await readFile(join(__dirname, "api", "openapi.json"), "utf-8"));
 
 function register(app: Application) {

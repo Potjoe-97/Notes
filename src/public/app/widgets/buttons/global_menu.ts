@@ -5,12 +5,13 @@ import UpdateAvailableWidget from "./update_available.js";
 import options from "../../services/options.js";
 import { Tooltip, Dropdown } from "bootstrap";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="dropdown global-menu">
     <style>
     .global-menu {
         width: 53px;
         height: 53px;
+        flex-shrink: 0;
     }
 
     .global-menu .dropdown-menu {
@@ -140,7 +141,7 @@ const TPL = `
             <kbd data-command="toggleZenMode"></kbd>
         </li>
 
-        <div class="dropdown-divider"></div>
+        <div class="dropdown-divider desktop-only"></div>
 
         <li class="dropdown-item switch-to-mobile-version-button" data-trigger-command="switchToMobileVersion">
             <span class="bx bx-mobile"></span>

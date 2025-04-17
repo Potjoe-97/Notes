@@ -17,8 +17,7 @@ import type BNote from "../becca/entities/bnote.js";
 
 function index(req: Request, res: Response) {
     const options = optionService.getOptionMap();
-
-    const view = !isElectron && req.cookies["trilium-device"] === "mobile" ? "mobile" : "desktop";
+    const view = getView(req);
 
     //'overwrite' set to false (default) => the existing token will be re-used and validated
     //'validateOnReuse' set to false => if validation fails, generate a new token instead of throwing an error
@@ -37,7 +36,7 @@ function index(req: Request, res: Response) {
         device: view,
         csrfToken: csrfToken,
         themeCssUrl: getThemeCssUrl(theme, themeNote),
-        themeUseNextAsBase: themeNote?.getAttributeValue("label", "appThemeBase") === "next",
+        themeUseNextAsBase: themeNote?.getAttributeValue("label", "appThemeBase"),
         headingStyle: options.headingStyle,
         layoutOrientation: options.layoutOrientation,
         platform: process.platform,
@@ -59,6 +58,38 @@ function index(req: Request, res: Response) {
         assetPath: assetPath,
         appPath: appPath
     });
+}
+
+function getView(req: Request): "desktop" | "mobile" {
+    // Electron always uses the desktop view.
+    if (isElectron) {
+        return "desktop";
+    }
+
+    // Respect user's manual override via URL.
+    if ("desktop" in req.query) {
+        return "desktop";
+    } else if ("mobile" in req.query) {
+        return "mobile";
+    }
+
+    // Respect user's manual override via cookie.
+    const cookie = req.cookies?.["trilium-device"];
+    if (cookie === "mobile" || cookie === "desktop") {
+        return cookie;
+    }
+
+    // Try to detect based on user agent.
+    const userAgent = req.headers["user-agent"];
+    if (userAgent) {
+        // TODO: Deduplicate regex with client-side login.ts.
+        const mobileRegex = /\b(Android|iPhone|iPad|iPod|Windows Phone|BlackBerry|webOS|IEMobile)\b/i;
+        if (mobileRegex.test(userAgent)) {
+            return "mobile";
+        }
+    }
+
+    return "desktop";
 }
 
 function getThemeCssUrl(theme: string, themeNote: BNote | null) {

@@ -3,11 +3,11 @@ import utils from "../../../../services/utils.js";
 import { t } from "../../../../services/i18n.js";
 import type { OptionMap } from "../../../../../../services/options_interface.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("search_engine.title")}</h4>
 
-    <p>${t("search_engine.custom_search_engine_info")}</p>
+    <p class="form-text">${t("search_engine.custom_search_engine_info")}</p>
 
     <form class="sync-setup-form">
         <div class="form-group">

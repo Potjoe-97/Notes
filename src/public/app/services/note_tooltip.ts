@@ -147,11 +147,11 @@ async function renderTooltip(note: FNote | null) {
         tooltip: true,
         trim: true
     });
-    const isContentEmpty = ($renderedContent[0].innerHTML.length === 0);
+    const isContentEmpty = $renderedContent[0].innerHTML.length === 0;
 
     let content = "";
     if (noteTitleWithPathAsSuffix) {
-        const classes = [ "note-tooltip-title" ];
+        const classes = ["note-tooltip-title"];
         if (isContentEmpty) {
             classes.push("note-no-content");
         }

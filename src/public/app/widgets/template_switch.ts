@@ -17,10 +17,10 @@ export default class TemplateSwitchWidget extends SwitchWidget {
         super.doRender();
 
         this.switchOnName = t("template_switch.template");
-        this.switchOnTooltip =  t("template_switch.toggle-on-hint");
+        this.switchOnTooltip = t("template_switch.toggle-on-hint");
 
         this.switchOffName = t("template_switch.template");
-        this.switchOffTooltip =  t("template_switch.toggle-off-hint");
+        this.switchOffTooltip = t("template_switch.toggle-off-hint");
 
         this.$helpButton.attr("data-help-page", "template.html").show();
     }

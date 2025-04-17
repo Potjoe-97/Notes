@@ -61,7 +61,7 @@
   },
   "clone_to": {
     "clone_notes_to": "Notizen klonen nach...",
-    "close":"Schließen",
+    "close": "Schließen",
     "help_on_links": "Hilfe zu Links",
     "notes_to_clone": "Notizen zum Klonen",
     "target_parent_note": "Ziel-Übergeordnetenotiz",
@@ -74,7 +74,7 @@
   },
   "confirm": {
     "confirmation": "Bestätigung",
-    "close":"Schließen",
+    "close": "Schließen",
     "cancel": "Abbrechen",
     "ok": "OK",
     "are_you_sure_remove_note": "Bist du sicher, dass du \"{{title}}\" von der Beziehungskarte entfernen möchten? ",
@@ -93,7 +93,6 @@
     "cancel": "Abbrechen",
     "ok": "OK",
     "deleted_relation_text": "Notiz {{- note}} (soll gelöscht werden) wird von Beziehung {{- relation}} ausgehend von {{- source}} referenziert."
-
   },
   "export": {
     "export_note_title": "Notiz exportieren",
@@ -273,12 +272,12 @@
     "help_title": "Hilfe zu Notizrevisionen",
     "close": "Schließen",
     "revision_last_edited": "Diese Revision wurde zuletzt am {{date}} bearbeitet",
-    "confirm_delete_all": "Möchtest du alle Revisionen dieser Notiz löschen? Durch diese Aktion werden der Titel und der Inhalt der Revision gelöscht, die Metadaten der Revision bleiben jedoch erhalten.",
+    "confirm_delete_all": "Möchtest du alle Revisionen dieser Notiz löschen?",
     "no_revisions": "Für diese Notiz gibt es noch keine Revisionen...",
-    "restore_button": "Stelle diese Revision wieder her",
+    "restore_button": "",
     "confirm_restore": "Möchtest du diese Revision wiederherstellen? Dadurch werden der aktuelle Titel und Inhalt der Notiz mit dieser Revision überschrieben.",
-    "delete_button": "Lösche diese Revision",
-    "confirm_delete": "Möchtest du diese Revision löschen? Durch diese Aktion werden der Titel und der Inhalt der Revision gelöscht, die Metadaten der Revision bleiben jedoch erhalten.",
+    "delete_button": "",
+    "confirm_delete": "Möchtest du diese Revision löschen?",
     "revisions_deleted": "Notizrevisionen wurden gelöscht.",
     "revision_restored": "Die Notizrevision wurde wiederhergestellt.",
     "revision_deleted": "Notizrevision wurde gelöscht.",
@@ -556,7 +555,6 @@
     "to": "zu",
     "target_note": "Zielnotiz",
     "on_all_matched_notes": "Auf allen übereinstimmenden Notizen",
-    "create_given_relation": "Erstelle die gegebene Beziehung, wenn die Notiz noch keine hat",
     "change_target_note": "oder ändere die Zielnotiz der bestehenden Beziehung",
     "update_relation_target": "Beziehungsziel aktualisieren"
   },
@@ -1248,10 +1246,10 @@
   "etapi": {
     "title": "ETAPI",
     "description": "ETAPI ist eine REST-API, die für den programmgesteuerten Zugriff auf die Trilium-Instanz ohne Benutzeroberfläche verwendet wird.",
-    "see_more": "Weitere Details findest du unter",
+    "see_more": "Weitere Details können im {{- link_to_wiki}} und in der {{- link_to_openapi_spec}} oder der {{- link_to_swagger_ui }} gefunden werden.",
     "wiki": "Wiki",
-    "and": "und",
     "openapi_spec": "ETAPI OpenAPI-Spezifikation",
+    "swagger_ui": "ETAPI Swagger UI",
     "create_token": "Erstelle ein neues ETAPI-Token",
     "existing_tokens": "Vorhandene Token",
     "no_tokens_yet": "Es sind noch keine Token vorhanden. Klicke auf die Schaltfläche oben, um eine zu erstellen.",
@@ -1449,9 +1447,6 @@
   "highlights_list_2": {
     "title": "Hervorhebungs-Liste",
     "options": "Optionen"
-  },
-  "mermaid": {
-    "diagram_error": "Das Diagramm konnte nicht angezeigt werden. Siehe <a href=\"https://mermaid-js.github.io/mermaid/#/flowchart?id=graph\">Hilfe und Beispiele</a>."
   },
   "quick-search": {
     "placeholder": "Schnellsuche",

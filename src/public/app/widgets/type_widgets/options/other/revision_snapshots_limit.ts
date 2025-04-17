@@ -4,15 +4,18 @@ import server from "../../../../services/server.js";
 import toastService from "../../../../services/toast.js";
 import type { OptionMap } from "../../../../../../services/options_interface.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("revisions_snapshot_limit.note_revisions_snapshot_limit_title")}</h4>
 
-    <p>${t("revisions_snapshot_limit.note_revisions_snapshot_limit_description")}</p>
+    <p class="form-text">${t("revisions_snapshot_limit.note_revisions_snapshot_limit_description")}</p>
 
     <div class="form-group">
         <label>${t("revisions_snapshot_limit.snapshot_number_limit_label")}</label>
-        <input class="revision-snapshot-number-limit form-control options-number-input" type="number" min="-1">
+        <label class="input-group tn-number-unit-pair">
+            <input class="revision-snapshot-number-limit form-control options-number-input" type="number" min="-1">
+            <span class="input-group-text">${t("revisions_snapshot_limit.snapshot_number_limit_unit")}</span>
+        </label>
     </div>
 
     <button class="erase-excess-revision-snapshots-now-button btn btn-sm">

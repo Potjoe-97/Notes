@@ -15,7 +15,7 @@ interface ConvertToAttachmentResponse {
     attachment: FAttachmentRow;
 }
 
-const TPL = `
+const TPL = /*html*/`
 <div class="dropdown note-actions">
     <style>
         .note-actions {
@@ -228,7 +228,7 @@ export default class NoteActionsWidget extends NoteContextAwareWidget {
 
         toastService.showMessage(t("note_actions.convert_into_attachment_successful", { title: newAttachment.title }));
         await ws.waitForMaxKnownEntityChangeId();
-        await appContext.tabManager.getActiveContext().setNote(newAttachment.ownerId, {
+        await appContext.tabManager.getActiveContext()?.setNote(newAttachment.ownerId, {
             viewScope: {
                 viewMode: "attachments",
                 attachmentId: newAttachment.attachmentId

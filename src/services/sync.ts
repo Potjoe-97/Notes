@@ -347,7 +347,7 @@ function getEntityChangeRow(entityChange: EntityChange) {
             throw new Error(`Unknown entity for entity change ${JSON.stringify(entityChange)}`);
         }
 
-        const entityRow = sql.getRow<EntityRow>(`SELECT * FROM ${entityName} WHERE ${primaryKey} = ?`, [entityId]);
+        const entityRow = sql.getRow<EntityRow>(/*sql*/`SELECT * FROM ${entityName} WHERE ${primaryKey} = ?`, [entityId]);
 
         if (!entityRow) {
             log.error(`Cannot find entity for entity change ${JSON.stringify(entityChange)}`);
@@ -361,6 +361,15 @@ function getEntityChangeRow(entityChange: EntityChange) {
 
             if (entityRow.content) {
                 entityRow.content = entityRow.content.toString("base64");
+            }
+        }
+
+        // Special handling for note_embeddings embedding field
+        if (entityName === "note_embeddings") {
+            // Cast to any to access the embedding property
+            const row = entityRow as any;
+            if (row.embedding && Buffer.isBuffer(row.embedding)) {
+                row.embedding = row.embedding.toString("base64");
             }
         }
 

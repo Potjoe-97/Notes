@@ -11,7 +11,7 @@ runs:
     - name: Set up node & dependencies
       uses: actions/setup-node@v4
       with:
-        node-version: 20
+        node-version: 22
         cache: "npm"
     - name: Install dependencies
       shell: bash
@@ -28,4 +28,5 @@ runs:
       run: |
         mkdir -p upload
         file=$(find dist -name '*.tar.xz' -print -quit)
-        cp "$file" "upload/TriliumNextNotes-Server-${{ github.ref_name }}-${{ inputs.os }}-${{ inputs.arch }}.tar.xz"
+        name=${{ github.ref_name }}
+        cp "$file" "upload/TriliumNextNotes-Server-${name//\//-}-${{ inputs.os }}-${{ inputs.arch }}.tar.xz"

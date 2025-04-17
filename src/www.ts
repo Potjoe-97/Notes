@@ -5,6 +5,7 @@ import sessionParser from "./routes/session_parser.js";
 import fs from "fs";
 import http from "http";
 import https from "https";
+import tmp from "tmp";
 import config from "./services/config.js";
 import log from "./services/log.js";
 import appInfo from "./services/app_info.js";
@@ -42,6 +43,7 @@ if (utils.compareVersions(process.versions.node, MINIMUM_NODE_VERSION) < 0) {
     process.exit(1);
 }
 
+tmp.setGracefulCleanup();
 startTrilium();
 
 async function startTrilium() {

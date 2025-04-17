@@ -8,11 +8,11 @@ import appContext from "../../components/app_context.js";
 import openService from "../../services/open.js";
 import utils from "../../services/utils.js";
 import { Dropdown } from "bootstrap";
-import type attachmentsApiRoute from "../../../../routes/api/attachments.js"
+import type attachmentsApiRoute from "../../../../routes/api/attachments.js";
 import type FAttachment from "../../entities/fattachment.js";
 import type AttachmentDetailWidget from "../attachment_detail.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="dropdown attachment-actions">
     <style>
     .attachment-actions {
@@ -105,8 +105,7 @@ export default class AttachmentActionsWidget extends BasicWidget {
 
         this.$uploadNewRevisionInput = this.$widget.find(".attachment-upload-new-revision-input");
         this.$uploadNewRevisionInput.on("change", async () => {
-
-            const fileToUpload = this.$uploadNewRevisionInput[0].files?.item(0);  // copy to allow reset below
+            const fileToUpload = this.$uploadNewRevisionInput[0].files?.item(0); // copy to allow reset below
             this.$uploadNewRevisionInput.val("");
             if (fileToUpload) {
                 const result = await server.upload(`attachments/${this.attachmentId}/file`, fileToUpload);
@@ -131,7 +130,6 @@ export default class AttachmentActionsWidget extends BasicWidget {
             const $openAttachmentCustomButton = this.$widget.find("[data-trigger-command='openAttachmentCustom']");
             $openAttachmentCustomButton.addClass("disabled").append($('<span class="bx bx-info-circle disabled-tooltip" />').attr("title", t("attachments_actions.open_custom_client_only")));
         }
-
     }
 
     async openAttachmentCommand() {
@@ -170,11 +168,10 @@ export default class AttachmentActionsWidget extends BasicWidget {
             return;
         }
 
-
         const { note: newNote } = await server.post<ReturnType<typeof attachmentsApiRoute.convertAttachmentToNote>>(`attachments/${this.attachmentId}/convert-to-note`);
         toastService.showMessage(t("attachments_actions.convert_success", { title: this.attachment.title }));
         await ws.waitForMaxKnownEntityChangeId();
-        await appContext.tabManager.getActiveContext().setNote(newNote.noteId);
+        await appContext.tabManager.getActiveContext()?.setNote(newNote.noteId);
     }
 
     async renameAttachmentCommand() {

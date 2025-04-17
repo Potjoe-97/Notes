@@ -1,20 +1,23 @@
 import { GPX, Marker, type LatLng, type LeafletMouseEvent } from "leaflet";
 import type FNote from "../../entities/fnote.js";
 import GeoMapWidget, { type InitCallback, type Leaflet } from "../geo_map.js";
-import TypeWidget from "./type_widget.js"
+import TypeWidget from "./type_widget.js";
 import server from "../../services/server.js";
 import toastService from "../../services/toast.js";
 import dialogService from "../../services/dialog.js";
-import type { EventData } from "../../components/app_context.js";
+import type { CommandListenerData, EventData } from "../../components/app_context.js";
 import { t } from "../../services/i18n.js";
 import attributes from "../../services/attributes.js";
-import asset_path from "../../../../services/asset_path.js";
 import openContextMenu from "./geo_map_context_menu.js";
 import link from "../../services/link.js";
 import note_tooltip from "../../services/note_tooltip.js";
 import appContext from "../../components/app_context.js";
 
-const TPL = `\
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIconShadow from "leaflet/dist/images/marker-shadow.png";
+import { hasTouchBar } from "../../services/utils.js";
+
+const TPL = /*html*/`\
 <div class="note-detail-geo-map note-detail-printable">
     <style>
         .leaflet-pane {
@@ -75,21 +78,21 @@ const TPL = `\
 
 const LOCATION_ATTRIBUTE = "geolocation";
 const CHILD_NOTE_ICON = "bx bx-pin";
-const DEFAULT_COORDINATES: [ number, number ] = [ 3.878638227135724, 446.6630455551659 ];
+const DEFAULT_COORDINATES: [number, number] = [3.878638227135724, 446.6630455551659];
 const DEFAULT_ZOOM = 2;
 
 interface MapData {
     view?: {
-        center?: LatLng | [ number, number ];
+        center?: LatLng | [number, number];
         zoom?: number;
-    }
+    };
 }
 
 // TODO: Deduplicate
 interface CreateChildResponse {
     note: {
         noteId: string;
-    }
+    };
 }
 
 enum State {
@@ -105,6 +108,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
     private currentMarkerData: Record<string, Marker>;
     private currentTrackData: Record<string, GPX>;
     private gpxLoaded?: boolean;
+    private ignoreNextZoomEvent?: boolean;
 
     static getType() {
         return "geoMap";
@@ -122,10 +126,10 @@ export default class GeoMapTypeWidget extends TypeWidget {
     }
 
     doRender() {
+        super.doRender();
+
         this.$widget = $(TPL);
         this.$widget.append(this.geoMapWidget.render());
-
-        super.doRender();
     }
 
     async #onMapInitialized(L: Leaflet) {
@@ -140,10 +144,25 @@ export default class GeoMapTypeWidget extends TypeWidget {
         // Restore markers.
         await this.#reloadMarkers();
 
+        // This fixes an issue with the map appearing cut off at the beginning, due to the container not being properly attached
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+
         const updateFn = () => this.spacedUpdate.scheduleUpdate();
         map.on("moveend", updateFn);
         map.on("zoomend", updateFn);
         map.on("click", (e) => this.#onMapClicked(e));
+
+        if (hasTouchBar) {
+            map.on("zoom", () => {
+                if (!this.ignoreNextZoomEvent) {
+                    this.triggerCommand("refreshTouchBar");
+                }
+
+                this.ignoreNextZoomEvent = false;
+            });
+        }
     }
 
     async #restoreViewportAndZoom() {
@@ -220,7 +239,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
             return;
         }
 
-        const [ lat, lng ] = latLng.split(",", 2).map((el) => parseFloat(el));
+        const [lat, lng] = latLng.split(",", 2).map((el) => parseFloat(el));
         const L = this.L;
         const icon = this.#buildIcon(note.getIcon(), note.getColorClass(), note.title);
 
@@ -228,10 +247,10 @@ export default class GeoMapTypeWidget extends TypeWidget {
             icon,
             draggable: true,
             autoPan: true,
-            autoPanSpeed: 5,
+            autoPanSpeed: 5
         })
             .addTo(map)
-            .on("moveend", e => {
+            .on("moveend", (e) => {
                 this.moveMarker(note.noteId, (e.target as Marker).getLatLng());
             });
         marker.on("mousedown", ({ originalEvent }) => {
@@ -259,19 +278,22 @@ export default class GeoMapTypeWidget extends TypeWidget {
 
     #buildIcon(bxIconClass: string, colorClass: string, title: string) {
         return this.L.divIcon({
-            html: `\
-                <img class="icon" src="${asset_path}/node_modules/leaflet/dist/images/marker-icon.png" />
-                <img class="icon-shadow" src="${asset_path}/node_modules/leaflet/dist/images/marker-shadow.png" />
+            html: /*html*/`\
+                <img class="icon" src="${markerIcon}" />
+                <img class="icon-shadow" src="${markerIconShadow}" />
                 <span class="bx ${bxIconClass} ${colorClass}"></span>
                 <span class="title-label">${title}</span>`,
-            iconSize: [ 25, 41 ],
-            iconAnchor: [ 12, 41 ]
-        })
+            iconSize: [25, 41],
+            iconAnchor: [12, 41]
+        });
     }
 
     #changeState(newState: State) {
         this._state = newState;
         this.geoMapWidget.$container.toggleClass("placing-note", newState === State.NewNote);
+        if (hasTouchBar) {
+            this.triggerCommand("refreshTouchBar");
+        }
     }
 
     async #onMapClicked(e: LeafletMouseEvent) {
@@ -296,7 +318,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
     }
 
     async moveMarker(noteId: string, latLng: LatLng | null) {
-        const value = (latLng ? [latLng.lat, latLng.lng].join(",") : "");
+        const value = latLng ? [latLng.lat, latLng.lng].join(",") : "";
         await attributes.setLabel(noteId, LOCATION_ATTRIBUTE, value);
     }
 
@@ -361,7 +383,7 @@ export default class GeoMapTypeWidget extends TypeWidget {
         // If any of note has its location attribute changed.
         // TODO: Should probably filter by parent here as well.
         const attributeRows = loadResults.getAttributeRows();
-        if (attributeRows.find((at) => [ LOCATION_ATTRIBUTE, "color" ].includes(at.name ?? ""))) {
+        if (attributeRows.find((at) => [LOCATION_ATTRIBUTE, "color"].includes(at.name ?? ""))) {
             this.#reloadMarkers();
         }
     }
@@ -379,6 +401,32 @@ export default class GeoMapTypeWidget extends TypeWidget {
 
     deleteFromMapEvent({ noteId }: EventData<"deleteFromMap">) {
         this.moveMarker(noteId, null);
+    }
+
+    buildTouchBarCommand({ TouchBar }: CommandListenerData<"buildTouchBar">) {
+        const map = this.geoMapWidget.map;
+        const that = this;
+        if (!map) {
+            return;
+        }
+
+        return [
+            new TouchBar.TouchBarSlider({
+                label: "Zoom",
+                value: map.getZoom(),
+                minValue: map.getMinZoom(),
+                maxValue: map.getMaxZoom(),
+                change(newValue) {
+                    that.ignoreNextZoomEvent = true;
+                    map.setZoom(newValue);
+                },
+            }),
+            new TouchBar.TouchBarButton({
+                label: "New geo note",
+                click: () => this.triggerCommand("geoMapCreateChildNote", { ntxId: this.ntxId }),
+                enabled: (this._state === State.Normal)
+            })
+        ];
     }
 
 }

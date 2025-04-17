@@ -6,7 +6,7 @@ import syncService from "../services/sync.js";
 import { escapeQuotes } from "../services/utils.js";
 import { Tooltip } from "bootstrap";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="sync-status-widget launcher-button">
     <style>
     .sync-status-widget {
@@ -78,8 +78,8 @@ export default class SyncStatusWidget extends BasicWidget {
     lastSyncedPush!: number;
     settings: {
         // TriliumNextTODO: narrow types and use TitlePlacement Type
-        titlePlacement: string; 
-    }
+        titlePlacement: string;
+    };
 
     constructor() {
         super();
@@ -105,7 +105,6 @@ export default class SyncStatusWidget extends BasicWidget {
             this.toggleInt(false);
             return;
         }
-
 
         Tooltip.getOrCreateInstance(this.$widget.find(`.sync-status-${className}`)[0], {
             html: true,

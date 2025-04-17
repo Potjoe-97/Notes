@@ -11,7 +11,7 @@
 
 interface JQueryStatic {
     ui: JQueryUI.UI;
-};
+}
 
 declare namespace JQueryUI {
     interface UI {
@@ -679,13 +679,13 @@ declare namespace Fancytree {
         activate = 1,
         expand = 2,
         activate_and_expand = 3,
-        activate_dblclick_expands = 4,
+        activate_dblclick_expands = 4
     }
 
     enum FancytreeSelectMode {
         single = 1,
         multi = 2,
-        mutlti_hier = 3,
+        mutlti_hier = 3
     }
 
     /** Context object passed to events and hook functions. */

@@ -22,7 +22,7 @@ export interface AttachmentRow {
 export interface RevisionRow {
     revisionId?: string;
     noteId: string;
-    type: string;
+    type: NoteType;
     mime: string;
     isProtected?: boolean;
     title: string;
@@ -140,12 +140,16 @@ export interface NoteRow {
     content?: string | Buffer;
 }
 
-export interface TaskRow {
-    taskId?: string;
-    parentNoteId: string;
-    title: string;
-    dueDate?: string;
-    isDone?: boolean;
-    isDeleted?: boolean;
-    utcDateModified?: string;
+export interface NoteEmbeddingRow {
+    embedId: string;
+    noteId: string;
+    providerId: string;
+    modelId: string;
+    dimension: number;
+    embedding: Buffer;
+    version: number;
+    dateCreated: string;
+    utcDateCreated: string;
+    dateModified: string;
+    utcDateModified: string;
 }

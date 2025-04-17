@@ -4,7 +4,7 @@ import { t } from "../../services/i18n.js";
 import type FNote from "../../entities/fnote.js";
 import type { EventData } from "../../components/app_context.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="book-properties-widget">
     <style>
         .book-properties-widget {
@@ -126,7 +126,7 @@ export default class BookPropertiesWidget extends NoteContextAwareWidget {
             return;
         }
 
-        if (![ "list", "grid", "calendar"].includes(type)) {
+        if (!["list", "grid", "calendar"].includes(type)) {
             throw new Error(t("book_properties.invalid_view_type", { type }));
         }
 

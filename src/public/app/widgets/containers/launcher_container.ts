@@ -11,7 +11,6 @@ export default class LauncherContainer extends FlexContainer<LauncherWidget> {
         super(isHorizontalLayout ? "row" : "column");
 
         this.id("launcher-container");
-        this.css(isHorizontalLayout ? "width" : "height", "100%");
         this.filling();
         this.isHorizontalLayout = isHorizontalLayout;
 

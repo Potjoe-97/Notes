@@ -98,10 +98,12 @@
   "login": {
     "title": "Login",
     "heading": "Trilium Login",
+    "incorrect-totp": "TOTP is incorrect. Please try again.",
     "incorrect-password": "Password is incorrect. Please try again.",
     "password": "Password",
     "remember-me": "Remember me",
-    "button": "Login"
+    "button": "Login",
+    "sign_in_with_google": "Sign in with Google"
   },
   "set_password": {
     "title": "Set Password",
@@ -172,6 +174,7 @@
     "saturday": "Saturday",
     "sunday": "Sunday"
   },
+  "weekdayNumber": "Week {weekNumber}",
   "months": {
     "january": "January",
     "february": "February",
@@ -186,6 +189,7 @@
     "november": "November",
     "december": "December"
   },
+  "quarterNumber": "Quarter {quarterNumber}",
   "special_notes": {
     "search_prefix": "Search:"
   },
@@ -230,6 +234,7 @@
     "protected-session-title": "Protected Session",
     "sync-status-title": "Sync Status",
     "settings-title": "Settings",
+    "llm-chat-title": "Chat with Notes",
     "options-title": "Options",
     "appearance-title": "Appearance",
     "shortcuts-title": "Shortcuts",
@@ -238,18 +243,22 @@
     "images-title": "Images",
     "spellcheck-title": "Spellcheck",
     "password-title": "Password",
+    "multi-factor-authentication-title": "MFA",
     "etapi-title": "ETAPI",
     "backup-title": "Backup",
     "sync-title": "Sync",
+    "ai-llm-title": "AI/LLM",
     "other": "Other",
     "advanced-title": "Advanced",
     "visible-launchers-title": "Visible Launchers",
-    "user-guide": "User Guide"
+    "user-guide": "User Guide",
+    "localization": "Language & Region",
+    "inbox-title": "Inbox"
   },
   "notes": {
     "new-note": "New note",
     "duplicate-note-suffix": "(dup)",
-    "duplicate-note-title": "{{ noteTitle }} {{ duplicateNoteSuffix }}"
+    "duplicate-note-title": "{{- noteTitle }} {{ duplicateNoteSuffix }}"
   },
   "backend_log": {
     "log-does-not-exist": "The backend log file '{{ fileName }}' does not exist (yet).",
@@ -271,7 +280,8 @@
     "bookmarks": "Bookmarks",
     "today": "Open today's journal note",
     "new-note": "New note",
-    "show-windows": "Show windows"
+    "show-windows": "Show windows",
+    "open_new_window": "Open new window"
   },
   "migration": {
     "old_version": "Direct migration from your current version is not supported. Please upgrade to the latest v0.60.4 first and only then to this version.",

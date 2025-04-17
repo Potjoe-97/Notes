@@ -18,7 +18,7 @@ export class TypedComponent<ChildT extends TypedComponent<ChildT>> {
     children: ChildT[];
     initialized: Promise<void> | null;
     parent?: TypedComponent<any>;
-    position!: number;
+    _position!: number;
 
     constructor() {
         this.componentId = `${this.sanitizedClassName}-${utils.randomString(8)}`;
@@ -29,6 +29,14 @@ export class TypedComponent<ChildT extends TypedComponent<ChildT>> {
     get sanitizedClassName() {
         // webpack mangles names and sometimes uses unsafe characters
         return this.constructor.name.replace(/[^A-Z0-9]/gi, "_");
+    }
+
+    get position() {
+        return this._position;
+    }
+
+    set position(newPosition: number) {
+        this._position = newPosition;
     }
 
     setParent(parent: TypedComponent<any>) {

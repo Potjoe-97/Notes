@@ -1,6 +1,6 @@
 # TriliumNext Notes
 
-![Docker Pulls](https://img.shields.io/docker/pulls/triliumnext/notes) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/triliumnext/notes/total)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/eliandoran) ![Docker Pulls](https://img.shields.io/docker/pulls/triliumnext/notes) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/triliumnext/notes/total)
 
 [English](./README.md) | [Chinese](./README-ZH_CN.md) | [Russian](./README.ru.md) | [Japanese](./README.ja.md) | [Italian](./README.it.md) | [Spanish](./README.es.md)
 
@@ -16,7 +16,7 @@ See [screenshots](https://triliumnext.github.io/Docs/Wiki/screenshot-tour) for q
 
 ### Migrating from Trilium?
 
-There are no special migration steps to migrate from a zadam/Trilium instance to a TriliumNext/Notes instance. Just upgrade your Trilium instance to the latest version and [install TriliumNext/Notes as usual](#-installation)
+There are no special migration steps to migrate from a zadam/Trilium instance to a TriliumNext/Notes instance. Simply [install TriliumNext/Notes](#-installation) as usual and it will use your existing database.
 
 Versions up to and including [v0.90.4](https://github.com/TriliumNext/Notes/releases/tag/v0.90.4) are compatible with the latest zadam/trilium version of [v0.63.7](https://github.com/zadam/trilium/releases/tag/v0.63.7). Any later versions of TriliumNext have their sync versions incremented.
 
@@ -37,6 +37,7 @@ Feel free to join our official conversations. We would love to hear what feature
 * Fast and easy [navigation between notes](https://triliumnext.github.io/Docs/Wiki/note-navigation), full text search and [note hoisting](https://triliumnext.github.io/Docs/Wiki/note-hoisting)
 * Seamless [note versioning](https://triliumnext.github.io/Docs/Wiki/note-revisions)
 * Note [attributes](https://triliumnext.github.io/Docs/Wiki/attributes) can be used for note organization, querying and advanced [scripting](https://triliumnext.github.io/Docs/Wiki/scripts)
+* Direct OpenID and TOTP integration for more secure login
 * [Synchronization](https://triliumnext.github.io/Docs/Wiki/synchronization) with self-hosted sync server
   * there's a [3rd party service for hosting synchronisation server](https://trilium.cc/paid-hosting)
 * [Sharing](https://triliumnext.github.io/Docs/Wiki/sharing) (publishing) notes to public internet
@@ -65,24 +66,15 @@ To use TriliumNext on your desktop machine (Linux, MacOS, and Windows) you have 
 * Download the binary release for your platform from the [latest release page](https://github.com/TriliumNext/Notes/releases/latest), unzip the package and run the ```trilium``` executable.
 * Access TriliumNext via the web interface of a server installation (see below)
     * Currently only the latest versions of Chrome & Firefox are supported (and tested).
-* (Coming Soon) TriliumNext will also be provided as a Flatpak
-
-#### MacOS
-Currently when running TriliumNext/Notes on MacOS, you may get the following error:
-> Apple could not verify "TriliumNext Notes" is free of malware and may harm your Mac or compromise your privacy.
-
-You will need to run the command on your shell to resolve the error (documented [here](https://github.com/TriliumNext/Notes/issues/329#issuecomment-2287164137)):
-
-```bash
-xattr -c "/path/to/Trilium Next.app"
-```
+* TriliumNext is also provided as a Flatpak, but not yet published on FlatHub.
 
 ### Mobile
 
-To use TriliumNext on a mobile device:
+To use TriliumNext on a mobile device, you can use a mobile web browser to access the mobile interface of a server installation (see below).
 
-* Use a mobile web browser to access the mobile interface of a server installation (see below)
-* Use of a mobile app is not yet supported ([see here](https://github.com/TriliumNext/Notes/issues/72)) to track mobile improvements.
+If you prefer a native Android app, you can use [TriliumDroid](https://apt.izzysoft.de/fdroid/index/apk/eu.fliegendewurst.triliumdroid). Report bugs and missing features at [their repository](https://github.com/FliegendeWurst/TriliumDroid).
+
+See issue https://github.com/TriliumNext/Notes/issues/72 for more information on mobile app support.
 
 ### Server
 
@@ -105,9 +97,11 @@ npm install
 npm run server:start
 ```
 
+For more details, see the [development docs](https://github.com/TriliumNext/Notes/blob/develop/docs/Developer%20Guide/Developer%20Guide/Building%20and%20deployment/Running%20a%20development%20build.md).
+
 ### Documentation
 
-Head on over to our [Docs repo](https://github.com/TriliumNext/Docs)
+See the [documentation guide](https://github.com/TriliumNext/Notes/blob/develop/docs/Developer%20Guide/Developer%20Guide/Documentation.md) for details.
 
 ## 👏 Shoutouts
 

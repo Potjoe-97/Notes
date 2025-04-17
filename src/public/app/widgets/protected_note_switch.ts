@@ -9,7 +9,7 @@ export default class ProtectedNoteSwitchWidget extends SwitchWidget {
         super.doRender();
 
         this.switchOnName = t("protect_note.toggle-on");
-        this.switchOnTooltip =  t("protect_note.toggle-on-hint");
+        this.switchOnTooltip = t("protect_note.toggle-on-hint");
 
         this.switchOffName = t("protect_note.toggle-off");
         this.switchOffTooltip = t("protect_note.toggle-off-hint");

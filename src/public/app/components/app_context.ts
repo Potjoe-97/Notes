@@ -3,7 +3,7 @@ import bundleService from "../services/bundle.js";
 import RootCommandExecutor from "./root_command_executor.js";
 import Entrypoints, { type SqlExecuteResults } from "./entrypoints.js";
 import options from "../services/options.js";
-import utils from "../services/utils.js";
+import utils, { hasTouchBar } from "../services/utils.js";
 import zoomComponent from "./zoom.js";
 import TabManager from "./tab_manager.js";
 import Component from "./component.js";
@@ -22,8 +22,10 @@ import type LoadResults from "../services/load_results.js";
 import type { Attribute } from "../services/attribute_parser.js";
 import type NoteTreeWidget from "../widgets/note_tree.js";
 import type { default as NoteContext, GetTextEditorCallback } from "./note_context.js";
-import type { ContextMenuEvent } from "../menus/context_menu.js";
 import type TypeWidget from "../widgets/type_widgets/type_widget.js";
+import type EditableTextTypeWidget from "../widgets/type_widgets/editable_text.js";
+import type { NativeImage, TouchBar } from "electron";
+import TouchBarComponent from "./touch_bar.js";
 
 interface Layout {
     getRootWidget: (appContext: AppContext) => RootWidget;
@@ -51,18 +53,23 @@ export interface ContextMenuCommandData extends CommandData {
     node: Fancytree.FancytreeNode;
     notePath?: string;
     noteId?: string;
-    selectedOrActiveBranchIds?: any; // TODO: Remove any once type is defined
-    selectedOrActiveNoteIds: any; // TODO: Remove  any once type is defined
+    selectedOrActiveBranchIds: string[];
+    selectedOrActiveNoteIds?: string[];
 }
 
 export interface NoteCommandData extends CommandData {
-    notePath?: string;
-    hoistedNoteId?: string;
+    notePath?: string | null;
+    hoistedNoteId?: string | null;
     viewScope?: ViewScope;
 }
 
 export interface ExecuteCommandData<T> extends CommandData {
-    resolve: (data: T) => void
+    resolve: (data: T) => void;
+}
+
+export interface NoteSwitchedContext {
+    noteContext: NoteContext;
+    notePath: string | null | undefined;
 }
 
 /**
@@ -70,7 +77,7 @@ export interface ExecuteCommandData<T> extends CommandData {
  */
 export type CommandMappings = {
     "api-log-messages": CommandData;
-    focusTree: CommandData,
+    focusTree: CommandData;
     focusOnTitle: CommandData;
     focusOnDetail: CommandData;
     focusOnSearchDefinition: Required<CommandData>;
@@ -82,6 +89,8 @@ export type CommandMappings = {
     closeHlt: CommandData;
     showLaunchBarSubtree: CommandData;
     showRevisions: CommandData;
+    showLlmChat: CommandData;
+    createAiChat: CommandData;
     showOptions: CommandData & {
         section: string;
     };
@@ -108,7 +117,7 @@ export type CommandMappings = {
     showInfoDialog: ConfirmWithMessageOptions;
     showConfirmDialog: ConfirmWithMessageOptions;
     showRecentChanges: CommandData & { ancestorNoteId: string };
-    showImportDialog: CommandData & { noteId: string; };
+    showImportDialog: CommandData & { noteId: string };
     openNewNoteSplit: NoteCommandData;
     openInWindow: NoteCommandData;
     openNoteInNewTab: CommandData;
@@ -121,18 +130,24 @@ export type CommandMappings = {
     hoistNote: CommandData & { noteId: string };
     leaveProtectedSession: CommandData;
     enterProtectedSession: CommandData;
-
+    noteContextReorder: CommandData & {
+        ntxIdsInOrder: string[];
+        oldMainNtxId?: string | null;
+        newMainNtxId?: string | null;
+    };
     openInTab: ContextMenuCommandData;
     openNoteInSplit: ContextMenuCommandData;
     toggleNoteHoisting: ContextMenuCommandData;
     insertNoteAfter: ContextMenuCommandData;
     insertChildNote: ContextMenuCommandData;
     delete: ContextMenuCommandData;
-    editNoteTitle: ContextMenuCommandData;
+    editNoteTitle: {};
     protectSubtree: ContextMenuCommandData;
     unprotectSubtree: ContextMenuCommandData;
-    openBulkActionsDialog: ContextMenuCommandData | {
-        selectedOrActiveNoteIds?: string[]
+    openBulkActionsDialog:
+    | ContextMenuCommandData
+    | {
+        selectedOrActiveNoteIds?: string[];
     };
     editBranchPrefix: ContextMenuCommandData;
     convertNoteToAttachment: ContextMenuCommandData;
@@ -158,6 +173,8 @@ export type CommandMappings = {
     moveNoteDownInHierarchy: ContextMenuCommandData;
     selectAllNotesInParent: ContextMenuCommandData;
 
+    createNoteIntoInbox: CommandData;
+
     addNoteLauncher: ContextMenuCommandData;
     addScriptLauncher: ContextMenuCommandData;
     addWidgetLauncher: ContextMenuCommandData;
@@ -170,10 +187,10 @@ export type CommandMappings = {
         callback: (value: NoteDetailWidget | PromiseLike<NoteDetailWidget>) => void;
     };
     executeWithTextEditor: CommandData &
-        ExecuteCommandData<TextEditor> & {
-            callback?: GetTextEditorCallback;
-        };
-    executeWithCodeEditor: CommandData & ExecuteCommandData<null>;
+    ExecuteCommandData<TextEditor> & {
+        callback?: GetTextEditorCallback;
+    };
+    executeWithCodeEditor: CommandData & ExecuteCommandData<CodeMirrorInstance>;
     /**
      * Called upon when attempting to retrieve the content element of a {@link NoteContext}.
      * Generally should not be invoked manually, as it is used by {@link NoteContext.getContentElement}.
@@ -190,6 +207,8 @@ export type CommandMappings = {
     showPasswordNotSet: CommandData;
     showProtectedSessionPasswordDialog: CommandData;
     showUploadAttachmentsDialog: CommandData & { noteId: string };
+    showIncludeNoteDialog: CommandData & { textTypeWidget: EditableTextTypeWidget };
+    showAddLinkDialog: CommandData & { textTypeWidget: EditableTextTypeWidget, text: string };
     closeProtectedSessionPasswordDialog: CommandData;
     copyImageReferenceToClipboard: CommandData;
     copyImageToClipboard: CommandData;
@@ -221,11 +240,11 @@ export type CommandMappings = {
     moveTabToNewWindow: CommandData;
     copyTabToNewWindow: CommandData;
     closeActiveTab: CommandData & {
-        $el: JQuery<HTMLElement>
-    },
+        $el: JQuery<HTMLElement>;
+    };
     setZoomFactorAndSave: {
         zoomFactor: string;
-    }
+    };
 
     reEvaluateRightPaneVisibility: CommandData;
     runActiveNote: CommandData;
@@ -234,21 +253,30 @@ export type CommandMappings = {
     };
     scrollToEnd: CommandData;
     closeThisNoteSplit: CommandData;
-    moveThisNoteSplit: CommandData & { isMovingLeft: boolean; };
+    moveThisNoteSplit: CommandData & { isMovingLeft: boolean };
+    jumpToNote: CommandData;
 
     // Geomap
-    deleteFromMap: { noteId: string },
-    openGeoLocation: { noteId: string, event: JQuery.MouseDownEvent }
+    deleteFromMap: { noteId: string };
+    openGeoLocation: { noteId: string; event: JQuery.MouseDownEvent };
 
     toggleZenMode: CommandData;
 
     updateAttributeList: CommandData & { attributes: Attribute[] };
     saveAttributes: CommandData;
     reloadAttributes: CommandData;
-    refreshNoteList: CommandData & { noteId: string; };
+    refreshNoteList: CommandData & { noteId: string };
 
     refreshResults: {};
     refreshSearchDefinition: {};
+
+    geoMapCreateChildNote: CommandData;
+
+    buildTouchBar: CommandData & {
+        TouchBar: typeof TouchBar;
+        buildIcon(name: string): NativeImage;
+    };
+    refreshTouchBar: CommandData;
 };
 
 type EventMappings = {
@@ -289,19 +317,10 @@ type EventMappings = {
     beforeNoteContextRemove: {
         ntxIds: string[];
     };
-    noteSwitched: {
-        noteContext: NoteContext;
-        notePath?: string | null;
-    };
-    noteSwitchedAndActivatedEvent: {
-        noteContext: NoteContext;
-        notePath: string;
-    };
+    noteSwitched: NoteSwitchedContext;
+    noteSwitchedAndActivated: NoteSwitchedContext;
     setNoteContext: {
         noteContext: NoteContext;
-    };
-    noteTypeMimeChangedEvent: {
-        noteId: string;
     };
     reEvaluateHighlightsListWidgetVisibility: {
         noteId: string | undefined;
@@ -312,6 +331,9 @@ type EventMappings = {
     showHighlightsListWidget: {
         noteId: string;
     };
+    showTocWidget: {
+        noteId: string;
+    };
     showSearchError: {
         error: string;
     };
@@ -320,14 +342,16 @@ type EventMappings = {
         noteId: string;
         ntxId: string | null;
     };
-    contextsReopenedEvent: {
-        mainNtxId: string;
+    contextsReopened: {
+        ntxId?: string;
+        mainNtxId: string | null;
         tabPosition: number;
+        afterNtxId?: string;
     };
     noteDetailRefreshed: {
         ntxId?: string | null;
     };
-    noteContextReorderEvent: {
+    noteContextReorder: {
         oldMainNtxId: string;
         newMainNtxId: string;
         ntxIdsInOrder: string[];
@@ -335,26 +359,41 @@ type EventMappings = {
     newNoteContextCreated: {
         noteContext: NoteContext;
     };
-    noteContextRemovedEvent: {
+    noteContextRemoved: {
         ntxIds: string[];
     };
-    exportSvg: {
-        ntxId: string | null | undefined;
-    };
+    exportSvg: { ntxId: string | null | undefined; };
+    exportPng: { ntxId: string | null | undefined; };
     geoMapCreateChildNote: {
         ntxId: string | null | undefined; // TODO: deduplicate ntxId
     };
     tabReorder: {
-        ntxIdsInOrder: string[]
+        ntxIdsInOrder: string[];
     };
     refreshNoteList: {
         noteId: string;
     };
-    showToc: {
-        noteId: string;
-    };
     noteTypeMimeChanged: { noteId: string };
     zenModeChanged: { isEnabled: boolean };
+    relationMapCreateChildNote: { ntxId: string | null | undefined };
+    relationMapResetPanZoom: { ntxId: string | null | undefined };
+    relationMapResetZoomIn: { ntxId: string | null | undefined };
+    relationMapResetZoomOut: { ntxId: string | null | undefined };
+    activeNoteChanged: {};
+    showAddLinkDialog: {
+        textTypeWidget: EditableTextTypeWidget;
+        text: string;
+    };
+    showIncludeDialog: {
+        textTypeWidget: EditableTextTypeWidget;
+    };
+    openBulkActionsDialog: {
+        selectedOrActiveNoteIds: string[];
+    };
+    cloneNoteIdsTo: {
+        noteIds: string[];
+    };
+    refreshData: { ntxId: string | null | undefined };
 };
 
 export type EventListener<T extends EventNames> = {
@@ -384,7 +423,7 @@ type FilterByValueType<T, ValueType> = { [K in keyof T]: T[K] extends ValueType 
  */
 export type FilteredCommandNames<T extends CommandData> = keyof Pick<CommandMappings, FilterByValueType<CommandMappings, T>>;
 
-class AppContext extends Component {
+export class AppContext extends Component {
     isMainWindow: boolean;
     components: Component[];
     beforeUnloadListeners: WeakRef<BeforeUploadListener>[];
@@ -441,6 +480,10 @@ class AppContext extends Component {
 
         if (utils.isElectron()) {
             this.child(zoomComponent);
+        }
+
+        if (hasTouchBar) {
+            this.child(new TouchBarComponent());
         }
     }
 
@@ -538,10 +581,12 @@ $(window).on("beforeunload", () => {
 });
 
 $(window).on("hashchange", function () {
-    const { notePath, ntxId, viewScope } = linkService.parseNavigationStateFromUrl(window.location.href);
+    const { notePath, ntxId, viewScope, searchString } = linkService.parseNavigationStateFromUrl(window.location.href);
 
     if (notePath || ntxId) {
         appContext.tabManager.switchToNoteContext(ntxId, notePath, viewScope);
+    } else if (searchString) {
+        appContext.triggerCommand("searchNotes", { searchString });
     }
 });
 

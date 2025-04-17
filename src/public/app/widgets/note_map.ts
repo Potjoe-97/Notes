@@ -12,32 +12,17 @@ import type FNote from "../entities/fnote.js";
 
 const esc = utils.escapeHtml;
 
-const TPL = `<div class="note-map-widget">
+const TPL = /*html*/`<div class="note-map-widget">
     <style>
         .note-detail-note-map {
             height: 100%;
             overflow: hidden;
         }
 
-        .map-type-switcher {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 10; /* should be below dropdown (note actions) */
-        }
-
-        .map-type-switcher button.bx {
-            font-size: 130%;
-            padding: 1px 10px 1px 10px;
-        }
-
         /* Style Ui Element to Drag Nodes */
         .fixnodes-type-switcher {
-            position: absolute;
             display: flex;
             align-items: center;
-            bottom: 10px;
-            left: 10px;
             z-index: 10; /* should be below dropdown (note actions) */
             border-radius: .2rem;
         }
@@ -94,14 +79,14 @@ const TPL = `<div class="note-map-widget">
 
     </style>
 
-    <div class="btn-group btn-group-sm map-type-switcher" role="group">
+    <div class="btn-group btn-group-sm map-type-switcher content-floating-buttons top-left" role="group">
       <button type="button" class="btn bx bx-network-chart tn-tool-button" title="${t("note-map.button-link-map")}" data-type="link"></button>
       <button type="button" class="btn bx bx-sitemap tn-tool-button" title="${t("note-map.button-tree-map")}" data-type="tree"></button>
     </div>
 
     <! UI for dragging Notes and link force >
 
-    <div class=" btn-group-sm fixnodes-type-switcher" role="group">
+    <div class="btn-group-sm fixnodes-type-switcher content-floating-buttons bottom-left" role="group">
       <button type="button" data-toggle="button" class="btn bx bx-lock-alt tn-tool-button" title="${t("note_map.fix-nodes")}" data-type="moveable"></button>
       <input type="range" class="slider" min="1" title="${t("note_map.link-distance")}" max="100" value="40" >
     </div>
@@ -139,7 +124,7 @@ interface NotesAndRelationsData {
         source: string;
         target: string;
         name: string;
-    }[]
+    }[];
 }
 
 // Replace
@@ -152,7 +137,7 @@ interface ResponseLink {
 
 interface PostNotesMapResponse {
     notes: string[];
-    links: ResponseLink[],
+    links: ResponseLink[];
     noteIdToDescendantCountMap: Record<string, number>;
 }
 
@@ -160,7 +145,7 @@ interface GroupedLink {
     id: string;
     sourceNoteId: string;
     targetNoteId: string;
-    names: string[]
+    names: string[];
 }
 
 interface CssData {
@@ -313,9 +298,7 @@ export default class NoteMapWidget extends NoteContextAwareWidget {
                 ctx.fillStyle = color;
                 ctx.beginPath();
                 if (node.x && node.y) {
-                    ctx.arc(node.x, node.y,
-                        this.noteIdToSizeMap[node.id], 0,
-                        2 * Math.PI, false);
+                    ctx.arc(node.x, node.y, this.noteIdToSizeMap[node.id], 0, 2 * Math.PI, false);
                 }
                 ctx.fill();
             })
@@ -324,7 +307,7 @@ export default class NoteMapWidget extends NoteContextAwareWidget {
             .warmupTicks(30)
             .onNodeClick((node) => {
                 if (node.id) {
-                    appContext.tabManager.getActiveContext().setNote((node as Node).id);
+                    appContext.tabManager.getActiveContext()?.setNote((node as Node).id);
                 }
             })
             .onNodeRightClick((node, e) => {
@@ -373,7 +356,7 @@ export default class NoteMapWidget extends NoteContextAwareWidget {
         if (mapRootNoteId === "hoisted") {
             mapRootNoteId = hoistedNoteService.getHoistedNoteId();
         } else if (!mapRootNoteId) {
-            mapRootNoteId = appContext.tabManager.getActiveContext().parentNoteId;
+            mapRootNoteId = appContext.tabManager.getActiveContext()?.parentNoteId;
         }
 
         return mapRootNoteId ?? "";
@@ -467,13 +450,13 @@ export default class NoteMapWidget extends NoteContextAwareWidget {
         }
 
         if (source.x && source.y && target.x && target.y) {
-            const x = ((source.x) + (target.x)) / 2;
-            const y = ((source.y) + (target.y)) / 2;
+            const x = (source.x + target.x) / 2;
+            const y = (source.y + target.y) / 2;
             ctx.save();
             ctx.translate(x, y);
 
-            const deltaY = (source.y) - (target.y);
-            const deltaX = (source.x) - (target.x);
+            const deltaY = source.y - target.y;
+            const deltaX = source.x - target.x;
 
             let angle = Math.atan2(deltaY, deltaX);
             let moveY = 2;

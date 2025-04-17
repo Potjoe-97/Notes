@@ -102,16 +102,9 @@ async function deleteNotes(branchIdsToDelete: string[], forceDeleteAllClones = f
         return false;
     }
 
-    let proceed, deleteAllClones, eraseNotes;
-
-    if (utils.isMobile()) {
-        proceed = true;
-        deleteAllClones = false;
-    } else {
-        ({ proceed, deleteAllClones, eraseNotes } = await new Promise<ResolveOptions>((res) =>
-            appContext.triggerCommand("showDeleteNotesDialog", { branchIdsToDelete, callback: res, forceDeleteAllClones })
-        ));
-    }
+    const { proceed, deleteAllClones, eraseNotes } = await new Promise<ResolveOptions>((res) =>
+        appContext.triggerCommand("showDeleteNotesDialog", { branchIdsToDelete, callback: res, forceDeleteAllClones })
+    );
 
     if (!proceed) {
         return false;
@@ -152,10 +145,10 @@ async function deleteNotes(branchIdsToDelete: string[], forceDeleteAllClones = f
 async function activateParentNotePath() {
     // this is not perfect, maybe we should find the next/previous sibling, but that's more complex
     const activeContext = appContext.tabManager.getActiveContext();
-    const parentNotePathArr = activeContext.notePathArray.slice(0, -1);
+    const parentNotePathArr = activeContext?.notePathArray.slice(0, -1);
 
-    if (parentNotePathArr.length > 0) {
-        activeContext.setNote(parentNotePathArr.join("/"));
+    if (parentNotePathArr && parentNotePathArr.length > 0) {
+        activeContext?.setNote(parentNotePathArr.join("/"));
     }
 }
 
@@ -252,7 +245,7 @@ async function cloneNoteToBranch(childNoteId: string, parentBranchId: string, pr
     }
 }
 
-async function cloneNoteToParentNote(childNoteId: string, parentNoteId: string, prefix: string) {
+async function cloneNoteToParentNote(childNoteId: string, parentNoteId: string, prefix?: string) {
     const resp = await server.put<Response>(`notes/${childNoteId}/clone-to-note/${parentNoteId}`, {
         prefix: prefix
     });

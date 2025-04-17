@@ -1,4 +1,4 @@
-import type { FilterOptionsByType, OptionDefinitions, OptionMap, OptionNames } from "../../../../../services/options_interface.js";
+import type { FilterOptionsByType, OptionMap, OptionNames } from "../../../../../services/options_interface.js";
 import type { EventData, EventListener } from "../../../components/app_context.js";
 import type FNote from "../../../entities/fnote.js";
 import { t } from "../../../services/i18n.js";
@@ -45,7 +45,7 @@ export default class OptionsWidget extends NoteContextAwareWidget implements Eve
         $checkbox.prop("checked", optionValue === "true");
     }
 
-    optionsLoaded(options: OptionMap) {}
+    optionsLoaded(options: OptionMap) { }
 
     async refresh() {
         this.toggleInt(this.isEnabled());

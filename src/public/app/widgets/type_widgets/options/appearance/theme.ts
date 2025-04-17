@@ -4,7 +4,7 @@ import utils from "../../../../services/utils.js";
 import { t } from "../../../../services/i18n.js";
 import type { OptionMap } from "../../../../../../services/options_interface.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="options-section">
     <h4>${t("theme.layout")}</h4>
 
@@ -67,6 +67,9 @@ export default class ThemeOptions extends OptionsWidget {
             utils.reloadFrontendApp("layout orientation change");
         });
 
+        const $layoutOrientationSection = $(this.$widget[0]);
+        $layoutOrientationSection.toggleClass("hidden-ext", utils.isMobile());
+
         this.$themeSelect.on("change", async () => {
             const newTheme = this.$themeSelect.val();
 
@@ -91,10 +94,12 @@ export default class ThemeOptions extends OptionsWidget {
         this.$themeSelect.empty();
 
         for (const theme of themes) {
-            this.$themeSelect.append($("<option>")
-                .attr("value", theme.val)
-                .attr("data-note-id", theme.noteId || "")
-                .text(theme.title));
+            this.$themeSelect.append(
+                $("<option>")
+                    .attr("value", theme.val)
+                    .attr("data-note-id", theme.noteId || "")
+                    .text(theme.title)
+            );
         }
 
         this.$themeSelect.val(options.theme);

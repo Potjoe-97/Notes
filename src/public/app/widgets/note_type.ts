@@ -38,6 +38,7 @@ const NOTE_TYPES: NoteTypeMapping[] = [
     // Misc note types
     { type: "render", mime: "", title: t("note_types.render-note"), selectable: true },
     { type: "webView", mime: "", title: t("note_types.web-view"), selectable: true },
+    { type: "aiChat", mime: "application/json", title: t("note_types.ai-chat"), selectable: true },
 
     // Code notes
     { type: "code", mime: "text/plain", title: t("note_types.code"), selectable: true },
@@ -49,13 +50,12 @@ const NOTE_TYPES: NoteTypeMapping[] = [
     { type: "image", title: t("note_types.image"), selectable: false },
     { type: "launcher", mime: "", title: t("note_types.launcher"), selectable: false },
     { type: "noteMap", mime: "", title: t("note_types.note-map"), selectable: false },
-    { type: "search", title: t("note_types.saved-search"), selectable: false },
-    { type: "taskList", title: t("note_types.task-list"), selectable: false }
+    { type: "search", title: t("note_types.saved-search"), selectable: false }
 ];
 
 const NOT_SELECTABLE_NOTE_TYPES = NOTE_TYPES.filter((nt) => !nt.selectable).map((nt) => nt.type);
 
-const TPL = `
+const TPL = /*html*/`
 <div class="dropdown note-type-widget">
     <style>
         .note-type-dropdown {

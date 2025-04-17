@@ -272,12 +272,12 @@
     "help_title": "Help on Note Revisions",
     "close": "Close",
     "revision_last_edited": "This revision was last edited on {{date}}",
-    "confirm_delete_all": "Do you want to delete all revisions of this note? This action will erase the revision title and content, but still preserve the revision metadata.",
+    "confirm_delete_all": "Do you want to delete all revisions of this note?",
     "no_revisions": "No revisions for this note yet...",
-    "restore_button": "Restore this revision",
+    "restore_button": "Restore",
     "confirm_restore": "Do you want to restore this revision? This will overwrite the current title and content of the note with this revision.",
-    "delete_button": "Delete this revision",
-    "confirm_delete": "Do you want to delete this revision? This action will delete the revision title and content, but still preserve the revision metadata.",
+    "delete_button": "Delete",
+    "confirm_delete": "Do you want to delete this revision?",
     "revisions_deleted": "Note revisions have been deleted.",
     "revision_restored": "Note revision has been restored.",
     "revision_deleted": "Note revision has been deleted.",
@@ -376,7 +376,7 @@
     "auto_read_only_disabled": "text/code notes can be set automatically into read mode when they are too large. You can disable this behavior on per-note basis by adding this label to the note",
     "app_css": "marks CSS notes which are loaded into the Trilium application and can thus be used to modify Trilium's looks.",
     "app_theme": "marks CSS notes which are full Trilium themes and are thus available in Trilium options.",
-    "app_theme_base": "set to \"next\" in order to use the TriliumNext theme as a base for a custom theme instead of the legacy one.",
+    "app_theme_base": "set to \"next\", \"next-light\", or \"next-dark\" to use the corresponding TriliumNext theme (auto, light or dark) as the base for a custom theme, instead of the legacy one.",
     "css_class": "value of this label is then added as CSS class to the node representing given note in the tree. This can be useful for advanced theming. Can be used in template notes.",
     "icon_class": "value of this label is added as a CSS class to the icon on the tree which can help visually distinguish the notes in the tree. Example might be bx bx-home - icons are taken from boxicons. Can be used in template notes.",
     "page_size": "number of items per page in note listing",
@@ -555,8 +555,7 @@
     "to": "to",
     "target_note": "target note",
     "on_all_matched_notes": "On all matched notes",
-    "create_given_relation": "create given relation if note doesn't have one yet",
-    "change_target_note": "or change target note of the existing relation",
+    "change_target_note": "change target note of the existing relation",
     "update_relation_target": "Update relation target"
   },
   "attachments_actions": {
@@ -589,6 +588,7 @@
     "sat": "Sat",
     "sun": "Sun",
     "cannot_find_day_note": "Cannot find day note",
+    "cannot_find_week_note": "Cannot find week note",
     "january": "January",
     "febuary": "February",
     "march": "March",
@@ -744,7 +744,8 @@
   "basic_properties": {
     "note_type": "Note type",
     "editable": "Editable",
-    "basic_properties": "Basic Properties"
+    "basic_properties": "Basic Properties",
+    "language": "Language"
   },
   "book_properties": {
     "view_type": "View type",
@@ -1089,7 +1090,8 @@
   "max_content_width": {
     "title": "Content Width",
     "default_description": "Trilium by default limits max content width to improve readability for maximized screens on wide screens.",
-    "max_width_label": "Max content width in pixels",
+    "max_width_label": "Max content width",
+    "max_width_unit": "pixels",
     "apply_changes_description": "To apply content width changes, click on",
     "reload_button": "reload frontend",
     "reload_description": "changes from appearance options"
@@ -1120,6 +1122,201 @@
     "layout-vertical-description": "launcher bar is on the left (default)",
     "layout-horizontal-description": "launcher bar is underneath the tab bar, the tab bar is now full width."
   },
+  "ai_llm": {
+    "embeddings_configuration": "Embeddings Configuration",
+    "not_started": "Not started",
+    "title": "AI & Embedding Settings",
+    "embedding_statistics": "Embedding Statistics",
+    "processed_notes": "Processed Notes",
+    "total_notes": "Total Notes",
+    "progress": "Progress",
+    "queued_notes": "Queued Notes",
+    "failed_notes": "Failed Notes",
+    "last_processed": "Last Processed",
+    "refresh_stats": "Refresh Statistics",
+    "no_failed_embeddings": "No failed embeddings found.",
+    "enable_ai_features": "Enable AI/LLM features",
+    "enable_ai_description": "Enable AI features like note summarization, content generation, and other LLM capabilities",
+    "openai_tab": "OpenAI",
+    "anthropic_tab": "Anthropic",
+    "voyage_tab": "Voyage AI",
+    "ollama_tab": "Ollama",
+    "enable_ai": "Enable AI/LLM features",
+    "enable_ai_desc": "Enable AI features like note summarization, content generation, and other LLM capabilities",
+    "provider_configuration": "AI Provider Configuration",
+    "provider_precedence": "Provider Precedence",
+    "provider_precedence_description": "Comma-separated list of providers in order of precedence (e.g., 'openai,anthropic,ollama')",
+    "temperature": "Temperature",
+    "temperature_description": "Controls randomness in responses (0 = deterministic, 2 = maximum randomness)",
+    "system_prompt": "System Prompt",
+    "system_prompt_description": "Default system prompt used for all AI interactions",
+    "openai_configuration": "OpenAI Configuration",
+    "openai_settings": "OpenAI Settings",
+    "api_key": "API Key",
+    "url": "Base URL",
+    "model": "Model",
+    "openai_api_key_description": "Your OpenAI API key for accessing their AI services",
+    "anthropic_api_key_description": "Your Anthropic API key for accessing Claude models",
+    "default_model": "Default Model",
+    "openai_model_description": "Examples: gpt-4o, gpt-4-turbo, gpt-3.5-turbo",
+    "embedding_model": "Embedding Model",
+    "openai_embedding_model_description": "Model used for generating embeddings (text-embedding-3-small recommended)",
+    "base_url": "Base URL",
+    "openai_url_description": "Default: https://api.openai.com/v1",
+    "anthropic_settings": "Anthropic Settings",
+    "anthropic_url_description": "Base URL for the Anthropic API (default: https://api.anthropic.com)",
+    "anthropic_model_description": "Anthropic Claude models for chat completion",
+    "voyage_settings": "Voyage AI Settings",
+    "voyage_api_key_description": "Your Voyage AI API key for accessing embeddings services",
+    "ollama_settings": "Ollama Settings",
+    "ollama_url_description": "URL for the Ollama API (default: http://localhost:11434)",
+    "ollama_model_description": "Ollama model to use for chat completion",
+    "anthropic_configuration": "Anthropic Configuration",
+    "voyage_embedding_model_description": "Voyage AI embedding models for text embeddings (voyage-2 recommended)",
+    "voyage_configuration": "Voyage AI Configuration",
+    "voyage_url_description": "Default: https://api.voyageai.com/v1",
+    "ollama_configuration": "Ollama Configuration",
+    "enable_ollama": "Enable Ollama",
+    "enable_ollama_description": "Enable Ollama for local AI model usage",
+    "ollama_url": "Ollama URL",
+    "ollama_model": "Ollama Model",
+    "ollama_embedding_model": "Embedding Model",
+    "ollama_embedding_model_description": "Specialized model for generating embeddings (vector representations)",
+    "refresh_models": "Refresh Models",
+    "refreshing_models": "Refreshing...",
+    "embedding_configuration": "Embeddings Configuration",
+    "embedding_default_provider": "Default Provider",
+    "embedding_default_provider_description": "Select the default provider used for generating note embeddings",
+    "embedding_provider_precedence": "Embedding Provider Precedence",
+    "embedding_providers_order": "Embedding Provider Order",
+    "embedding_providers_order_description": "Set the order of embedding providers in comma-separated format (e.g., \"openai,voyage,ollama,local\")",
+    "enable_automatic_indexing": "Enable Automatic Indexing",
+    "enable_automatic_indexing_description": "Automatically generate embeddings for new and updated notes",
+    "embedding_auto_update_enabled": "Auto-update Embeddings",
+    "embedding_auto_update_enabled_description": "Automatically update embeddings when notes are modified",
+    "recreate_embeddings": "Recreate All Embeddings",
+    "recreate_embeddings_description": "Regenerate all note embeddings from scratch (may take a long time for large note collections)",
+    "recreate_embeddings_started": "Embeddings regeneration started. This may take a long time for large note collections.",
+    "recreate_embeddings_error": "Error starting embeddings regeneration. Check logs for details.",
+    "recreate_embeddings_confirm": "Are you sure you want to recreate all embeddings? This may take a long time for large note collections.",
+    "rebuild_index": "Rebuild Index",
+    "rebuild_index_description": "Rebuild the vector search index for better performance (much faster than recreating embeddings)",
+    "rebuild_index_started": "Embedding index rebuild started. This may take several minutes.",
+    "rebuild_index_error": "Error starting index rebuild. Check logs for details.",
+    "note_title": "Note Title",
+    "error": "Error",
+    "last_attempt": "Last Attempt",
+    "actions": "Actions",
+    "retry": "Retry",
+    "partial": "{{ percentage }}% completed",
+    "retry_queued": "Note queued for retry",
+    "retry_failed": "Failed to queue note for retry",
+    "embedding_provider_precedence_description": "Comma-separated list of providers in order of precedence for embeddings search (e.g., 'openai,ollama,anthropic')",
+    "embedding_dimension_strategy": "Embedding Dimension Strategy",
+    "embedding_dimension_auto": "Auto (Recommended)",
+    "embedding_dimension_fixed": "Fixed",
+    "embedding_similarity_threshold": "Similarity Threshold",
+    "embedding_similarity_threshold_description": "Minimum similarity score for notes to be included in search results (0-1)",
+    "max_notes_per_llm_query": "Max Notes Per Query",
+    "max_notes_per_llm_query_description": "Maximum number of similar notes to include in AI context",
+    "embedding_dimension_strategy_description": "Choose how embeddings are handled. 'Native' preserves maximum information by adapting smaller vectors to match larger ones (recommended). 'Regenerate' creates new embeddings with the target model for specific search needs.",
+    "drag_providers_to_reorder": "Drag providers up or down to set your preferred order for embedding searches",
+    "active_providers": "Active Providers",
+    "disabled_providers": "Disabled Providers",
+    "remove_provider": "Remove provider from search",
+    "restore_provider": "Restore provider to search",
+    "embedding_generation_location": "Generation Location",
+    "embedding_generation_location_description": "Select where embedding generation should happen",
+    "embedding_generation_location_client": "Client/Server",
+    "embedding_generation_location_sync_server": "Sync Server",
+    "enable_auto_update_embeddings": "Auto-update Embeddings",
+    "enable_auto_update_embeddings_description": "Automatically update embeddings when notes are modified",
+    "auto_update_embeddings": "Auto-update Embeddings",
+    "auto_update_embeddings_desc": "Automatically update embeddings when notes are modified",
+    "similarity_threshold": "Similarity Threshold",
+    "similarity_threshold_description": "Minimum similarity score (0-1) for notes to be included in context for LLM queries",
+    "embedding_batch_size": "Batch Size",
+    "embedding_batch_size_description": "Number of notes to process in a single batch (1-50)",
+    "embedding_update_interval": "Update Interval (ms)",
+    "embedding_update_interval_description": "Time between processing batches of embeddings (in milliseconds)",
+    "embedding_default_dimension": "Default Dimension",
+    "embedding_default_dimension_description": "Default embedding vector dimension when creating new embeddings",
+    "reprocess_all_embeddings": "Reprocess All Embeddings",
+    "reprocess_all_embeddings_description": "Queue all notes for embedding processing. This may take some time depending on your number of notes.",
+    "reprocessing_embeddings": "Reprocessing...",
+    "reprocess_started": "Embedding reprocessing started in the background",
+    "reprocess_error": "Error starting embedding reprocessing",
+
+    "reprocess_index": "Rebuild Search Index",
+    "reprocess_index_description": "Optimize the search index for better performance. This uses existing embeddings without regenerating them (much faster than reprocessing all embeddings).",
+    "reprocessing_index": "Rebuilding...",
+    "reprocess_index_started": "Search index optimization started in the background",
+    "reprocess_index_error": "Error rebuilding search index",
+
+    "index_rebuild_progress": "Index Rebuild Progress",
+    "index_rebuilding": "Optimizing index ({{percentage}}%)",
+    "index_rebuild_complete": "Index optimization complete",
+    "index_rebuild_status_error": "Error checking index rebuild status",
+    "never": "Never",
+    "processing": "Processing ({{percentage}}%)",
+    "incomplete": "Incomplete ({{percentage}}%)",
+    "complete": "Complete (100%)",
+    "refreshing": "Refreshing...",
+    "stats_error": "Error fetching embedding statistics",
+    "auto_refresh_notice": "Auto-refreshes every {{seconds}} seconds",
+    "note_queued_for_retry": "Note queued for retry",
+    "failed_to_retry_note": "Failed to retry note",
+    "all_notes_queued_for_retry": "All failed notes queued for retry",
+    "failed_to_retry_all": "Failed to retry notes",
+    "ai_settings": "AI Settings",
+    "api_key_tooltip": "API key for accessing the service",
+    "confirm_delete_embeddings": "Are you sure you want to delete all AI embeddings? This will remove all semantic search capabilities until notes are reindexed, which can take a significant amount of time.",
+    "empty_key_warning": {
+      "anthropic": "Anthropic API key is empty. Please enter a valid API key.",
+      "openai": "OpenAI API key is empty. Please enter a valid API key.",
+      "voyage": "Voyage API key is empty. Please enter a valid API key.",
+      "ollama": "Ollama API key is empty. Please enter a valid API key."
+    },
+    "agent": {
+      "processing": "Processing...",
+      "thinking": "Thinking...",
+      "loading": "Loading...",
+      "generating": "Generating..."
+    },
+    "name": "AI",
+    "openai": "OpenAI",
+    "use_enhanced_context": "Use enhanced context",
+    "enhanced_context_description": "Provides the AI with more context from the note and its related notes for better responses",
+    "show_thinking": "Show thinking",
+    "show_thinking_description": "Show the AI's chain of thought process",
+    "enter_message": "Enter your message...",
+    "error_contacting_provider": "Error contacting AI provider. Please check your settings and internet connection.",
+    "error_generating_response": "Error generating AI response",
+    "index_all_notes": "Index All Notes",
+    "index_status": "Index Status",
+    "indexed_notes": "Indexed Notes",
+    "indexing_stopped": "Indexing stopped",
+    "indexing_in_progress": "Indexing in progress...",
+    "last_indexed": "Last Indexed",
+    "n_notes_queued": "{{ count }} note queued for indexing",
+    "n_notes_queued_plural": "{{ count }} notes queued for indexing",
+    "note_chat": "Note Chat",
+    "notes_indexed": "{{ count }} note indexed",
+    "notes_indexed_plural": "{{ count }} notes indexed",
+    "reset_embeddings": "Reset Embeddings",
+    "sources": "Sources",
+    "start_indexing": "Start Indexing",
+    "use_advanced_context": "Use Advanced Context",
+    "ollama_no_url": "Ollama is not configured. Please enter a valid URL.",
+    "chat": {
+      "root_note_title": "AI Chats",
+      "root_note_content": "This note contains your saved AI chat conversations.",
+      "new_chat_title": "New Chat",
+      "create_new_ai_chat": "Create new AI Chat"
+    },
+    "create_new_ai_chat": "Create new AI Chat",
+    "configuration_warnings": "There are some issues with your AI configuration. Please check your settings."
+  },
   "zoom_factor": {
     "title": "Zoom Factor (desktop build only)",
     "description": "Zooming can be controlled with CTRL+- and CTRL+= shortcuts as well."
@@ -1127,7 +1324,11 @@
   "code_auto_read_only_size": {
     "title": "Automatic Read-Only Size",
     "description": "Automatic read-only note size is the size after which notes will be displayed in a read-only mode (for performance reasons).",
-    "label": "Automatic read-only size (code notes)"
+    "label": "Automatic read-only size (code notes)",
+    "unit": "characters"
+  },
+  "code-editor-options": {
+    "title": "Editor"
   },
   "code_mime_types": {
     "title": "Available MIME types in the dropdown"
@@ -1145,7 +1346,8 @@
     "download_images_automatically": "Download images automatically for offline use.",
     "download_images_description": "Pasted HTML can contain references to online images, Trilium will find those references and download the images so that they are available offline.",
     "enable_image_compression": "Enable image compression",
-    "max_image_dimensions": "Max width / height of an image in pixels (image will be resized if it exceeds this setting).",
+    "max_image_dimensions": "Max width / height of an image (image will be resized if it exceeds this setting).",
+    "max_image_dimensions_unit": "pixels",
     "jpeg_quality_description": "JPEG quality (10 - worst quality, 100 - best quality, 50 - 85 is recommended)"
   },
   "attachment_erasure_timeout": {
@@ -1177,6 +1379,7 @@
     "note_revisions_snapshot_limit_title": "Note Revision Snapshot Limit",
     "note_revisions_snapshot_limit_description": "The note revision snapshot number limit refers to the maximum number of revisions that can be saved for each note. Where -1 means no limit, 0 means delete all revisions. You can set the maximum revisions for a single note through the #versioningLimit label.",
     "snapshot_number_limit_label": "Note revision snapshot number limit:",
+    "snapshot_number_limit_unit": "snapshots",
     "erase_excess_revision_snapshots": "Erase excess revision snapshots now",
     "erase_excess_revision_snapshots_prompt": "Excess revision snapshots have been erased."
   },
@@ -1219,20 +1422,30 @@
   "table_of_contents": {
     "title": "Table of Contents",
     "description": "Table of contents will appear in text notes when the note has more than a defined number of headings. You can customize this number:",
+    "unit": "headings",
     "disable_info": "You can also use this option to effectively disable TOC by setting a very high number.",
     "shortcut_info": "You can configure a keyboard shortcut for quickly toggling the right pane (including TOC) in the Options -> Shortcuts (name 'toggleRightPane')."
   },
   "text_auto_read_only_size": {
     "title": "Automatic Read-Only Size",
     "description": "Automatic read-only note size is the size after which notes will be displayed in a read-only mode (for performance reasons).",
-    "label": "Automatic read-only size (text notes)"
+    "label": "Automatic read-only size (text notes)",
+    "unit": "characters"
   },
   "i18n": {
     "title": "Localization",
     "language": "Language",
     "first-day-of-the-week": "First day of the week",
     "sunday": "Sunday",
-    "monday": "Monday"
+    "monday": "Monday",
+    "first-week-of-the-year": "First week of the year",
+    "first-week-contains-first-day": "First week contains first day of the year",
+    "first-week-contains-first-thursday": "First week contains first Thursday of the year",
+    "first-week-has-minimum-days": "First week has minimum days",
+    "min-days-in-first-week": "Minimum days in first week",
+    "first-week-info": "First week contains first Thursday of the year is based on <a href=\"https://en.wikipedia.org/wiki/ISO_week_date#First_week\">ISO 8601</a> standard.",
+    "first-week-warning": "Changing first week options may cause duplicate with existing Week Notes and the existing Week Notes will not be updated accordingly.",
+    "formatting-locale": "Date & number format"
   },
   "backup": {
     "automatic_backup": "Automatic backup",
@@ -1252,10 +1465,10 @@
   "etapi": {
     "title": "ETAPI",
     "description": "ETAPI is a REST API used to access Trilium instance programmatically, without UI.",
-    "see_more": "See more details on",
+    "see_more": "See more details in the {{- link_to_wiki}} and the {{- link_to_openapi_spec}} or the {{- link_to_swagger_ui }}.",
     "wiki": "wiki",
-    "and": "and",
     "openapi_spec": "ETAPI OpenAPI spec",
+    "swagger_ui": "ETAPI Swagger UI",
     "create_token": "Create new ETAPI token",
     "existing_tokens": "Existing tokens",
     "no_tokens_yet": "There are no tokens yet. Click on the button above to create one.",
@@ -1299,6 +1512,39 @@
     "password_mismatch": "New passwords are not the same.",
     "password_changed_success": "Password has been changed. Trilium will be reloaded after you press OK."
   },
+  "multi_factor_authentication": {
+    "title": "Multi-Factor Authentication",
+    "description": "Multi-Factor Authentication (MFA) adds an extra layer of security to your account. Instead of just entering a password to log in, MFA requires you to provide one or more additional pieces of evidence to verify your identity. This way, even if someone gets hold of your password, they still can't access your account without the second piece of information. It's like adding an extra lock to your door, making it much harder for anyone else to break in.<br><br>Please follow the instructions below to enable MFA. If you don't config correctly, login will fall back to password only.",
+    "mfa_enabled": "Enable Multi-Factor Authentication",
+    "mfa_method": "MFA Method",
+    "electron_disabled": "Multi-Factor Authentication is not supported in the desktop build currently.",
+    "totp_title": "Time-based One-Time Password (TOTP)",
+    "totp_description": "TOTP (Time-Based One-Time Password) is a security feature that generates a unique, temporary code which changes every 30 seconds. You use this code, along with your password to log into your account, making it much harder for anyone else to access it.",
+    "totp_secret_title": "Generate TOTP Secret",
+    "totp_secret_generate": "Generate TOTP Secret",
+    "totp_secret_regenerate": "Regenerate TOTP Secret",
+    "no_totp_secret_warning": "To enable TOTP, you need to generate a TOTP secret first.",
+    "totp_secret_description_warning": "After generating a new TOTP secret, you will be required to login again with the new TOTP secret.",
+    "totp_secret_generated": "TOTP Secret Generated",
+    "totp_secret_warning": "Please save the generated secret in a secure location. It will not be shown again.",
+    "totp_secret_regenerate_confirm": "Are you sure you want to regenerate the TOTP secret? This will invalidate previous TOTP secret and all existing recovery codes.",
+    "recovery_keys_title": "Single Sign-on Recovery Keys",
+    "recovery_keys_description": "Single sign-on recovery keys are used to login in the even you cannot access your Authenticator codes.",
+    "recovery_keys_description_warning": "Recovery keys won't be shown again after leaving the page, keep them somewhere safe and secure.<br>After a recovery key is used it cannot be used again.",
+    "recovery_keys_error": "Error generating recovery codes",
+    "recovery_keys_no_key_set": "No recovery codes set",
+    "recovery_keys_generate": "Generate Recovery Codes",
+    "recovery_keys_regenerate": "Regenerate Recovery Codes",
+    "recovery_keys_used": "Used: {{date}}",
+    "recovery_keys_unused": "Recovery code {{index}} is unused",
+    "oauth_title": "OAuth/OpenID",
+    "oauth_description": "OpenID is a standardized way to let you log into websites using an account from another service, like Google, to verify your identity. Follow these <a href=\"https://developers.google.com/identity/openid-connect/openid-connect\">instructions</a> to setup an OpenID service through Google.",
+    "oauth_description_warning": "To enable OAuth/OpenID, you need to set the OAuth/OpenID base URL, client ID and client secret in the config.ini file and restart the application. If you want to set from environment variables, please set TRILIUM_OAUTH_BASE_URL, TRILIUM_OAUTH_CLIENT_ID and TRILIUM_OAUTH_CLIENT_SECRET.",
+    "oauth_missing_vars": "Missing settings: {{variables}}",
+    "oauth_user_account": "User Account: ",
+    "oauth_user_email": "User Email: ",
+    "oauth_user_not_logged_in": "Not logged in!"
+  },
   "shortcuts": {
     "keyboard_shortcuts": "Keyboard Shortcuts",
     "multiple_shortcuts": "Multiple shortcuts for the same action can be separated by comma.",
@@ -1325,7 +1571,8 @@
   "sync_2": {
     "config_title": "Sync Configuration",
     "server_address": "Server instance address",
-    "timeout": "Sync timeout (milliseconds)",
+    "timeout": "Sync timeout",
+    "timeout_unit": "milliseconds",
     "proxy_label": "Sync proxy server (optional)",
     "note": "Note",
     "note_description": "If you leave the proxy setting blank, the system proxy will be used (applies to desktop/electron build only).",
@@ -1422,7 +1669,8 @@
     "confirm-change": "It is not recommended to change note type when note content is not empty. Do you want to continue anyway?",
     "geo-map": "Geo Map",
     "beta-feature": "Beta",
-    "task-list": "To-Do List"
+    "ai-chat": "AI Chat",
+    "task-list": "Task List"
   },
   "protect_note": {
     "toggle-on": "Protect the note",
@@ -1454,9 +1702,6 @@
   "highlights_list_2": {
     "title": "Highlights List",
     "options": "Options"
-  },
-  "mermaid": {
-    "diagram_error": "The diagram could not be displayed. See <a href=\"https://mermaid-js.github.io/mermaid/#/flowchart?id=graph\">help and examples</a>."
   },
   "quick-search": {
     "placeholder": "Quick search",
@@ -1670,10 +1915,42 @@
     "check_share_root": "Check Share Root Status",
     "share_root_found": "Share root note '{{noteTitle}}' is ready",
     "share_root_not_found": "No note with #shareRoot label found",
-    "share_root_not_shared": "Note '{{noteTitle}}' has #shareRoot label but is not Shared"
+    "share_root_not_shared": "Note '{{noteTitle}}' has #shareRoot label but is not shared"
   },
   "time_selector": {
     "invalid_input": "The entered time value is not a valid number.",
     "minimum_input": "The entered time value needs to be at least {{minimumSeconds}} seconds."
+  },
+  "tasks": {
+    "due": {
+      "today": "Today",
+      "tomorrow": "Tomorrow",
+      "yesterday": "Yesterday"
+    }
+  },
+  "content_widget": {
+    "unknown_widget": "Unknown widget for \"{{id}}\"."
+  },
+  "note_language": {
+    "not_set": "Not set",
+    "configure-languages": "Configure languages..."
+  },
+  "content_language": {
+    "title": "Content languages",
+    "description": "Select one or more languages that should appear in the language selection in the Basic Properties section of a read-only or editable text note. This will allow features such as spell-checking or right-to-left support."
+  },
+  "switch_layout_button": {
+    "title_vertical": "Move editing pane to the bottom",
+    "title_horizontal": "Move editing pane to the left"
+  },
+  "toggle_read_only_button": {
+    "unlock-editing": "Unlock editing",
+    "lock-editing": "Lock editing"
+  },
+  "png_export_button": {
+    "button_title": "Export diagram as PNG"
+  },
+  "svg": {
+    "export_to_png": "The diagram could not be exported to PNG."
   }
 }

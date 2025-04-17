@@ -30,7 +30,7 @@ function getRelationMap(req: Request) {
         return resp;
     }
 
-    const questionMarks = noteIds.map((noteId) => "?").join(",");
+    const questionMarks = noteIds.map((_noteId) => "?").join(",");
 
     const relationMapNote = becca.getNoteOrThrow(relationMapNoteId);
 
@@ -40,7 +40,7 @@ function getRelationMap(req: Request) {
     const hideRelationsVal = relationMapNote.getLabelValue("hideRelations");
     const hideRelations = !hideRelationsVal ? [] : hideRelationsVal.split(",").map((token) => token.trim());
 
-    const foundNoteIds = sql.getColumn<string>(`SELECT noteId FROM notes WHERE isDeleted = 0 AND noteId IN (${questionMarks})`, noteIds);
+    const foundNoteIds = sql.getColumn<string>(/*sql*/`SELECT noteId FROM notes WHERE isDeleted = 0 AND noteId IN (${questionMarks})`, noteIds);
     const notes = becca.getNotes(foundNoteIds);
 
     for (const note of notes) {

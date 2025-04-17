@@ -1,7 +1,7 @@
 import { t } from "../services/i18n.js";
 import NoteContextAwareWidget from "./note_context_aware_widget.js";
 
-const TPL = `
+const TPL = /*html*/`
 <div class="switch-widget">
     <style>
     .switch-widget {
@@ -131,7 +131,7 @@ export default class SwitchWidget extends NoteContextAwareWidget {
     protected switchOffName = "";
     protected switchOffTooltip = "";
 
-    private disabledTooltip = "";
+    protected disabledTooltip = "";
 
     private currentState = false;
 
@@ -185,7 +185,7 @@ export default class SwitchWidget extends NoteContextAwareWidget {
 
     /** Gets or sets whether the switch is enabled. */
     get canToggle() {
-        return (!this.$switchButton.hasClass("disabled"));
+        return !this.$switchButton.hasClass("disabled");
     }
 
     set canToggle(isEnabled) {
