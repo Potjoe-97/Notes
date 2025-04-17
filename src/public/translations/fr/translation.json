@@ -98,8 +98,8 @@
     "export_note_title": "Exporter la note",
     "close": "Fermer",
     "export_type_subtree": "Cette note et tous ses descendants",
-    "format_html": "HTML - recommandé car il conserve la mise en forme",
-    "format_html_zip": "HTML dans l'archive ZIP - recommandé car préserve la mise en forme.",
+    "format_html": "HTML - recommandé préserve la mise en forme",
+    "format_html_zip": "HTML dans une archive ZIP - recommandé car préserve la mise en forme.",
     "format_markdown": "Markdown - préserve la majeure partie du formatage.",
     "format_opml": "OPML - format d'échange pour les outlineurs, uniquement pour le texte. La mise en forme, les images et les fichiers ne sont pas inclus.",
     "opml_version_1": "OPML v1.0 - texte brut uniquement",
@@ -272,12 +272,12 @@
     "help_title": "Aide sur les versions de notes",
     "close": "Fermer",
     "revision_last_edited": "Cette version a été modifiée pour la dernière fois le {{date}}",
-    "confirm_delete_all": "Voulez-vous supprimer toutes les versions de cette note ? Cette action effacera le titre et le contenu de la version, mais conservera leurs métadonnées.",
-    "no_revisions": "Aucune version pour cette note pour l'instant...",
+    "confirm_delete_all": "Voulez-vous supprimer toutes les versions de cette note ?",
+    "no_revisions": "Aucune version de cette note pour l'instant...",
     "restore_button": "Restaurer cette version",
     "confirm_restore": "Voulez-vous restaurer cette version ? Le titre et le contenu actuels de la note seront écrasés par cette version.",
     "delete_button": "Supprimer cette version",
-    "confirm_delete": "Voulez-vous supprimer cette version ? Le titre et le contenu de cette version seront supprimés, tout en conservant ses métadonnées.",
+    "confirm_delete": "Voulez-vous supprimer cette version ?",
     "revisions_deleted": "Les versions de notes ont été supprimées.",
     "revision_restored": "La version de la note a été restaurée.",
     "revision_deleted": "La version de la note a été supprimée.",
@@ -376,7 +376,7 @@
     "auto_read_only_disabled": "les notes textuelles/de code peuvent être automatiquement mises en mode lecture lorsqu'elles sont trop volumineuses. Vous pouvez désactiver ce comportement note par note en ajoutant ce label à la note",
     "app_css": "marque les notes CSS qui sont chargées dans l'application Trilium et peuvent ainsi être utilisées pour modifier l'apparence de Trilium.",
     "app_theme": "marque les notes CSS qui sont des thèmes Trilium complets et sont donc disponibles dans les options Trilium.",
-    "app_theme_base": "définir sur \"next\" afin d'utiliser le thème TriliumNext comme base pour un thème personnalisé à la place de l'ancien thème.",
+    "app_theme_base": "set to \"next\", \"next-light\", or \"next-dark\" to use the corresponding TriliumNext theme (auto, light or dark) as the base for a custom theme, instead of the legacy one.",
     "css_class": "la valeur de ce label est ensuite ajoutée en tant que classe CSS au nœud représentant la note donnée dans l'arborescence. Cela peut être utile pour les thèmes avancés. Peut être utilisé dans les notes modèle.",
     "icon_class": "la valeur de ce label est ajoutée en tant que classe CSS à l'icône dans l'arbre, ce qui peut aider à distinguer visuellement les notes dans l'arborescence. Un exemple pourrait être bx bx-home - les icônes sont extraites de boxicons. Peut être utilisé dans les notes modèle.",
     "page_size": "nombre d'éléments par page dans la liste de notes",
@@ -555,8 +555,7 @@
     "to": "vers",
     "target_note": "note cible",
     "on_all_matched_notes": "Pour toutes les notes correspondantes",
-    "create_given_relation": "créer une relation donnée si la note ne la possède pas encore",
-    "change_target_note": "ou changer la note cible de la relation existante",
+    "change_target_note": "changer la note cible de la relation existante",
     "update_relation_target": "Mettre à jour la cible de la relation"
   },
   "attachments_actions": {
@@ -589,6 +588,7 @@
     "sat": "Sam",
     "sun": "Dim",
     "cannot_find_day_note": "Note journalière introuvable",
+    "cannot_find_week_note": "Impossible de trouver la note de la semaine",
     "january": "Janvier",
     "febuary": "Février",
     "march": "Mars",
@@ -642,7 +642,7 @@
     "show_help": "Afficher l'aide",
     "about": "À propos de TriliumNext Notes",
     "logout": "Déconnexion",
-    "show-cheatsheet": "Afficher l'aide rapide",
+    "show-cheatsheet": "Afficher l'aide-mémoire",
     "toggle-zen-mode": "Zen Mode"
   },
   "zen_mode": {
@@ -691,7 +691,7 @@
     "inactive": "Cliquez pour accéder à une session protégée"
   },
   "revisions_button": {
-    "note_revisions": "Versions des Notes"
+    "note_revisions": "Versions de la note"
   },
   "update_available": {
     "update_available": "Mise à jour disponible"
@@ -744,7 +744,8 @@
   "basic_properties": {
     "note_type": "Type de note",
     "editable": "Modifiable",
-    "basic_properties": "Propriétés de base"
+    "basic_properties": "Propriétés de base",
+    "language": "Langue"
   },
   "book_properties": {
     "view_type": "Type d'affichage",
@@ -1090,6 +1091,7 @@
     "title": "Largeur du contenu",
     "default_description": "Trilium limite par défaut la largeur maximale du contenu pour améliorer la lisibilité sur des écrans larges.",
     "max_width_label": "Largeur maximale du contenu en pixels",
+    "max_width_unit": "pixels",
     "apply_changes_description": "Pour appliquer les modifications de largeur du contenu, cliquez sur",
     "reload_button": "recharger l'interface",
     "reload_description": "changements par rapport aux options d'apparence"
@@ -1101,7 +1103,7 @@
   },
   "ribbon": {
     "widgets": "Ruban de widgets",
-    "promoted_attributes_message": "L'onglet du ruban Attributs promus s'ouvrira automatiquement si la note possède des attributs mis en avant",
+    "promoted_attributes_message": "L'onglet Attributs promus s'ouvrira automatiquement si la note possède des attributs mis en avant",
     "edited_notes_message": "L'onglet du ruban Notes modifiées s'ouvrira automatiquement sur les notes journalières"
   },
   "theme": {
@@ -1120,6 +1122,199 @@
     "layout-vertical-description": "la barre de raccourcis est à gauche (défaut)",
     "layout-horizontal-description": "la barre de raccourcis est sous la barre des onglets, cette-dernière est s'affiche en pleine largeur."
   },
+  "ai_llm": {
+    "embeddings_configuration": "Configuration des embeddings",
+    "not_started": "Non démarré",
+    "title": "Paramètres de l'IA et de l'intégration",
+    "embedding_statistics": "Statistiques de l'intégration",
+    "processed_notes": "Notes traitées",
+    "total_notes": "Total des Notes",
+    "progress": "Progression",
+    "queued_notes": "Notes en attente",
+    "failed_notes": "Notes échouées",
+    "last_processed": "Dernière traitée",
+    "refresh_stats": "Rafraîchir les statistiques",
+    "no_failed_embeddings": "Aucune intégration en échec trouvée.",
+    "enable_ai_features": "Activer les fonctionnalités AI/LLM",
+    "enable_ai_description": "Activer les fonctionnalités d'IA telles que le résumé des notes, la génération de contenu et autres fonctions de LLM",
+    "openai_tab": "OpenAI",
+    "anthropic_tab": "Anthropic",
+    "voyage_tab": "Voyage AI",
+    "ollama_tab": "Ollama",
+    "enable_ai": "Activer les fonctionnalités AI/LLM",
+    "enable_ai_desc": "Activer les fonctionnalités d'IA telles que le résumé des notes, la génération de contenu et autres fonctions de LLM",
+    "provider_configuration": "Configuration du fournisseur d'IA",
+    "provider_precedence": "Priorité du fournisseur",
+    "provider_precedence_description": "Comma-separated list of providers in order of precedence (e.g., 'openai,anthropic,ollama')",
+    "temperature": "Température",
+    "temperature_description": "Contrôle l'aléatoire dans les réponses (0 = déterministe, 2 = aléatoire maximum)",
+    "system_prompt": "Message du système",
+    "system_prompt_description": "Invité système par défaut utilisé pour toutes les interactions avec les IA",
+    "openai_configuration": "Configuration OpenAI",
+    "openai_settings": "Paramètres OpenAI",
+    "api_key": "Clé API",
+    "url": "URL de base",
+    "model": "Modélisation",
+    "openai_api_key_description": "Votre clé API OpenAI pour accéder à leurs services AI",
+    "anthropic_api_key_description": "Your Anthropic API key for accessing Claude models",
+    "default_model": "Modèle par défaut",
+    "openai_model_description": "Examples: gpt-4o, gpt-4-turbo, gpt-3.5-turbo",
+    "embedding_model": "Modèle d'intégration",
+    "openai_embedding_model_description": "Model used for generating embeddings (text-embedding-3-small recommended)",
+    "base_url": "URL de base",
+    "openai_url_description": "Default: https://api.openai.com/v1",
+    "anthropic_settings": "Paramètres anthropiques",
+    "anthropic_url_description": "Base URL for the Anthropic API (default: https://api.anthropic.com)",
+    "anthropic_model_description": "Anthropic Claude models for chat completion",
+    "voyage_settings": "Paramètres de l'IA Voyage",
+    "voyage_api_key_description": "Votre clé d'API Voyage AI pour accéder aux services d'intégration",
+    "ollama_settings": "Ollama Settings",
+    "ollama_url_description": "URL for the Ollama API (default: http://localhost:11434)",
+    "ollama_model_description": "Ollama model to use for chat completion",
+    "anthropic_configuration": "Configuration anthropique",
+    "voyage_embedding_model_description": "Modèles d'intégration de l'IA de Voyage pour les incorporations de texte (voyage-2 recommandé)",
+    "voyage_configuration": "Voyage AI Configuration",
+    "voyage_url_description": "Default: https://api.voyageai.com/v1",
+    "ollama_configuration": "Ollama Configuration",
+    "enable_ollama": "Enable Ollama",
+    "enable_ollama_description": "Enable Ollama for local AI model usage",
+    "ollama_url": "Ollama URL",
+    "ollama_model": "Ollama Model",
+    "ollama_embedding_model": "Modèle d'intégration",
+    "ollama_embedding_model_description": "Specialized model for generating embeddings (vector representations)",
+    "refresh_models": "Rafraîchir les modèles",
+    "refreshing_models": "Rafraîchissement...",
+    "embedding_configuration": "Configuration des incorporations",
+    "embedding_default_provider": "Fournisseur par défaut",
+    "embedding_default_provider_description": "Sélectionnez le fournisseur par défaut utilisé pour la génération des incorporations de notes",
+    "embedding_provider_precedence": "Embedding Provider Precedence",
+    "embedding_providers_order": "Commande de fournisseur d'intégration",
+    "embedding_providers_order_description": "Set the order of embedding providers in comma-separated format (e.g., \"openai,voyage,ollama,local\")",
+    "enable_automatic_indexing": "Activer l'indexation automatique",
+    "enable_automatic_indexing_description": "Automatically generate embeddings for new and updated notes",
+    "embedding_auto_update_enabled": "Mise à jour automatique des intégrations",
+    "embedding_auto_update_enabled_description": "Automatically update embeddings when notes are modified",
+    "recreate_embeddings": "Recréer toutes les incorporations",
+    "recreate_embeddings_description": "Régénérer toutes les incorporations de notes à partir de zéro (peut prendre beaucoup de temps pour les grandes collections de notes)",
+    "recreate_embeddings_started": "La régénération des intégrations a commencé. Cela peut prendre beaucoup de temps pour les collections de notes.",
+    "recreate_embeddings_error": "Erreur lors du démarrage de la régénération des incorporations. Vérifiez les logs pour plus de détails.",
+    "recreate_embeddings_confirm": "Are you sure you want to recreate all embeddings? This may take a long time for large note collections.",
+    "rebuild_index": "Reconstruire l'index",
+    "rebuild_index_description": "Reconstruire l'index de recherche vectorielle pour de meilleures performances (bien plus rapide que la recréation des incorporations)",
+    "rebuild_index_started": "La reconstruction de l'index a commencé. Cela peut prendre plusieurs minutes.",
+    "rebuild_index_error": "Erreur lors du démarrage de la reconstruction de l'index. Vérifiez les logs pour plus de détails.",
+    "note_title": "Titre de la note",
+    "error": "Erreur",
+    "last_attempt": "Dernière tentative",
+    "actions": "Actions",
+    "retry": "Réessayer",
+    "partial": "{{ percentage }}% terminé",
+    "retry_queued": "Note mise en file d'attente pour une nouvelle tentative",
+    "retry_failed": "Échec de la mise en file d'attente de la note pour réessayer",
+    "embedding_provider_precedence_description": "Comma-separated list of providers in order of precedence for embeddings search (e.g., 'openai,ollama,anthropic')",
+    "embedding_dimension_strategy": "Stratégie de dimension intégrée",
+    "embedding_dimension_auto": "Auto (Recommandé)",
+    "embedding_dimension_fixed": "Fixe",
+    "embedding_similarity_threshold": "Seuil de similitude",
+    "embedding_similarity_threshold_description": "Score de similarité minimum pour les notes à inclure dans les résultats de recherche (0-1)",
+    "max_notes_per_llm_query": "Nombre maximum de notes par requête",
+    "max_notes_per_llm_query_description": "Nombre maximum de notes similaires à inclure dans le contexte de l'IA",
+    "embedding_dimension_strategy_description": "Choose how embeddings are handled. 'Native' preserves maximum information by adapting smaller vectors to match larger ones (recommended). 'Regenerate' creates new embeddings with the target model for specific search needs.",
+    "drag_providers_to_reorder": "Faites glisser les fournisseurs vers le haut ou vers le bas pour définir votre commande préférée pour les recherches d'intégration",
+    "active_providers": "Fournisseurs actifs",
+    "disabled_providers": "Fournisseurs désactivés",
+    "remove_provider": "Retirer le fournisseur de la recherche",
+    "restore_provider": "Restaurer le fournisseur à rechercher",
+    "embedding_generation_location": "Lieu de génération",
+    "embedding_generation_location_description": "Sélectionnez où la génération d'intégration devrait se produire",
+    "embedding_generation_location_client": "Client/Serveur",
+    "embedding_generation_location_sync_server": "Synchroniser le serveur",
+    "enable_auto_update_embeddings": "Mise à jour automatique des intégrations",
+    "enable_auto_update_embeddings_description": "Automatically update embeddings when notes are modified",
+    "auto_update_embeddings": "Mise à jour automatique des intégrations",
+    "auto_update_embeddings_desc": "Automatically update embeddings when notes are modified",
+    "similarity_threshold": "Seuil de similitude",
+    "similarity_threshold_description": "Score de similarité minimum (0-1) pour les notes à inclure dans le contexte des requêtes LLM",
+    "embedding_batch_size": "Taille du lot",
+    "embedding_batch_size_description": "Nombre de notes à traiter en un seul lot (1-50)",
+    "embedding_update_interval": "Intervalle de mise à jour (ms)",
+    "embedding_update_interval_description": "Time between processing batches of embeddings (in milliseconds)",
+    "embedding_default_dimension": "Dimension par défaut",
+    "embedding_default_dimension_description": "Dimension vectorielle d'intégration par défaut lors de la création de nouvelles incorporations",
+    "reprocess_all_embeddings": "Retraiter toutes les intégrations",
+    "reprocess_all_embeddings_description": "Mettre en file d'attente toutes les notes à intégrer dans le traitement. Cela peut prendre un certain temps en fonction de votre nombre de notes.",
+    "reprocessing_embeddings": "Retraitement...",
+    "reprocess_started": "Le retraitement de l'intégration a commencé en arrière-plan",
+    "reprocess_error": "Erreur lors du démarrage du retraitement de l'intégration",
+    "reprocess_index": "Reconstruire l'index de recherche",
+    "reprocess_index_description": "Optimize the search index for better performance. This uses existing embeddings without regenerating them (much faster than reprocessing all embeddings).",
+    "reprocessing_index": "Reconstruction...",
+    "reprocess_index_started": "L'optimisation de l'index de recherche a commencé en arrière-plan",
+    "reprocess_index_error": "Erreur lors de la reconstruction de l'index de recherche",
+    "index_rebuild_progress": "Progression de la reconstruction de l'index",
+    "index_rebuilding": "Optimisation de l'index ({{percentage}}%)",
+    "index_rebuild_complete": "Optimisation de l'index terminée",
+    "index_rebuild_status_error": "Erreur lors de la vérification de l'état de la reconstruction de l'index",
+    "never": "Jamais",
+    "processing": "Traitement ({{percentage}}%)",
+    "incomplete": "Incomplet ({{percentage}}%)",
+    "complete": "Complété (100%)",
+    "refreshing": "Rafraîchissement...",
+    "stats_error": "Erreur lors de la récupération des statistiques d'intégration",
+    "auto_refresh_notice": "Actualisation automatique toutes les {{seconds}} secondes",
+    "note_queued_for_retry": "Note mise en file d'attente pour une nouvelle tentative",
+    "failed_to_retry_note": "Impossible de réessayer la note",
+    "all_notes_queued_for_retry": "Toutes les notes échouées ont été mises en file d'attente pour une nouvelle tentative",
+    "failed_to_retry_all": "Impossible de réessayer les notes",
+    "ai_settings": "Paramètres IA",
+    "api_key_tooltip": "Clé API pour accéder au service",
+    "confirm_delete_embeddings": "Are you sure you want to delete all AI embeddings? This will remove all semantic search capabilities until notes are reindexed, which can take a significant amount of time.",
+    "empty_key_warning": {
+      "anthropic": "La clé API anthropique est vide. Veuillez entrer une clé API valide.",
+      "openai": "La clé API OpenAI est vide. Veuillez entrer une clé API valide.",
+      "voyage": "La clé de l'API Voyage est vide. Veuillez entrer une clé API valide.",
+      "ollama": "Ollama API key is empty. Please enter a valid API key."
+    },
+    "agent": {
+      "processing": "Traitement en cours...",
+      "thinking": "Réfléchissement...",
+      "loading": "Chargement en cours...",
+      "generating": "Génération en cours..."
+    },
+    "name": "AI",
+    "openai": "OpenAI",
+    "use_enhanced_context": "Utiliser un contexte amélioré",
+    "enhanced_context_description": "Fournit à l'IA plus de contexte de la note et de ses notes connexes pour de meilleures réponses",
+    "show_thinking": "Afficher la pensée",
+    "show_thinking_description": "Afficher la chaîne de pensée de l'IA",
+    "enter_message": "Entrez votre message...",
+    "error_contacting_provider": "Erreur de contact avec le fournisseur d'IA. Veuillez vérifier vos paramètres et votre connexion Internet.",
+    "error_generating_response": "Erreur lors de la génération de la réponse AI",
+    "index_all_notes": "Indexer toutes les notes",
+    "index_status": "Statut de l'index",
+    "indexed_notes": "Notes indexées",
+    "indexing_stopped": "Indexation arrêtée",
+    "indexing_in_progress": "Indexation en cours...",
+    "last_indexed": "Dernier indexé",
+    "n_notes_queued": "Note {{ count }} mise en file d'attente pour indexation",
+    "n_notes_queued_plural": "Notes {{ count }} mises en file d'attente pour indexation",
+    "note_chat": "Discussion de note",
+    "notes_indexed": "{{ count }} note indexed",
+    "notes_indexed_plural": "Notes {{ count }} indexées",
+    "reset_embeddings": "Réinitialiser les intégrations",
+    "sources": "Sources",
+    "start_indexing": "Commencer l'indexation",
+    "use_advanced_context": "Utiliser le contexte avancé",
+    "ollama_no_url": "Ollama is not configured. Please enter a valid URL.",
+    "chat": {
+      "root_note_title": "AI Chats",
+      "root_note_content": "Cette note contient vos conversations de chat IA enregistrées.",
+      "new_chat_title": "Nouveau chat",
+      "create_new_ai_chat": "Créer un nouveau chat IA"
+    },
+    "create_new_ai_chat": "Créer un nouveau chat IA",
+    "configuration_warnings": "Il y a quelques problèmes avec la configuration de votre IA. Veuillez vérifier vos paramètres."
+  },
   "zoom_factor": {
     "title": "Facteur de zoom (version bureau uniquement)",
     "description": "Le zoom peut également être contrôlé avec les raccourcis CTRL+- et CTRL+=."
@@ -1127,7 +1322,11 @@
   "code_auto_read_only_size": {
     "title": "Taille pour la lecture seule automatique",
     "description": "La taille pour la lecture seule automatique est le seuil au-delà de laquelle les notes seront affichées en mode lecture seule (pour optimiser les performances).",
-    "label": "Taille pour la lecture seule automatique (notes de code)"
+    "label": "Taille pour la lecture seule automatique (notes de code)",
+    "unit": "caractères"
+  },
+  "code-editor-options": {
+    "title": "Éditeur"
   },
   "code_mime_types": {
     "title": "Types MIME disponibles dans la liste déroulante"
@@ -1143,9 +1342,10 @@
   "images": {
     "images_section_title": "Images",
     "download_images_automatically": "Téléchargez automatiquement les images pour une utilisation hors ligne.",
-    "download_images_description": "Le HTML collé peut contenir des références à des images en ligne, Trilium trouvera ces références et téléchargera les images afin qu'elles soient disponibles hors ligne.",
+    "download_images_description": "Du code HTML collé peut contenir des références à des images en ligne. Trilium trouvera ces références et téléchargera les images afin qu'elles soient disponibles hors ligne.",
     "enable_image_compression": "Activer la compression des images",
     "max_image_dimensions": "Largeur/hauteur maximale d'une image en pixels (l'image sera redimensionnée si elle dépasse ce paramètre).",
+    "max_image_dimensions_unit": "pixels",
     "jpeg_quality_description": "Qualité JPEG (10 - pire qualité, 100 - meilleure qualité, 50 - 85 est recommandé)"
   },
   "attachment_erasure_timeout": {
@@ -1177,6 +1377,7 @@
     "note_revisions_snapshot_limit_title": "Limite du nombre de versions de note",
     "note_revisions_snapshot_limit_description": "La limite du nombre de versions de note désigne le nombre maximum de versions pouvant être enregistrées pour chaque note. -1 signifie aucune limite, 0 signifie supprimer toutes les versions. Vous pouvez définir le nombre maximal de versions pour une seule note avec le label #versioningLimit.",
     "snapshot_number_limit_label": "Nombre limite de versions de note :",
+    "snapshot_number_limit_unit": "snapshots",
     "erase_excess_revision_snapshots": "Effacer maintenant les versions en excès",
     "erase_excess_revision_snapshots_prompt": "Les versions en excès ont été effacées."
   },
@@ -1219,20 +1420,30 @@
   "table_of_contents": {
     "title": "Table des matières",
     "description": "La table des matières apparaîtra dans les notes textuelles lorsque la note comporte plus d'un nombre défini de titres. Vous pouvez personnaliser ce nombre :",
+    "unit": "en-têtes",
     "disable_info": "Vous pouvez également utiliser cette option pour désactiver la table des matières en définissant un nombre très élevé.",
-    "shortcut_info": "Vous pouvez configurer un raccourci clavier pour afficher/masquer le volet de droite (y compris la table des matières) dans Options -> Raccourcis (nom « toggleRightPane »)."
+    "shortcut_info": "Vous pouvez configurer un raccourci clavier pour afficher/masquer le volet de droite (comprenant s la table des matières) dans Options -> Raccourcis (nom « toggleRightPane »)."
   },
   "text_auto_read_only_size": {
     "title": "Taille automatique en lecture seule",
-    "description": "La taille automatique des notes en lecture seule est la taille au-delà de laquelle les notes seront affichées en mode lecture seule (pour des raisons de performances).",
-    "label": "Taille automatique en lecture seule (notes de texte)"
+    "description": "La taille automatique des notes en lecture seule est la taille au-delà de laquelle les notes seront affichées par défaut en mode lecture seule (pour de meilleures performances).",
+    "label": "Taille automatique en lecture seule (notes de texte)",
+    "unit": "caractères"
   },
   "i18n": {
     "title": "Paramètres régionaux",
     "language": "Langue",
     "first-day-of-the-week": "Premier jour de la semaine",
     "sunday": "Dimanche",
-    "monday": "Lundi"
+    "monday": "Lundi",
+    "first-week-of-the-year": "Première semaine de l'année",
+    "first-week-contains-first-day": "La première semaine contient le premier jour de l'année",
+    "first-week-contains-first-thursday": "La première semaine contient le premier jeudi de l'année",
+    "first-week-has-minimum-days": "La première semaine a un minimum de jours",
+    "min-days-in-first-week": "Minimum de jours dans la première semaine",
+    "first-week-info": "La première semaine contient le premier jeudi de l'année est basée sur le standard <a href=\"https://en.wikipedia.org/wiki/ISO_week_date#First_week\">ISO 8601</a>.",
+    "first-week-warning": "La modification des options de la première semaine peut faire dupliquer avec les notes de semaine existantes et les notes de semaine existantes ne seront pas mises à jour en conséquence.",
+    "formatting-locale": "Format de date et de numéro"
   },
   "backup": {
     "automatic_backup": "Sauvegarde automatique",
@@ -1252,10 +1463,10 @@
   "etapi": {
     "title": "ETAPI",
     "description": "ETAPI est une API REST utilisée pour accéder à l'instance Trilium par programme, sans interface utilisateur.",
-    "see_more": "Voir plus de détails sur",
+    "see_more": "Voir plus de détails dans l' {{- link_to_wiki}} et l' {{- link_to_openapi_spec}} ou l' {{- link_to_swagger_ui }}.",
     "wiki": "wiki",
-    "and": "et",
     "openapi_spec": "Spec ETAPI OpenAPI",
+    "swagger_ui": "ETAPI Swagger UI",
     "create_token": "Créer un nouveau jeton ETAPI",
     "existing_tokens": "Jetons existants",
     "no_tokens_yet": "Il n'y a pas encore de jetons. Cliquez sur le bouton ci-dessus pour en créer un.",
@@ -1271,7 +1482,7 @@
     "rename_token": "Renommer ce jeton",
     "delete_token": "Supprimer/désactiver ce token",
     "rename_token_title": "Renommer le jeton",
-    "rename_token_message": "Veuillez saisir le nom du nouveau jeton",
+    "rename_token_message": "Veuillez saisir le nouveau nom du jeton",
     "delete_token_confirmation": "Êtes-vous sûr de vouloir supprimer le jeton ETAPI « {{name}} » ?"
   },
   "options_widget": {
@@ -1298,6 +1509,39 @@
     "set_password": "Définir le mot de passe",
     "password_mismatch": "Les nouveaux mots de passe saisis ne sont pas les mêmes.",
     "password_changed_success": "Le mot de passe a été modifié. Trilium va redémarrer après avoir appuyé sur OK."
+  },
+  "multi_factor_authentication": {
+    "title": "Multi-Factor Authentication",
+    "description": "Multi-Factor Authentication (MFA) adds an extra layer of security to your account. Instead of just entering a password to log in, MFA requires you to provide one or more additional pieces of evidence to verify your identity. This way, even if someone gets hold of your password, they still can't access your account without the second piece of information. It's like adding an extra lock to your door, making it much harder for anyone else to break in.<br><br>Please follow the instructions below to enable MFA. If you don't config correctly, login will fall back to password only.",
+    "mfa_enabled": "Enable Multi-Factor Authentication",
+    "mfa_method": "Méthode MFA",
+    "electron_disabled": "Multi-Factor Authentication is not supported in the desktop build currently.",
+    "totp_title": "Mot de passe unique basé sur le temps (TOTP)",
+    "totp_description": "TOTP (mot de passe unique basé sur le temps) est une fonctionnalité de sécurité qui génère un code temporaire unique qui change toutes les 30 secondes. Vous utilisez ce code, ainsi que votre mot de passe pour vous connecter à votre compte, ce qui rend beaucoup plus difficile pour quiconque d'y accéder.",
+    "totp_secret_title": "Générer le secret TOTP",
+    "totp_secret_generate": "Générer le secret TOTP",
+    "totp_secret_regenerate": "Regenerate TOTP Secret",
+    "no_totp_secret_warning": "Pour activer TOTP, vous devez d'abord générer un secret TOTP.",
+    "totp_secret_description_warning": "Après avoir généré un nouveau secret TOTP, vous devrez vous reconnecter avec le nouveau secret TOTP.",
+    "totp_secret_generated": "Secret TOTP généré",
+    "totp_secret_warning": "Veuillez enregistrer le secret généré dans un emplacement sécurisé. Il ne sera plus affiché.",
+    "totp_secret_regenerate_confirm": "Êtes-vous sûr de vouloir régénérer le secret TOTP ? Cela invalidera le secret TOTP précédent et tous les codes de récupération existants.",
+    "recovery_keys_title": "Touches de récupération de l'authentification unique",
+    "recovery_keys_description": "Les clés de récupération de l'authentification unique sont utilisées pour se connecter dans le même temps, vous ne pouvez pas accéder à vos codes d'authentification.",
+    "recovery_keys_description_warning": "Recovery keys won't be shown again after leaving the page, keep them somewhere safe and secure.<br>After a recovery key is used it cannot be used again.",
+    "recovery_keys_error": "Erreur lors de la génération des codes de récupération",
+    "recovery_keys_no_key_set": "Aucun code de récupération défini",
+    "recovery_keys_generate": "Générer des codes de récupération",
+    "recovery_keys_regenerate": "Régénérer les codes de récupération",
+    "recovery_keys_used": "Utilisé : {{date}}",
+    "recovery_keys_unused": "Le code de récupération {{index}} n'est pas utilisé",
+    "oauth_title": "OAuth/OpenID",
+    "oauth_description": "OpenID is a standardized way to let you log into websites using an account from another service, like Google, to verify your identity. Follow these <a href=\"https://developers.google.com/identity/openid-connect/openid-connect\">instructions</a> to setup an OpenID service through Google.",
+    "oauth_description_warning": "To enable OAuth/OpenID, you need to set the OAuth/OpenID base URL, client ID and client secret in the config.ini file and restart the application. If you want to set from environment variables, please set TRILIUM_OAUTH_BASE_URL, TRILIUM_OAUTH_CLIENT_ID and TRILIUM_OAUTH_CLIENT_SECRET.",
+    "oauth_missing_vars": "Paramètres manquants : {{variables}}",
+    "oauth_user_account": "User Account: ",
+    "oauth_user_email": "Courriel de l'utilisateur : ",
+    "oauth_user_not_logged_in": "Not logged in!"
   },
   "shortcuts": {
     "keyboard_shortcuts": "Raccourcis clavier",
@@ -1326,6 +1570,7 @@
     "config_title": "Configuration de synchronisation",
     "server_address": "Adresse de l'instance du serveur",
     "timeout": "Délai d'expiration de la synchronisation (millisecondes)",
+    "timeout_unit": "millisecondes",
     "proxy_label": "Serveur proxy de synchronisation (facultatif)",
     "note": "Note",
     "note_description": "Si vous laissez le paramètre de proxy vide, le proxy système sera utilisé (applicable uniquement à la version de bureau/électronique).",
@@ -1333,7 +1578,7 @@
     "save": "Sauvegarder",
     "help": "Aide",
     "test_title": "Test de synchronisation",
-    "test_description": "Testera la connexion et la prise de contact avec le serveur de synchronisation. Si le serveur de synchronisation n'est pas initialisé, cela le configurera pour qu'il se synchronise avec le document local.",
+    "test_description": "Tester la connexion et l'authentification avec le serveur de synchronisation. Si le serveur de synchronisation n'est pas initialisé, il sera configuré pour se synchronise avec le document local.",
     "test_button": "Tester la synchronisation",
     "handshake_failed": "Échec de la négociation avec le serveur de synchronisation, erreur : {{message}}"
   },
@@ -1406,7 +1651,7 @@
     "text": "Texte",
     "code": "Code",
     "saved-search": "Recherche enregistrée",
-    "relation-map": "Carte des relations",
+    "relation-map": "Carte de relations",
     "note-map": "Carte de notes",
     "render-note": "Rendu Html",
     "book": "Livre",
@@ -1422,6 +1667,7 @@
     "confirm-change": "Il n'est pas recommandé de modifier le type de note lorsque son contenu n'est pas vide. Voulez-vous continuer ?",
     "geo-map": "Carte géo",
     "beta-feature": "Beta",
+    "ai-chat": "Chat IA",
     "task-list": "Liste de tâches"
   },
   "protect_note": {
@@ -1454,9 +1700,6 @@
   "highlights_list_2": {
     "title": "Accentuations",
     "options": "Options"
-  },
-  "mermaid": {
-    "diagram_error": "Le diagramme n'a pas pu être affiché. Consultez l'<a href=\"https://mermaid-js.github.io/mermaid/#/flowchart?id=graph\">aide et exemples</a>."
   },
   "quick-search": {
     "placeholder": "Recherche rapide",
@@ -1500,7 +1743,7 @@
     "no_rows": "Aucune ligne n'a été renvoyée pour cette requête"
   },
   "sql_table_schemas": {
-    "tables": "Tableaux"
+    "tables": "Tables"
   },
   "tab_row": {
     "close_tab": "Fermer l'onglet",
@@ -1675,5 +1918,37 @@
   "time_selector": {
     "invalid_input": "La valeur de l'heure saisie n'est pas un nombre valide.",
     "minimum_input": "La valeur de temps saisie doit être d'au moins {{minimumSeconds}} secondes."
+  },
+  "tasks": {
+    "due": {
+      "today": "Aujourd'hui",
+      "tomorrow": "Demain",
+      "yesterday": "Hier"
+    }
+  },
+  "content_widget": {
+    "unknown_widget": "Widget inconnu pour \"{{id}}\"."
+  },
+  "note_language": {
+    "not_set": "Non défini",
+    "configure-languages": "Configurer les langues..."
+  },
+  "content_language": {
+    "title": "Langues du contenu",
+    "description": "Sélectionnez une ou plusieurs langues qui devraient apparaître dans la sélection de langue dans la section Propriétés de base d'une note de texte en lecture seule ou modifiable. Cela permettra des fonctionnalités telles que la vérification orthographique ou la prise en charge de droite à gauche."
+  },
+  "switch_layout_button": {
+    "title_vertical": "Déplacer le volet d'édition vers le bas",
+    "title_horizontal": "Déplacer le volet d'édition vers la gauche"
+  },
+  "toggle_read_only_button": {
+    "unlock-editing": "Édition du déverrouillage",
+    "lock-editing": "Verrouiller l'édition"
+  },
+  "png_export_button": {
+    "button_title": "Exporter le diagramme en PNG"
+  },
+  "svg": {
+    "export_to_png": "Le diagramme n'a pas pu être exporté vers PNG."
   }
 }
