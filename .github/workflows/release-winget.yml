@@ -16,5 +16,5 @@ jobs:
         uses: vedantmgoyal9/winget-releaser@main
         with:
           identifier: TriliumNext.Notes
-          token: ${{ secrets.token }}
+          token: ${{ secrets.WINGET_PAT  }}
           release-tag:  ${{ github.event.inputs.release_tag || github.event.release.tag_name }}

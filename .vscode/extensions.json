@@ -1,11 +1,14 @@
 {
   "recommendations": [
-    "lokalise.i18n-ally",
-    "editorconfig.editorconfig",
-    "vitest.explorer",
-    "ms-playwright.playwright",
-    "tobermory.es6-string-html",
     "dbaeumer.vscode-eslint",
+    "editorconfig.editorconfig",
+    "lokalise.i18n-ally",
+    "ms-azuretools.vscode-docker",
+    "ms-playwright.playwright",
+    "nrwl.angular-console",
+    "redhat.vscode-yaml",
+    "tobermory.es6-string-html",
+    "vitest.explorer",
     "yzhang.markdown-all-in-one"
   ]
 }

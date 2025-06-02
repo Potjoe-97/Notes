@@ -1,6 +1,0 @@
-# Adaptive icon
-<figure class="table" style="width:100%;"><table class="ck-table-resized"><colgroup><col> <col></colgroup><tbody><tr><th>Before</th><td><figure class="image"><img src="1_Adaptive icon_image.png"></figure></td></tr><tr><th>After</th><td><figure class="image"><img src="6_Adaptive icon_image.png"></figure></td></tr><tr><th>With new scale</th><td><figure class="image"><img src="4_Adaptive icon_image.png"></figure></td></tr></tbody></table></figure>
-
-## Scale
-
-<figure class="table" style="width:300px;"><table><tbody><tr><th>0.9</th><td style="background-color:hsl(0, 0%, 90%)"><figure class="image"><img src="2_Adaptive icon_image.png"></figure></td></tr><tr><th>0.85</th><td style="background-color:hsl(0, 0%, 90%);"><figure class="image"><img src="5_Adaptive icon_image.png"></figure></td></tr><tr><th>0.8</th><td style="background-color:hsl(0, 0%, 90%);"><figure class="image"><img src="Adaptive icon_image.png"></figure></td></tr><tr><th>0.75</th><td style="background-color:hsl(0, 0%, 90%);"><figure class="image"><img src="3_Adaptive icon_image.png"></figure></td></tr></tbody></table></figure>

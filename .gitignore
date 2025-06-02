@@ -1,50 +1,48 @@
-.cache
-.DS_Store
-node_modules/
-dist/
-upload/
-build/
-coverage/
-src/public/app-dist/
+# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# compiled output
+dist
+tmp
+out-tsc
+
+# dependencies
+node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
 npm-debug.log
 yarn-error.log
-po-*/
-.flatpak-builder/
+testem.log
+/typings
 
-*.db
-!test/**/*.db
-!integration-tests/db/document.db
-!integration-tests/db/config.ini
-integration-tests/db/log
-integration-tests/db/sessions
-integration-tests/db/backup
-integration-tests/db/session_secret.txt
+# System Files
+.DS_Store
+Thumbs.db
 
-cert.key
-cert.crt
-server-package.json
-.idea/httpRequests/
-.idea/shelf/
-data/
-data-test/
-data-demo/
-tmp/
-.eslintcache
+.nx/cache
+.nx/workspace-data
 
-out/
+vite.config.*.timestamp*
+vitest.config.*.timestamp*
+test-output
 
-images/app-icons/mac/*.png
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+apps/*/data
+apps/*/out
+upload
 
-data-docs/backup
-data-docs/log
-data-docs/session
-data-docs/session_secret.txt
-data-docs/document.*
+.rollup.cache
+*.tsbuildinfo
 
-# Webpack
-webpack-stats.json
+/result

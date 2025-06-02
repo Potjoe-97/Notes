@@ -5,6 +5,7 @@ on:
       - "v*"
 permissions:
   contents: write
+  discussions: write
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -32,10 +33,15 @@ jobs:
     runs-on: ${{ matrix.os.image }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Set up node & dependencies
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - uses: nrwl/nx-set-shas@v4
       - name: Run the build
         uses: ./.github/actions/build-electron
         with:
@@ -57,7 +63,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-desktop-${{ matrix.os.name }}-${{ matrix.arch }}
-          path: upload/*.*
+          path: apps/desktop/upload/*.*
 
   build_server:
     name: Build Linux Server
@@ -107,10 +113,14 @@ jobs:
           pattern: release-*
           path: upload
 
-      - name: Publish release
+      - name: Publish stable release
         uses: softprops/action-gh-release@v2
         with:
           draft: false
           body_path: docs/Release Notes/Release Notes/${{ github.ref_name }}.md
           fail_on_unmatched_files: true
           files: upload/*.*
+          discussion_category_name: Announcements
+          make_latest: ${{ !contains(github.ref, 'rc') }}
+          prerelease: ${{ !contains(github.ref, 'rc') }}
+          token: ${{ secrets.RELEASE_PAT }}

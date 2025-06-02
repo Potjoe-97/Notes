@@ -12,11 +12,18 @@ on:
     paths:
       - .github/actions/build-electron/*
       - forge.config.cjs
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   GITHUB_UPLOAD_URL: https://uploads.github.com/repos/TriliumNext/Notes/releases/179589950/assets{?name,label}
   GITHUB_RELEASE_ID: 179589950
+
 permissions:
   contents: write
+
 jobs:
   nightly-electron:
     name: Deploy nightly
@@ -40,12 +47,15 @@ jobs:
     runs-on: ${{ matrix.os.image }}
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Set up node & dependencies
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'pnpm'
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+      - uses: nrwl/nx-set-shas@v4
       - name: Update nightly version
         run: npm run chore:ci-update-nightly-version
       - name: Run the build
@@ -73,7 +83,7 @@ jobs:
           prerelease: true
           draft: false
           fail_on_unmatched_files: true
-          files: upload/*.*
+          files: apps/desktop/upload/*.*
           tag_name: nightly
           name: Nightly Build
 
@@ -82,7 +92,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         with:
           name: TriliumNextNotes ${{ matrix.os.name }} ${{ matrix.arch }}
-          path: upload
+          path: apps/desktop/upload
 
   nightly-server:
     name: Deploy server nightly

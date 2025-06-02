@@ -3,7 +3,7 @@
 
 Within text notes, it's possible to enter mathematical equations using the <img src="1_Math Equations_image.png" width="20" height="15"> button from the <a class="reference-link" href="Formatting%20toolbar.md">Formatting toolbar</a> (generally found under the <a class="reference-link" href="Insert%20buttons.md">Insert buttons</a>).
 
-If inserting equations frequently, using the <kbd>Ctrl</kbd>+<kbd>M</kbd> keyboard shortcut can be more comfortable.
+If inserting equations frequently, using the <kbd>Ctrl</kbd>+<kbd>M</kbd> keyboard shortcut can be more comfortable. Alternatively, type `$$` or `\[` to trigger the popup directly.
 
 There is currently no quick way to insert an equation, such as surrounding it with `$` or pressing <kbd>Ctrl</kbd>+<kbd>M</kbd> on an already typed-out equation.
 

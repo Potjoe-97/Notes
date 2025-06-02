@@ -27,5 +27,6 @@ To import more complex formatting into text notes, consider using the [_Import f
     *   `!!! caution`
     *   `!!! warning`
     *   Starting any other text with `!!!` will insert a note admonition with the text inside of it.
+*   For [emojis](Insert%20buttons.md), type `:` followed by an emoji name to trigger an auto-completion.
 
 If auto-formatting is not desirable, press <kbd>Ctrl</kbd> + <kbd>Z</kbd> to revert the text to its original form.

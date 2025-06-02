@@ -21,30 +21,39 @@ runs:
   # Certificate setup
   - name: Import Apple certificates
     if: inputs.os == 'macos'
-    uses: apple-actions/import-codesign-certs@v3
+    uses: apple-actions/import-codesign-certs@v5
     with:
       p12-file-base64: ${{ env.APPLE_APP_CERTIFICATE_BASE64 }}
       p12-password: ${{ env.APPLE_APP_CERTIFICATE_PASSWORD }}
-      keychain: build
+      keychain: build-app-${{ github.run_id }}
       keychain-password: ${{ github.run_id }}
 
   - name: Install Installer certificate
     if: inputs.os == 'macos'
-    uses: apple-actions/import-codesign-certs@v3
+    uses: apple-actions/import-codesign-certs@v5
     with:
       p12-file-base64: ${{ env.APPLE_INSTALLER_CERTIFICATE_BASE64 }}
       p12-password: ${{ env.APPLE_INSTALLER_CERTIFICATE_PASSWORD }}
-      keychain: build
+      keychain: build-installer-${{ github.run_id }}
       keychain-password: ${{ github.run_id }}
-      # We don't need to create a keychain here because we're using the build keychain that was created in the previous step
-      create-keychain: false
 
   - name: Verify certificates
     if: inputs.os == 'macos'
     shell: ${{ inputs.shell }}
     run: |
-      echo "Available signing identities:"
-      security find-identity -v -p codesigning build.keychain
+      echo "Available signing identities in app keychain:"
+      security find-identity -v -p codesigning build-app-${{ github.run_id }}.keychain
+
+      echo "Available signing identities in installer keychain:"
+      security find-identity -v -p codesigning build-installer-${{ github.run_id }}.keychain
+
+      # Make the keychains searchable
+      security list-keychains -d user -s build-app-${{ github.run_id }}.keychain build-installer-${{ github.run_id }}.keychain $(security list-keychains -d user | tr -d '"')
+      security default-keychain -s build-app-${{ github.run_id }}.keychain
+      security unlock-keychain -p ${{ github.run_id }} build-app-${{ github.run_id }}.keychain
+      security unlock-keychain -p ${{ github.run_id }} build-installer-${{ github.run_id }}.keychain
+      security set-keychain-settings -t 3600 -l build-app-${{ github.run_id }}.keychain
+      security set-keychain-settings -t 3600 -l build-installer-${{ github.run_id }}.keychain
 
   - name: Set up Python and other macOS dependencies
     if: ${{ inputs.os == 'macos' }}
@@ -63,11 +72,6 @@ runs:
       FLATPAK_VERSION='24.08'
       flatpak install --user --no-deps --arch $FLATPAK_ARCH --assumeyes runtime/org.freedesktop.Platform/$FLATPAK_ARCH/$FLATPAK_VERSION runtime/org.freedesktop.Sdk/$FLATPAK_ARCH/$FLATPAK_VERSION org.electronjs.Electron2.BaseApp/$FLATPAK_ARCH/$FLATPAK_VERSION
 
-  # Build setup
-  - name: Install dependencies
-    shell: ${{ inputs.shell }}
-    run: npm ci
-
   - name: Update build info
     shell: ${{ inputs.shell }}
     run: npm run chore:update-build-info
@@ -82,7 +86,7 @@ runs:
       APPLE_ID_PASSWORD: ${{ env.APPLE_ID_PASSWORD }}
       WINDOWS_SIGN_EXECUTABLE: ${{ env.WINDOWS_SIGN_EXECUTABLE }}
       TRILIUM_ARTIFACT_NAME_HINT: TriliumNextNotes-${{ github.ref_name }}-${{ inputs.os }}-${{ inputs.arch }}
-    run: npm run electron-forge:make -- --arch=${{ inputs.arch }} --platform=${{ inputs.forge_platform }}
+    run: pnpm nx --project=desktop electron-forge:make -- --arch=${{ inputs.arch }} --platform=${{ inputs.forge_platform }}
 
   # Add DMG signing step
   - name: Sign DMG
@@ -90,11 +94,11 @@ runs:
     shell: ${{ inputs.shell }}
     run: |
       echo "Signing DMG file..."
-      dmg_file=$(find ./dist -name "*.dmg" -print -quit)
+      dmg_file=$(find ./apps/desktop/dist -name "*.dmg" -print -quit)
       if [ -n "$dmg_file" ]; then
         echo "Found DMG: $dmg_file"
         # Get the first valid signing identity from the keychain
-        SIGNING_IDENTITY=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application" | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
+        SIGNING_IDENTITY=$(security find-identity -v -p codesigning build-app-${{ github.run_id }}.keychain | grep "Developer ID Application" | head -1 | sed -E 's/.*"([^"]+)".*/\1/')
         if [ -z "$SIGNING_IDENTITY" ]; then
           echo "Error: No valid Developer ID Application certificate found in keychain"
           exit 1
@@ -118,7 +122,7 @@ runs:
 
       # First check the .app bundle
       echo "Looking for .app bundle..."
-      app_bundle=$(find ./dist -name "*.app" -print -quit)
+      app_bundle=$(find ./apps/desktop/dist -name "*.app" -print -quit)
       if [ -n "$app_bundle" ]; then
         echo "Found app bundle: $app_bundle"
         echo "Verifying app bundle signing..."
@@ -137,7 +141,7 @@ runs:
 
       # Then check DMG if it exists
       echo "Looking for DMG..."
-      dmg_file=$(find ./dist -name "*.dmg" -print -quit)
+      dmg_file=$(find ./apps/desktop/dist -name "*.dmg" -print -quit)
       if [ -n "$dmg_file" ]; then
         echo "Found DMG: $dmg_file"
         echo "Verifying DMG signing..."
@@ -153,7 +157,7 @@ runs:
 
       # Finally check ZIP if it exists
       echo "Looking for ZIP..."
-      zip_file=$(find ./dist -name "*.zip" -print -quit)
+      zip_file=$(find ./apps/desktop/dist -name "*.zip" -print -quit)
       if [ -n "$zip_file" ]; then
         echo "Found ZIP: $zip_file"
         echo "Note: ZIP files are not code signed, but their contents should be"

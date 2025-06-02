@@ -1,6 +1,22 @@
 # Insert buttons
 Press the <img src="4_Insert buttons_image.png" width="34" height="16"> button in the <a class="reference-link" href="Formatting%20toolbar.md">Formatting toolbar</a> to reveal special inserable items and blocks such as symbols, Math expressions and separators.
 
+## Bookmarks
+
+See the dedicated <a class="reference-link" href="Bookmarks.md">Bookmarks</a> section.
+
+## Emoji
+
+<figure class="image image-style-align-right image_resized" style="width:42.4%;"><img style="aspect-ratio:366/410;" src="Insert buttons_plus.png" width="366" height="410"></figure>
+
+This feature allows inserting Unicode emoji characters. Simply select a category and a desired emoji to insert it.
+
+Emojis can also be searched by their English name and the skin tone can be selected via a combo box to the right.
+
+There is also the possibility of inserting emojis directly by typing `:` followed by a name of an emoji, triggering the display of a list of emojis. Simply use the arrow keys to select one and press <kbd>Enter</kbd> to insert it.
+
+<img src="1_Insert buttons_plus.png" width="272" height="187">
+
 ## Symbols
 
 <figure class="image image-style-align-right"><img style="aspect-ratio:346/322;" src="1_Insert buttons_image.png" width="346" height="322"></figure>

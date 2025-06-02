@@ -1,20 +1,61 @@
 {
-  "compilerOptions": {
-    "module": "NodeNext",
-    "declaration": false,
-    "sourceMap": true,
-    "outDir": "./build",
-    "strict": true,
-    "noImplicitAny": true,
-    "resolveJsonModule": true,
-    "allowJs": true,
-    "lib": ["ES2023"],
-    "downlevelIteration": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "verbatimModuleSyntax": true
-  },
-  "include": ["./src/**/*.js", "./src/**/*.ts", "./*.ts", "./*.js", "./spec/**/*.ts"],
-  "exclude": ["./node_modules/**/*", "./spec-es6/**/*.ts"],
-  "files": ["src/types.d.ts", "src/public/app/types.d.ts"]
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./packages/commons"
+    },
+    {
+      "path": "./packages/turndown-plugin-gfm"
+    },
+    {
+      "path": "./apps/server"
+    },
+    {
+      "path": "./apps/server-e2e"
+    },
+    {
+      "path": "./apps/client"
+    },
+    {
+      "path": "./apps/desktop"
+    },
+    {
+      "path": "./apps/dump-db"
+    },
+    {
+      "path": "./apps/edit-docs"
+    },
+    {
+      "path": "./packages/express-partial-content"
+    },
+    {
+      "path": "./apps/db-compare"
+    },
+    {
+      "path": "./packages/ckeditor5"
+    },
+    {
+      "path": "./packages/ckeditor5-keyboard-marker"
+    },
+    {
+      "path": "./packages/ckeditor5-mermaid"
+    },
+    {
+      "path": "./packages/ckeditor5-admonition"
+    },
+    {
+      "path": "./packages/ckeditor5-footnotes"
+    },
+    {
+      "path": "./packages/ckeditor5-math"
+    },
+    {
+      "path": "./packages/codemirror"
+    },
+    {
+      "path": "./packages/highlightjs"
+    }
+  ]
 }

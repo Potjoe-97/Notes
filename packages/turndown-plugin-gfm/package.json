@@ -1,23 +1,28 @@
 {
-  "name": "@joplin/turndown-plugin-gfm",
-  "description": "Turndown plugin to add GitHub Flavored Markdown extensions.",
-  "publishConfig": {
-    "access": "public"
-  },
+  "name": "@triliumnext/turndown-plugin-gfm",
   "version": "1.0.61",
+  "description": "Turndown plugin to add GitHub Flavored Markdown extensions.",
   "author": "Dom Christie",
-  "main": "lib/turndown-plugin-gfm.cjs.js",
-  "devDependencies": {
-    "browserify": "^17.0.1",
-    "rollup": "^4.36.0",
-    "standard": "^17.1.2",
-    "turndown": "7.2.0",
-    "turndown-attendant": "0.0.3"
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "development": "./src/index.js",
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
-  "files": [
-    "lib",
-    "dist"
-  ],
+  "gitHead": "05a29b450962bf05a8642bbd39446a1f679a96ba",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/laurent22/joplin-turndown-plugin-gfm.git"
+  },
   "keywords": [
     "turndown",
     "turndown-plugin",
@@ -27,20 +32,32 @@
     "github-flavored-markdown",
     "gfm"
   ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/laurent22/joplin-turndown-plugin-gfm.git"
+  "nx": {
+    "name": "turndown-plugin-gfm",
+    "sourceRoot": "packages/turndown-plugin-gfm/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "packages/turndown-plugin-gfm/dist",
+          "main": "packages/turndown-plugin-gfm/src/index.js",
+          "tsConfig": "packages/turndown-plugin-gfm/tsconfig.lib.json",
+          "format": [
+            "esm"
+          ],
+          "declarationRootDir": "packages/turndown-plugin-gfm/src"
+        }
+      },
+      "test": {
+        "command": "node packages/turndown-plugin-gfm/test/turndown-plugin-gfm-test.js"
+      }
+    }
   },
-  "type": "module",
-  "scripts": {
-    "build-all": "npm run build-cjs && npm run build-es && npm run build-iife",
-    "build": "rollup -c config/rollup.config.cjs.js",
-    "build-cjs": "rollup -c config/rollup.config.cjs.js && rollup -c config/rollup.config.browser.cjs.js",
-    "build-es": "rollup -c config/rollup.config.es.js && rollup -c config/rollup.config.browser.es.js",
-    "build-iife": "rollup -c config/rollup.config.iife.js",
-    "build-test": "browserify test/turndown-plugin-gfm-test.js --outfile test/turndown-plugin-gfm-test.browser.js",
-    "prepare": "npm run build"
-  },
-  "gitHead": "05a29b450962bf05a8642bbd39446a1f679a96ba"
+  "devDependencies": {
+    "turndown": "7.2.0",
+    "turndown-attendant": "0.0.3"
+  }
 }

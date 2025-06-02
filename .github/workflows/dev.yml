@@ -19,20 +19,45 @@ permissions:
   pull-requests: write  # for PR comments
 
 jobs:
-  report-electron-size:
-    name: Report Electron size
+  check-affected:
+    name: Check affected jobs (NX)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # needed for https://github.com/marketplace/actions/nx-set-shas
 
+      - uses: pnpm/action-setup@v4
       - name: Set up node & dependencies
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      - run: npm ci
+      - uses: nrwl/nx-set-shas@v4
+      - name: Check affected
+        run: pnpm nx affected --verbose -t typecheck build rebuild-deps
+
+  report-electron-size:
+    name: Report Electron size
+    runs-on: ubuntu-latest
+    needs:
+      - check-affected
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+      - name: Set up node & dependencies
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Run the build
         uses: ./.github/actions/build-electron
@@ -54,17 +79,20 @@ jobs:
   report-server-size:
     name: Report server size
     runs-on: ubuntu-latest
+    needs:
+      - check-affected
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
       - name: Set up node & dependencies
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
+          cache: "pnpm"
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Run the build
         uses: ./.github/actions/build-server
@@ -85,39 +113,42 @@ jobs:
   test_dev:
     name: Test development
     runs-on: ubuntu-latest
+    needs:
+      - check-affected
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
       - name: Set up node & dependencies
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: "npm"
-
-      - run: npm ci
-
-      - name: Run the TypeScript build
-        run: npx tsc
+          cache: "pnpm"
+      - run: pnpm install --frozen-lockfile
 
       - name: Run the unit tests
-        run: npm run test
+        run: pnpm run test:all
 
   build_docker:
     name: Build Docker image
     runs-on: ubuntu-latest
     needs:
       - test_dev
+      - check-affected
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: Update build info
-        run: npm run chore:update-build-info
+        run: pnpm run chore:update-build-info
+      - name: Trigger build
+        run: pnpm nx run server:build
       - uses: docker/setup-buildx-action@v3
       - uses: docker/build-push-action@v6
         with:
-          context: .
+          context: apps/server
           cache-from: type=gha
           cache-to: type=gha,mode=max
   test_docker:
@@ -125,6 +156,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build_docker
+      - check-affected
     strategy:
       matrix:
         include:
@@ -134,11 +166,14 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Update build info
-        run: npm run chore:update-build-info
+        run: pnpm run chore:update-build-info
+      - name: Trigger build
+        run: pnpm nx run server:build
 
       - name: Set IMAGE_NAME to lowercase
         run: echo "IMAGE_NAME=${IMAGE_NAME,,}" >> $GITHUB_ENV
@@ -151,8 +186,8 @@ jobs:
       - name: Build and export to Docker
         uses: docker/build-push-action@v6
         with:
-          context: .
-          file: ${{ matrix.dockerfile }}
+          context: apps/server
+          file: apps/server/${{ matrix.dockerfile }}
           load: true
           tags: ${{ env.TEST_TAG }}
           cache-from: type=gha
@@ -174,5 +209,4 @@ jobs:
       # Print the entire log of the container thus far, regardless if the healthcheck failed or succeeded
       - name: Print entire log
         if: always()
-        run: |
-          journalctl -u docker CONTAINER_NAME=trilium_local --no-pager
+        run: journalctl -u docker CONTAINER_NAME=trilium_local --no-pager

@@ -1,0 +1,89 @@
+{
+  "name": "@triliumnext/ckeditor5-footnotes",
+  "version": "0.0.4",
+  "description": "A plugin for CKEditor 5 to allow footnotes.",
+  "keywords": [
+    "ckeditor",
+    "ckeditor5",
+    "ckeditor 5",
+    "ckeditor5-feature",
+    "ckeditor5-plugin",
+    "ckeditor5-package-generator"
+  ],
+  "type": "module",
+  "main": "dist/index.ts",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./*": "./dist/*",
+    "./browser/*": null,
+    "./package.json": "./package.json"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=5.7.1"
+  },
+  "files": [
+    "dist",
+    "ckeditor5-metadata.json"
+  ],
+  "devDependencies": {
+    "@ckeditor/ckeditor5-dev-build-tools": "43.0.1",
+    "@ckeditor/ckeditor5-inspector": ">=4.1.0",
+    "@ckeditor/ckeditor5-package-tools": "^3.0.1",
+    "@typescript-eslint/eslint-plugin": "~8.33.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "@vitest/browser": "^3.0.5",
+    "@vitest/coverage-istanbul": "^3.0.5",
+    "ckeditor5": "45.1.0",
+    "eslint": "^9.0.0",
+    "eslint-config-ckeditor5": ">=9.1.0",
+    "http-server": "^14.1.0",
+    "lint-staged": "^16.0.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-ckeditor5": ">=9.1.0",
+    "ts-node": "^10.9.1",
+    "typescript": "5.8.3",
+    "vite-plugin-svgo": "~2.0.0",
+    "vitest": "^3.0.5",
+    "webdriverio": "^9.0.7"
+  },
+  "peerDependencies": {
+    "ckeditor5": "45.1.0"
+  },
+  "scripts": {
+    "build": "node ./scripts/build-dist.mjs",
+    "ts:build": "tsc -p ./tsconfig.release.json",
+    "ts:clear": "npx rimraf --glob \"src/**/*.@(js|d.ts)\"",
+    "lint": "eslint \"**/*.{js,ts}\" --quiet",
+    "start": "ckeditor5-package-tools start",
+    "stylelint": "stylelint --quiet --allow-empty-input 'theme/**/*.css'",
+    "test": "vitest",
+    "test:debug": "vitest --inspect-brk --no-file-parallelism --browser.headless=false",
+    "prepublishOnly": "npm run ts:build && ckeditor5-package-tools export-package-as-javascript",
+    "postpublish": "npm run ts:clear && ckeditor5-package-tools export-package-as-typescript",
+    "translations:synchronize": "ckeditor5-package-tools translations:synchronize",
+    "translations:validate": "ckeditor5-package-tools translations:synchronize --validate-only"
+  },
+  "lint-staged": {
+    "**/*.{js,ts}": [
+      "eslint --quiet"
+    ],
+    "**/*.css": [
+      "stylelint --quiet --allow-empty-input"
+    ]
+  },
+  "nx": {
+    "name": "ckeditor5-footnotes",
+    "targets": {
+      "build": {
+        "cache": "true"
+      }
+    }
+  }
+}
